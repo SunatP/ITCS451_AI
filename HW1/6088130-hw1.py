@@ -16,7 +16,6 @@ class EightPuzzleState:
                     self.y = i
                     self.x = j
 
-    
     def __repr__(self):
         """Return a string representation of a board."""
         output = []
@@ -31,20 +30,101 @@ class EightPuzzleState:
 
     @staticmethod
     def initializeState():
+        
+        Arr = list(range(0,9)) # Create Array value 0 - 8 
+        random.shuffle(Arr) # Shuffle by using Random func.
+        count = 0 # Init value to contain to nested list
+        nestlist = [] # create empty array
+        for x in range(0,3): # use for loop condition to pack them into nested list (2D-Array)
+            row = []
+            for y in range(0,3):
+                row.append(Arr[count])  # append shuffle value into row array
+                count += 1
+            nestlist.append(row) # append array into array again
+        
+        return EightPuzzleState(nestlist)
+        pass
         """
         Create an 8-puzzle state with a SHUFFLED tiles.
         
         Return
         ----------
-        List[List[int]]
-            A nested list containing integers representing numbers on a board
+        EightPuzzleState
+            A state that contain an 8-puzzle board with a type of List[List[int]]: 
+            a nested list containing integers representing numbers on a board
             e.g., [[0, 1, 2], [3, 4, 5], [6, 7, 8]] where 0 is a blank tile.
         """
         # TODO: 1
-        # ต้องทำนะจ๊ะ
-        pass
+        
 
     def successor(self, action):
+        if action not in self.action_space:
+            raise ValueError(f'`action`: {action} is not valid.')
+        # TODO: 2
+        # YOU NEED TO COPY A BOARD BEFORE MODIFYING IT
+        new_board = copy.deepcopy(self.board)
+
+        i = self.y
+        j = self.x
+        getmovement = self.possibleact(i,j)
+
+        if len(getmovement) == 0 or action not in getmovement:
+            return None
+
+        self.move(new_board,action,(i,j)) # move the position of blank tile   
+
+        return EightPuzzleState(new_board)
+        pass 
+
+    def blankPos(self): # create func. to report position of Blank Tile
+        for i in range(0,3):
+            for j in range(0,3):
+                if self.board[i][j] == 0:
+                    return i,j
+        pass
+
+    def move(self,copyboard,direction,blankPosition): # move value by using string
+        i = blankPosition[0]
+        j = blankPosition[1]
+
+        axisX = i
+        axisY = j
+        if direction == 'u':
+            axisX -= 1
+        elif direction == 'd':
+            axisX += 1
+        elif direction == 'r':
+            axisY += 1
+        elif direction == 'l':
+            axisY -= 1 
+            
+        tmp = copyboard[i][j]
+        copyboard[i][j] = copyboard[axisX][axisY]
+        copyboard[axisX][axisY] = tmp
+        
+        pass
+
+    def possibleact(self,i,j): 
+
+        getmovement = copy.deepcopy(self.action_space)
+
+        top_row = i - 1
+        if top_row < 0 :
+            getmovement.remove('u')
+
+        bottom_row = i + 1
+        if bottom_row > len(self.board) - 1:
+            getmovement.remove('d')
+
+        left_col = j - 1 
+        if left_col < 0 :
+            getmovement.remove('l')
+        
+        right_col = j + 1
+        if right_col > len(self.board[0]) - 1 :
+            getmovement.remove('r')
+
+        
         """
         Move a blank tile in the current state, and return a new state.
 
@@ -64,21 +144,18 @@ class EightPuzzleState:
         ValueError
             if the `action` is not in the action space
         
-        """    
-        if action not in self.action_space:
-            raise ValueError(f'`action`: {action} is not valid.')
-        # TODO: 2
-        # YOU NEED TO COPY A BOARD BEFORE MODIFYING IT
-        # ต้องทำนะจ๊ะ
-        new_board = copy.deepcopy(self.board)
+        """  
+        
+        return getmovement  
+        
         pass
 
-
     def is_goal(self, goal_board=[[1, 2, 3], [4, 5, 6], [7, 8, 0]]):
-        if goal_board[0][0] == len(self.board):
-            return True
-        else:
-            return False
+        for i in range(0, len(self.board)):
+            for j in range(0, len(self.board)):
+                if self.board[i][j] != goal_board[i][j]:
+                    return False
+        return True
         """
         Return True if the current state is a goal state.
         
@@ -94,26 +171,28 @@ class EightPuzzleState:
         
         """
         # TODO: 3
-         # ต้องทำนะจ๊ะ ปิดตรงนี้แปบ
-        # return False
-
-
-
+        
 class EightPuzzleNode:
     """A class for a node in a search tree of 8-puzzle state."""
     
-    def __init__(
-            self, state, parent=None, action=None, cost=1):
+    def __init__(self, state, parent=None, action=None, cost=1):
         """Create a node with a state."""
         self.state = state
         self.parent = parent
         self.action = action
         self.cost = cost
-        self.path_cost = parent.cost + self.cost
+        if parent is not None:
+            self.path_cost = parent.path_cost + self.cost
+        else:
+            self.path_cost = 0
 
     def trace(self):
-        if (not self):
-            return False
+        Nodes = []
+        currentNode = self
+        while currentNode.parent is not None:
+            Nodes.append(currentNode)
+            currentNode = currentNode.parent
+        return Nodes
         """
         Return a path from the root to this node.
 
@@ -124,7 +203,6 @@ class EightPuzzleNode:
 
         """
         # TODO: 4
-         # ต้องทำนะจ๊ะ
         pass
 
 
@@ -136,18 +214,19 @@ def test_by_hand():
     print(state)
     action = input('Please enter the next move (q to quit): ')
     while action != 'q':
-        new_state = state.successor(action)
+        new_state = cur_node.state.successor(action)
         cur_node = EightPuzzleNode(new_state, cur_node, action)
         print(new_state)
         if new_state.is_goal():
             print('Congratuations!')
             break
         action = input('Please enter the next move (q to quit): ')
-    
+
     print('Your actions are: ')
     for node in cur_node.trace():
         print(f'  - {node.action}')
     print(f'The total path cost is {cur_node.path_cost}')
+
 
 if __name__ == '__main__':
     test_by_hand()
