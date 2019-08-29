@@ -76,13 +76,6 @@ class EightPuzzleState:
         return EightPuzzleState(new_board)
         pass 
 
-    def blankPos(self): # create func. to report position of Blank Tile
-        for i in range(0,3):
-            for j in range(0,3):
-                if self.board[i][j] == 0:
-                    return i,j
-        pass
-
     def move(self,copyboard,direction,blankPosition): # move value by using string
         i = blankPosition[0]
         j = blankPosition[1]

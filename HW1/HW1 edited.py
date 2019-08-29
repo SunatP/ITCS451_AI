@@ -31,16 +31,16 @@ class EightPuzzleState:
     @staticmethod
     def initializeState():
         
-        Arr = list(range(0,9)) # Create Array value 0 - 8 
-        random.shuffle(Arr) # Shuffle by using Random func.
-        count = 0 # Init value to contain to nested list
-        nestlist = [] # create empty array
-        for x in range(0,3): # use for loop condition to pack them into nested list (2D-Array)
+        Arr = list(range(0,9)) # Create Array value 0 - 8 สร้างอาเรย์ที่มีค่า 9 ค่าตั้งแต่ 0 - 8
+        random.shuffle(Arr) # Shuffle by using Random func. ใช้ฟังก์ชั่นสุ่มค่าที่มีชื่อว่า Shuffle สุ่มค่าจากตัวแปร Arr
+        count = 0 # Init value to contain to nested list สร่างมาเก็บค่าไปทำ array listed
+        nestlist = [] # create empty array สร้างอาเรย์เปล่า
+        for x in range(0,3): # use for loop condition to pack them into nested list (2D-Array) ใช้ for loop ทำอาเรย์ 2 มิติ
             row = []
             for y in range(0,3):
-                row.append(Arr[count])  # append shuffle value into row array
+                row.append(Arr[count])  # append shuffle value into row array เอาค่าจาก Arr ใส่ในอาเรย์ row
                 count += 1
-            nestlist.append(row) # append array into array again
+            nestlist.append(row) # append array into array again เอาค่าจาก row ใส่ใน nestlisted อีกที ประมาณแบบ อาเรย์ซ้อนกัน [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
         
         return EightPuzzleState(nestlist)
         pass
@@ -66,22 +66,15 @@ class EightPuzzleState:
 
         i = self.y
         j = self.x
-        getmovement = self.possibleact(i,j)
+        # getmovement = self.possibleact(i,j)
 
-        if len(getmovement) == 0 or action not in getmovement:
-            return None
+        # if len(getmovement) == 0 or action not in getmovement:
+        #     return None
 
         self.move(new_board,action,(i,j)) # move the position of blank tile   
 
         return EightPuzzleState(new_board)
         pass 
-
-    def blankPos(self): # create func. to report position of Blank Tile
-        for i in range(0,3):
-            for j in range(0,3):
-                if self.board[i][j] == 0:
-                    return i,j
-        pass
 
     def move(self,copyboard,direction,blankPosition): # move value by using string
         i = blankPosition[0]
@@ -104,25 +97,25 @@ class EightPuzzleState:
         
         pass
 
-    def possibleact(self,i,j): 
+    # def possibleact(self,i,j): 
 
-        getmovement = copy.deepcopy(self.action_space)
+    #     getmovement = copy.deepcopy(self.action_space)
 
-        top_row = i - 1
-        if top_row < 0 :
-            getmovement.remove('u')
+    #     top_row = i - 1
+    #     if top_row < 0 :
+    #         getmovement.remove('u')
 
-        bottom_row = i + 1
-        if bottom_row > len(self.board) - 1:
-            getmovement.remove('d')
+    #     bottom_row = i + 1
+    #     if bottom_row > len(self.board) - 1:
+    #         getmovement.remove('d')
 
-        left_col = j - 1 
-        if left_col < 0 :
-            getmovement.remove('l')
+    #     left_col = j - 1 
+    #     if left_col < 0 :
+    #         getmovement.remove('l')
         
-        right_col = j + 1
-        if right_col > len(self.board[0]) - 1 :
-            getmovement.remove('r')
+    #     right_col = j + 1
+    #     if right_col > len(self.board[0]) - 1 :
+    #         getmovement.remove('r')
 
         
         """
@@ -146,7 +139,7 @@ class EightPuzzleState:
         
         """  
         
-        return getmovement  
+        # return EightPuzzleState(new_board)  
         
         pass
 
