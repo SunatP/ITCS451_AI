@@ -31,16 +31,16 @@ class EightPuzzleState:
     @staticmethod
     def initializeState():
         
-        Arr = list(range(0,9)) # Create Array value 0 - 8 
-        random.shuffle(Arr) # Shuffle by using Random func.
-        count = 0 # Init value to contain to nested list
-        nestlist = [] # create empty array
-        for x in range(0,3): # use for loop condition to pack them into nested list (2D-Array)
+        Arr = list(range(0,9)) # Create Array value 0 - 8 สร้างอาเรย์ที่มีค่า 9 ค่าตั้งแต่ 0 - 8
+        random.shuffle(Arr) # Shuffle by using Random func. ใช้ฟังก์ชั่นสุ่มค่าที่มีชื่อว่า Shuffle สุ่มค่าจากตัวแปร Arr
+        count = 0 # Init value to contain to nested list สร่างมาเก็บค่าไปทำ array listed
+        nestlist = [] # create empty array สร้างอาเรย์เปล่า
+        for x in range(0,3): # use for loop condition to pack them into nested list (2D-Array) ใช้ for loop ทำอาเรย์ 2 มิติ
             row = []
             for y in range(0,3):
-                row.append(Arr[count])  # append shuffle value into row array
+                row.append(Arr[count])  # append shuffle value into row array เอาค่าจาก Arr ใส่ในอาเรย์ row
                 count += 1
-            nestlist.append(row) # append array into array again
+            nestlist.append(row) # append array into array again เอาค่าจาก row ใส่ใน nestlisted อีกที ประมาณแบบ อาเรย์ซ้อนกัน [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
         
         return EightPuzzleState(nestlist)
         pass
