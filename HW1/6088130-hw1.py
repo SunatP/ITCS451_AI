@@ -64,60 +64,24 @@ class EightPuzzleState:
         # YOU NEED TO COPY A BOARD BEFORE MODIFYING IT
         new_board = copy.deepcopy(self.board)
 
-        i = self.y
-        j = self.x
-        getmovement = self.possibleact(i,j)
-
-        if len(getmovement) == 0 or action not in getmovement:
+        AxisX = self.x
+        AxisY = self.y
+        if action == 'u':
+            AxisY = (self.y) - 1
+        elif action == 'd':
+            AxisY = (self.y) + 1
+        elif action == 'l':
+            AxisX = (self.x) - 1
+        elif action == 'r':
+            AxisX = (self.x) + 1
+        if AxisX == -1 or AxisY == -1:
             return None
-
-        self.move(new_board,action,(i,j)) # move the position of blank tile   
-
-        return EightPuzzleState(new_board)
-        pass 
-
-    def move(self,copyboard,direction,blankPosition): # move value by using string
-        i = blankPosition[0]
-        j = blankPosition[1]
-
-        axisX = i
-        axisY = j
-        if direction == 'u':
-            axisX -= 1
-        elif direction == 'd':
-            axisX += 1
-        elif direction == 'r':
-            axisY += 1
-        elif direction == 'l':
-            axisY -= 1 
+        if AxisX == 3 or AxisY == 3:
+            return None
             
-        tmp = copyboard[i][j]
-        copyboard[i][j] = copyboard[axisX][axisY]
-        copyboard[axisX][axisY] = tmp
-        
-        pass
-
-    def possibleact(self,i,j): 
-
-        getmovement = copy.deepcopy(self.action_space)
-
-        top_row = i - 1
-        if top_row < 0 :
-            getmovement.remove('u')
-
-        bottom_row = i + 1
-        if bottom_row > len(self.board) - 1:
-            getmovement.remove('d')
-
-        left_col = j - 1 
-        if left_col < 0 :
-            getmovement.remove('l')
-        
-        right_col = j + 1
-        if right_col > len(self.board[0]) - 1 :
-            getmovement.remove('r')
-
-        
+        new_board[self.y][self.x]=new_board[AxisY][AxisX]
+        new_board[AxisY][AxisX] = 0    
+        return EightPuzzleState(new_board)         
         """
         Move a blank tile in the current state, and return a new state.
 
@@ -138,10 +102,6 @@ class EightPuzzleState:
             if the `action` is not in the action space
         
         """  
-        
-        return getmovement  
-        
-        pass
 
     def is_goal(self, goal_board=[[1, 2, 3], [4, 5, 6], [7, 8, 0]]):
         for i in range(0, len(self.board)):
@@ -181,10 +141,11 @@ class EightPuzzleNode:
 
     def trace(self):
         Nodes = []
-        currentNode = self
-        while currentNode.parent is not None:
-            Nodes.append(currentNode)
-            currentNode = currentNode.parent
+        # currentNode = self
+        while self.parent is not None:
+            Nodes.append(self)
+            self = self.parent
+        # print(currentNode)
         return Nodes
         """
         Return a path from the root to this node.
