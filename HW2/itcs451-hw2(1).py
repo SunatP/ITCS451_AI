@@ -2,11 +2,27 @@
 # noqa: D413
 
 import abc
+import heapq
+import math
+import copy
+import heapq
+import itertools
 from collections import defaultdict
+from typing import List, Any
 
 from hw1 import EightPuzzleState, EightPuzzleNode
 
-def eightPuzzleH1(state, goal_state):
+def eightPuzzleH1(state: EightPuzzleState):
+    goal_board=[[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+    sum = 0 # for count misplaced tiles
+    # for i in range(len(goal_board)):
+    #     for j in range(len(goal_board)):
+    #         if goal_board[i][j] != goal_board[i][j]:
+    #             sum += 1
+    for x,y in range(len(goal_board)):
+        if x != 0 and x!=y :
+            sum += 1   
+    return sum
 
     """
     Return the number of misplaced tiles including blank.
@@ -24,18 +40,20 @@ def eightPuzzleH1(state, goal_state):
 
     """
     # TODO 1:
-    pass
 
 
-def eightPuzzleH2(state, goal_state):
+def eightPuzzleH2(state: EightPuzzleState):
+    goal_board=[[1, 2, 3], [4, 5, 6], [7, 8, 0]]
     sum = 0
-    for i in range(0,3):
-        for j in range(0,3):
-            tile = state[i][j]
-            for k in range (0,3):
-                for l in range (0,3):
-                    if tile == goal_state[k][l]:
-                        sum += abs(i-k) + abs(j+l)
+    for i in range(0,3,1):
+        for j in range(0,3,1):
+            bij = b[i][j]
+            i_b = i
+            j_b = j
+
+            i_g,j_g = value_index(g,bij)
+            sum += (math.fabs(i_g - i_b) + math.fabs(j_g - j_b))
+    
     return sum
     """
     Return the total Manhattan distance from goal position of all tiles.
@@ -150,8 +168,7 @@ class GreedyFrontier(Frontier):
     """A frontier for greedy search."""
 
     def __init__(self, h_func):
-        self.state = [h_func]
-
+        Frontier.
         """
         Create a frontier.
 
@@ -163,16 +180,20 @@ class GreedyFrontier(Frontier):
 
         """
         self.h = h_func
+        self.queue = []
+        self.find = {}
+        self.count = itertools.count()
         # TODO: 3
         # Note that you have to create a data structure here and
         # implement the rest of the abstract methods.
-
     
 class AStarFrontier(Frontier):
     """A frontier for greedy search."""
 
     def __init__(self, h_func):
-        
+        self.h = h_func
+        self.queue = [] 
+        self.enqueued = {}
 
         """
         Create a frontier.
@@ -184,31 +205,8 @@ class AStarFrontier(Frontier):
 
 
         """
-        self.h = h_func
-        self.ha = h_func * h_func
+        
 
-        self.goal = range(1 ,self.ha)
-        self.goal.append(0)
-
-        self.ab = {}
-        for i in range(self.ha):
-            s = []
-            if i - self.h >= 0:
-                s.append(i - self.h)
-            if (i % self.h) - 1 >= 0:
-                s.append(i-1)
-            if (i % self.h) +1 < self.h:
-                s.append(i+1)
-            if i + self.h < self.ha:
-                s.append(i+self.h)
-            self.ab[i] = s
-
-        self.queue = [] 
-        self.enqueued = {}
-        self.verbose = 8963
-
-        self.w = 1
-        self.h = self.heuristics
  
         
         # TODO: 4
