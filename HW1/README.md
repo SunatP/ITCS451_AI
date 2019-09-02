@@ -186,11 +186,10 @@
 
 ```python
     List = [] # สร้างอาเรย์เปล่าขึ้นมา
-    node = self # สร้างตัวแปรชื่ออะไรก็ได้มารับค่าหรือพารามิเตอร์ชื่อ self
-    for i in range(self.path.cost):
-        List.append(node) # รวมค่า Node ลงไปในอาเรย์ชื่อ List
-    node = node.parent 
+    while self.parent is not None:
+        List.append(self)
+        self = self.parent
 
     return List
-
+    pass 
 ```
