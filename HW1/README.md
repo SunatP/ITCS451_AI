@@ -83,7 +83,7 @@
 ```
 
 
-### Successor(self,action):
+### 2 Successor(self,action):
 ```python
     """
         Move a blank tile in the current state, and return a new state.
@@ -124,19 +124,19 @@
     NewX = self.x
     NewY = self.y
     if action == 'u' : # ถ้า string ที่ input มาคือ u / up
-            NewY = (self.y) - 1
-        elif action == 'd': # ถ้า string ที่ input มาคือ d / down
-            NewY = (self.y) + 1
-        elif action == 'l': # ถ้า string ที่ input มาคือ l / left
-            NewX = (self.x) -1
-        elif action == 'r': # ถ้า string ที่ input มาคือ r / right
-            NewX = (self.x) + 1
-        if Newx == -1 or Newy == -1: 
-            return None # กรณีที่ 0 อยู่สุดกระดานแล้วเราจะไม่สามารถทำให้มันขยับออกนอกกระดานได้
-        if Newx == 3 or Newy == 3:
-            return None # กรณีที่ 0 อยู่สุดกระดานแล้วเราจะไม่สามารถทำให้มันขยับออกนอกกระดานได้
-        new_board[self.y][self.x]=new_board[NewY][NewX] # นำค่าลงไปทับ
-        new_board[NewY][NewX] = 0
+        NewY = (self.y) - 1
+    elif action == 'd': # ถ้า string ที่ input มาคือ d / down
+        NewY = (self.y) + 1
+    elif action == 'l': # ถ้า string ที่ input มาคือ l / left
+        NewX = (self.x) -1
+    elif action == 'r': # ถ้า string ที่ input มาคือ r / right
+        NewX = (self.x) + 1
+    if Newx == -1 or Newy == -1: 
+        return None # กรณีที่ 0 อยู่สุดกระดานแล้วเราจะไม่สามารถทำให้มันขยับออกนอกกระดานได้
+    if Newx == 3 or Newy == 3:
+        return None # กรณีที่ 0 อยู่สุดกระดานแล้วเราจะไม่สามารถทำให้มันขยับออกนอกกระดานได้
+    new_board[self.y][self.x]=new_board[NewY][NewX] # นำค่าลงไปทับ
+    new_board[NewY][NewX] = 0
 
     return EightPuzzleState(new_board)
 ```
