@@ -145,6 +145,7 @@ class EightPuzzleNode:
         while self.parent is not None:
             Nodes.append(self)
             self = self.parent
+        Nodes.reverse()
         # print(currentNode)
         return Nodes
         """
