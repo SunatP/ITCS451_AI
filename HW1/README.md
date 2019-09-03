@@ -5,7 +5,7 @@
   1.    InitializeState(): ต้องทำให้ฟังก์ชันนี้สุ่มค่ามาในรูปแบบ nested list หรือ 2D-Array หรือ อาเรย์ 2 มิติ
   2.    Successor(): เป็นฟังก์ชันที่ขยับตัว 0 ให้เลื่อนไปปตามตารางของ 8-Puzzle ได้
   3.    is_goal(): ใช้บอกตำแหน่งเคลื่อนที่ได้ตาม self.board โดยให้รีเทิร์นค่ามาเป็น True or False
-  4.    trace(): ใช้ระบุการเคลื่อนตำแหน่งของ Tile ว่าเคลื่อนที่ยังไง
+  4.    trace(): ใช้ระบุการเคลื่อนตำแหน่งของ Tile ว่าเคลื่อนที่ยังไง(-u , -l , -d, -r เป็นต้น)
 
 ### 1 InitializeState()
 ```python
@@ -185,11 +185,20 @@
 ใช้บอกว่าเรากดปุ่มไหนไปแล้วบ้างหลังจากโปรแกรมจบหรือกดยกเลิกก่อน
 
 ```python
-    List = [] # สร้างอาเรย์เปล่าขึ้นมา
-    while self.parent is not None:
-        List.append(self)
-        self = self.parent
-    List.reverse() # เพื่อรีเทิร์น root ไปหา node ปัจจุบัน
-    return List
+     Nodes = []
+        # currentNode = self
+
+        while self.parent is not None:
+            Nodes.append(self)
+            self = self.parent
+
+        if self.parent is None: # ถ้าเริ่มเกมมาไม่มี Input
+            Nodes.append(self)
+            self = self.action # ให้เอา Action - INIT ใส่เข้าไป
+
+        Nodes.reverse() # เรียงจาก root node ไปหา current node
+
+        # print(currentNode)
+        return Nodes
     pass 
 ```

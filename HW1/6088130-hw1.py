@@ -63,7 +63,7 @@ class EightPuzzleState:
         # TODO: 2
         # YOU NEED TO COPY A BOARD BEFORE MODIFYING IT
         new_board = copy.deepcopy(self.board)
-
+        
         AxisX = self.x
         AxisY = self.y
         if action == 'u':
@@ -142,10 +142,17 @@ class EightPuzzleNode:
     def trace(self):
         Nodes = []
         # currentNode = self
+
         while self.parent is not None:
             Nodes.append(self)
             self = self.parent
+
+        if self.parent is None:
+            Nodes.append(self)
+            self = self.action
+
         Nodes.reverse()
+
         # print(currentNode)
         return Nodes
         """
@@ -180,6 +187,7 @@ def test_by_hand():
     print('Your actions are: ')
     for node in cur_node.trace():
         print(f'  - {node.action}')
+    
     print(f'The total path cost is {cur_node.path_cost}')
 
 
