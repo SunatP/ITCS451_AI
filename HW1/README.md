@@ -189,7 +189,7 @@
     while self.parent is not None:
         List.append(self)
         self = self.parent
-
+    List.reverse() # เพื่อรีเทิร์น root ไปหา node ปัจจุบัน
     return List
     pass 
 ```
