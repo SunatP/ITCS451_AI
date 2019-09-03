@@ -20,7 +20,7 @@ def eightPuzzleH1(state: EightPuzzleState):
     #         if goal_board[i][j] != goal_board[i][j]:
     #             sum += 1
     for x,y in range(len(goal_board)):
-        if x != 0 and x!=y :
+        if (goal_board[x][y] != goal_board[x][y]) :
             sum += 1   
     return sum
 
@@ -45,15 +45,22 @@ def eightPuzzleH1(state: EightPuzzleState):
 def eightPuzzleH2(state: EightPuzzleState):
     goal_board=[[1, 2, 3], [4, 5, 6], [7, 8, 0]]
     sum = 0
-    for i in range(0,3,1):
-        for j in range(0,3,1):
-            bij = b[i][j]
-            i_b = i
-            j_b = j
+    # for i in range(0,3,1):
+    #     for j in range(0,3,1):
+    #         bij = b[i][j]
+    #         i_b = i
+    #         j_b = j
 
-            i_g,j_g = value_index(g,bij)
-            sum += (math.fabs(i_g - i_b) + math.fabs(j_g - j_b))
-    
+    #         i_g,j_g = value_index(g,bij)
+    #         sum += (math.fabs(i_g - i_b) + math.fabs(j_g - j_b))
+    for i in range(len(goal_board)):
+        for j in range(len(goal_board)):
+            tile = goal_board[i][j]
+            for m in range(len(goal_board)):
+                for n in range(len(goal_board)):
+                    if tile == goal_board[m][n]:
+                        sum += abs(i-m) + abs(j+n)
+
     return sum
     """
     Return the total Manhattan distance from goal position of all tiles.
@@ -71,7 +78,6 @@ def eightPuzzleH2(state: EightPuzzleState):
 
     """
     # TODO 2:
-    pass
 
 
 class Frontier(abc.ABC):
