@@ -194,7 +194,7 @@
 
         if self.parent is None: # ถ้าเริ่มเกมมาไม่มี Input
             Nodes.append(self)
-            self = self.action # ให้เอา Action - INIT ใส่เข้าไป
+            self = self.action # ให้เอา Action - INIT ใส่เข้าไปใน trace เป็นตัวแรกเลย
 
         Nodes.reverse() # เรียงจาก root node ไปหา current node
 
