@@ -413,6 +413,8 @@ def test_by_hand(verbose=True):
 
     # frontier = GreedyFrontier(eightPuzzleH1, goal_state)
     frontier = AStarFrontier(eightPuzzleH2, goal_state)
+    # frontier = GreedyFrontier(eightPuzzleH2, goal_state)
+    # frontier = AStarFrontier(eightPuzzleH1, goal_state)
     # frontier = DFSFrontier()  # Change this to your own implementation.
     if verbose:
         print(init_state)
