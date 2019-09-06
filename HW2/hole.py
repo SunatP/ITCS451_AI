@@ -145,7 +145,7 @@ class DFSFrontier(Frontier):
     def add(self, node):
         """
         Add a node into the frontier.
-        
+
         Parameters
         ----------
         node : EightPuzzleNode
@@ -326,7 +326,7 @@ def graph_search(init_state, goal_state, frontier):
         a goal state
     frontier : Frontier
         an implementation of a frontier which dictates the order of exploration.
-    
+
     Returns
     ----------
     plan : List[string] or None
@@ -432,14 +432,14 @@ def getPossibleActions(state: EightPuzzleState, i: int, j: int):
 def test_by_hand(verbose=True):
     """Run a graph-search."""
     goal_state = EightPuzzleState([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
-    init_state = EightPuzzleState.initializeState()
+    init_state = init_state = EightPuzzleState([[5, 3, 0], [1, 8, 4], [7, 6, 2]])
     while not _is_reachable(goal_state.board, init_state.board):
-        init_state = EightPuzzleState.initializeState()
+        #init_state = EightPuzzleState.initializeState()
 
     # Change this to your own implementation.
-    init_state = EightPuzzleState([[7, 8, 3], [0, 4, 1], [2, 5, 6]])
+        # init_state = EightPuzzleState([[7, 8, 3], [0, 4, 1], [2, 5, 6]])
 
-    # init_state = EightPuzzleState([[5,3,0], [1,8,4], [7,6,2]])
+        init_state = EightPuzzleState([[5,3,0], [1,8,4], [7,6,2]])
     # frontier = GreedyFrontier(eightPuzzleH1, goal_state)
     frontier = AStarFrontier(eightPuzzleH2, goal_state)
     # frontier = DFSFrontier()
@@ -472,4 +472,4 @@ def experiment(n=10000):
 
 if __name__ == '__main__':
     __, __ = test_by_hand(True)
-    # experiment()  # run graph search 10000 times and report result.
+    experiment()  # run graph search 10000 times and report result.

@@ -2,27 +2,27 @@
 # noqa: D413
 
 import abc
-import heapq
-import math
 import copy
 import heapq
 import itertools
 from collections import defaultdict
-import sys
 from typing import List, Any
 
 from hw1 import EightPuzzleState, EightPuzzleNode
 
-def eightPuzzleH1(state: EightPuzzleState):
-    goal_board=[[1, 2, 3], [4, 5, 6], [7, 8, 0]]
-    sum = 0 # for count misplaced tiles
+
+def eightPuzzleH1(state: EightPuzzleState, goal_state: EightPuzzleState):
+    # for count misplaced tiles
     # for i in range(len(goal_board)):
     #     for j in range(len(goal_board)):
     #         if goal_board[i][j] != goal_board[i][j]:
     #             sum += 1
-    for x,y in range(len(goal_board)):
-        if (goal_board[x][y] != goal_board[x][y]) :
-            sum += 1   
+    sum = 0
+    goal_board = goal_state.board
+    for x in range(len(goal_board)):
+        for y in range(len(goal_board[0])):
+            if goal_board[x][y] != goal_board[x][y]:
+                sum += 1
     return sum
 
     """
@@ -43,8 +43,7 @@ def eightPuzzleH1(state: EightPuzzleState):
     # TODO 1:
 
 
-def eightPuzzleH2(state: EightPuzzleState):
-    goal_board=[[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+def eightPuzzleH2(state: EightPuzzleState, goal_state: EightPuzzleState):
     sum = 0
     # for i in range(0,3,1):
     #     for j in range(0,3,1):
@@ -54,13 +53,14 @@ def eightPuzzleH2(state: EightPuzzleState):
 
     #         i_g,j_g = value_index(g,bij)
     #         sum += (math.fabs(i_g - i_b) + math.fabs(j_g - j_b))
+    goal_board = goal_state.board
     for i in range(len(goal_board)):
-        for j in range(len(goal_board)):
+        for j in range(len(goal_board[0])):
             tile = goal_board[i][j]
             for m in range(len(goal_board)):
                 for n in range(len(goal_board)):
                     if tile == goal_board[m][n]:
-                        sum += abs(i-m) + abs(j+n)
+                        sum += abs(i - m) + abs(j + n)
 
     return sum
     """
@@ -92,7 +92,7 @@ class Frontier(abc.ABC):
     def is_empty(self):
         """Return True if empty."""
         raise NotImplementedError()
-    
+
     @abc.abstractmethod
     def add(self, node):
         """
@@ -108,7 +108,7 @@ class Frontier(abc.ABC):
 
         """
         raise NotImplementedError()
-    
+
     @abc.abstractmethod
     def next(self):
         """
@@ -125,7 +125,6 @@ class Frontier(abc.ABC):
 
         """
         raise NotImplementedError()
-    
 
 
 class DFSFrontier(Frontier):
@@ -142,7 +141,7 @@ class DFSFrontier(Frontier):
     def add(self, node):
         """
         Add a node into the frontier.
-        
+
         Parameters
         ----------
         node : EightPuzzleNode
@@ -152,6 +151,9 @@ class DFSFrontier(Frontier):
         None
 
         """
+        for i in self.stack:
+            if i.state == node.state:
+                return None
         self.stack.append(node)
 
     def next(self):
@@ -174,7 +176,7 @@ class DFSFrontier(Frontier):
 class GreedyFrontier(Frontier):
     """A frontier for greedy search."""
 
-    def __init__(self, h_func):
+    def __init__(self, h_func, goal_state):
         """
         Create a frontier.
 
@@ -185,74 +187,85 @@ class GreedyFrontier(Frontier):
 
 
         """
+        self.goal = goal_state
         self.h = h_func
         self.queue = []
         self.find = {}
         self.count = itertools.count()
+
     pass
 
     def is_empty(self):
         return len(self.queue) == 0
-    def add(self, node:EightPuzzleNode):
+
+    def add(self, node: EightPuzzleNode):
         if node in self.find:
             self.rem(node)
         count = next(self.count)
-        
-        priority = self.h(node.state)
-        entry = [priority,count,node]
+
+        priority = self.h(node.state, self.goal)
+        entry = [priority, count, node]
         self.find[node] = entry
         heapq.heappush(self.queue, entry)
         pass
-    
+
     def next(self):
         while self.queue:
-            priority,count, node = heapq.heappop(self.queue)
-            if node is not -999:
+            priority, count, node = heapq.heappop(self.queue)
+            if node is not REMOVED:
                 del self.find[node]
                 return node
         raise KeyError("Pop From Empty Priority Queue")
-    
-    def rem(self , node: EightPuzzleNode):
+
+    def rem(self, node: EightPuzzleNode):
         entry = self.find.pop(node)
-        entry[-1] = -999
+        entry[-1] = REMOVED
         # TODO: 3
         # Note that you have to create a data structure here and
         # implement the rest of the abstract methods.
-    
+
+
+REMOVED = -999
+
+
 class AStarFrontier(Frontier):
     """A frontier for greedy search."""
 
-    def __init__(self, h_func):
+    def __init__(self, h_func, goal_state):
+        self.goal = goal_state
         self.h = h_func
-        self.queue = [] 
+        self.queue = []
         self.enqueued = {}
         self.counter = itertools.count()
-    
-    def is_empty(self): # return empty value
+
+    def is_empty(self):  # return empty value
         return len(self.queue) == 0
+
     def add(self, node: EightPuzzleNode):
         if node in self.enqueued:
             self.rem(node)
         count = next(self.counter)
-        priority = node.path_cost + self.h(node.state)
-        entry = [priority,count,node]
-        self.enqueued[node]= entry
+
+        priority = self.calculate(node)
+        entry = [priority, count, EightPuzzleNode]
+        self.enqueued[EightPuzzleNode] = entry
         heapq.heappush(self.queue, entry)
         pass
-    
+
     def next(self):
         while self.queue:
-            priority , count , node = heapq.heappop(self.queue)
-            if node is not -999:
+            priority, count, node = heapq.heappop(self.queue)
+            if node is not REMOVED:
                 del self.enqueued[node]
                 return node
         raise KeyError("Pop From Empty Priority Queue")
-                
 
     def rem(self, node: EightPuzzleNode):
         entry = self.enqueued.pop(node)
-        entry[-1] = -999
-        
+        entry[-1] = REMOVED
+
+    def calculate(self, node: EightPuzzleNode):
+        return node.path_cost + self.h(node.state, self.goal)
         """
         Create a frontier.
 
@@ -262,8 +275,8 @@ class AStarFrontier(Frontier):
             a heuristic function to score a state.
 
 
-        """      
-     
+        """
+
         # TODO: 4
         # Note that you have to create a data structure here and
         # implement the rest of the abstract methods.
@@ -277,7 +290,7 @@ def _parity(board):
         for value in row:
             nums.append(value)
     for i in range(len(nums)):
-        for j in range(i+ 1, len(nums)):
+        for j in range(i + 1, len(nums)):
             if nums[i] != 0 and nums[j] != 0 and nums[i] > nums[j]:
                 inversions += 1
     return inversions % 2
@@ -288,7 +301,7 @@ def _is_reachable(board1, board2):
     return _parity(board1) == _parity(board2)
 
 
-def graph_search(init_state: EightPuzzleState, goal_state: EightPuzzleState, frontier: Frontier):
+def graph_search(init_state, goal_state, frontier):
     """
     Search for a plan to solve problem.
 
@@ -300,7 +313,7 @@ def graph_search(init_state: EightPuzzleState, goal_state: EightPuzzleState, fro
         a goal state
     frontier : Frontier
         an implementation of a frontier which dictates the order of exploreation.
-    
+
     Returns
     ----------
     plan : List[string] or None
@@ -318,42 +331,70 @@ def graph_search(init_state: EightPuzzleState, goal_state: EightPuzzleState, fro
     solution = []
     # Perform graph search
     root_node: EightPuzzleNode = EightPuzzleNode(init_state, action='INIT')
-
+    nodeset = set()
     frontier.add(root_node)
     num_nodes += 1
-    leafNode = []
-    
+
     while not frontier.is_empty():
-        Nextnode = frontier.next()
-        result = Nextnode
-        if Nextnode.state.is_goal():
-            result = Nextnode
+        currentNode = frontier.next()
+        if currentNode.is_goal():
+            result = currentNode
             break
 
-            for i in getnode(Nextnode):
-                frontier.add(i) 
+        if currentNode.state not in nodeset:
+            nodeset.add(currentNode.state)
+            num_nodes += 1
 
-    path = result.trace()  
-    path.reverse()
+        for i in getnode(currentNode ):
+            frontier.add(i)
+
+    path = result.trace()
+    path.pop(0)
 
     for i in path:
         solution.append(i.action)
     print(str(len(path)) + " Levels")
-    return solution,num_nodes
+    return solution, num_nodes
 
-def getnode(NextNode: EightPuzzleNode):
+
+def getnode(currentNode:EightPuzzleNode):
     Nodes = []
-    getmove = NextNode.state.successor(NextNode.state.y, NextNode.state.x)
-    
+    getmove = Action(currentNode.state,currentNode.state.y, currentNode .state.x)
+
     for i in getmove:
-        board = copy.deepcopy(NextNode.board)
-        NextNode.successor(NextNode,i)
-        Nodes.append(EightPuzzleNode(EightPuzzleState(board),NextNode,i))
+        movement: EightPuzzleState = currentNode.state.successor(i)
+        Nodes.append(EightPuzzleNode(movement, currentNode, i))
     return Nodes
 
     # TODO: 5
 
-    return solution, num_nodes
+
+def Action(state: EightPuzzleState, i: int, j: int):
+    possibleAction = copy.deepcopy(state.action_space)
+
+    # Coordinate
+    # i-1 , j-1 |  i-1 , j  | i-1 , j+1
+    # i   , j-1 | [i   , j] | i   , j+1
+    # i+1 , j-1 |  i+1 , j  | i+1 , j+1
+
+    row_upper = i - 1
+    if row_upper < 0:
+        possibleAction.remove('u')
+
+    row_under = i + 1
+    if row_under > len(state.board) - 1:
+        possibleAction.remove('d')
+
+    col_left = j - 1
+    if col_left < 0:
+        possibleAction.remove('l')
+
+    col_right = j + 1
+    if col_right > len(state.board[0]) - 1:
+        possibleAction.remove('r')
+
+    return possibleAction
+    pass
 
 
 def test_by_hand(verbose=True):
@@ -361,19 +402,19 @@ def test_by_hand(verbose=True):
     goal_state = EightPuzzleState([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
     init_state = EightPuzzleState.initializeState()
     while not _is_reachable(goal_state.board, init_state.board):
-        init_state = EightPuzzleState.initializeState()
+        #init_state = EightPuzzleState.initializeState()
 
-    #frontier = GreedyFrontier(eightPuzzleH2)
-    #frontier = AStarFrontier(eightPuzzleH2)
-    frontier = DFSFrontier()  # Change this to your own implementation.
-    
-    
-    if verbose: 
+        init_state = EightPuzzleState([[7, 8, 3], [0, 4, 1], [2, 5, 6]])
+    # frontier = GreedyFrontier(eightPuzzleH2, goal_state)
+    frontier = AStarFrontier(eightPuzzleH2, goal_state)
+    #frontier = DFSFrontier()  # Change this to your own implementation.
+
+    if verbose:
         print(init_state)
     plan, num_nodes = graph_search(init_state, goal_state, frontier)
-    if verbose: 
+    if verbose:
         print(f'A solution is found after generating {num_nodes} nodes.')
-    if verbose: 
+    if verbose:
         for action in plan:
             print(f'- {action}')
     return len(plan), num_nodes
@@ -389,9 +430,10 @@ def experiment(n=10000):
     for i in range(max_d + 1):
         n = result[d]
         if len(n) == 0:
-            continue    
-        print(f'{d}, {len(n)}, {sum(n)/len(n)}')
+            continue
+        print(f'{d}, {len(n)}, {sum(n) / len(n)}')
+
 
 if __name__ == '__main__':
     __, __ = test_by_hand()
-    experiment()  #  run graph search 10000 times and report result.
+    experiment()  # run graph search 10000 times and report result.
