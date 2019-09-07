@@ -11,7 +11,7 @@ from typing import List, Any
 from hw1 import EightPuzzleState, EightPuzzleNode
 
 
-def eightPuzzleH1(state: EightPuzzleState, goal_state: EightPuzzleState):
+def eightPuzzleH1(state, goal_state):
     """
     Return the number of misplaced tiles including blank.
 
@@ -42,7 +42,7 @@ def eightPuzzleH1(state: EightPuzzleState, goal_state: EightPuzzleState):
     return sum
 
 
-def eightPuzzleH2(state: EightPuzzleState, goal_state: EightPuzzleState):
+def eightPuzzleH2(state, goal_state):
     """
     Return the total Manhattan distance from goal position of all tiles.
 
@@ -69,7 +69,7 @@ def eightPuzzleH2(state: EightPuzzleState, goal_state: EightPuzzleState):
     #         sum += (math.fabs(i_g - i_b) + math.fabs(j_g - j_b))
     goal_board = goal_state.board
     sum = 0
-    for num in range(9):
+    for num in range(0,9):
         # Currentstate = False
         # Finalstate = False
         for i in range(0, 3, 1):
@@ -233,7 +233,7 @@ class GreedyFrontier(Frontier):
             if node is not -9999:
                 del self.find[node]
                 return node
-        raise KeyError('pop from an empty priority queue')
+        raise KeyError("Pop From Empty Priority Queue")
 
     def remove(self, node: EightPuzzleNode):
         entry = self.find.pop(node)
@@ -270,7 +270,7 @@ class AStarFrontier(Frontier):
 
     def add(self, node: EightPuzzleNode):
         if node in self.enqueued:
-            self.rem(node)
+            self.remove(node)
         count = next(self.counter)
 
         priority = node.path_cost + self.h(node.state, self.goal)
@@ -287,12 +287,9 @@ class AStarFrontier(Frontier):
                 return node
         raise KeyError("Pop From Empty Priority Queue")
 
-    def rem(self, node: EightPuzzleNode):
+    def remove(self, node: EightPuzzleNode):
         entry = self.find.pop(node)
         entry[-1] = -9999
-        # TODO: 3
-        # Note that you have to create a data structure here and
-        # implement the rest of the abstract methods.
 
 
 def _parity(board):
@@ -371,7 +368,24 @@ def graph_search(init_state, goal_state, frontier):
 
 def getnode(currentNode: EightPuzzleNode):
     Nodes = []
-    moveAction = Action(currentNode.state, currentNode.state.y, currentNode.state.x)
+    def check(state: EightPuzzleState,i,j):
+        board = copy.deepcopy(state.action_space)
+        if i - 1 < 0:
+            board.remove('u')
+
+        if i + 1 > len(state.board) - 1:
+            board.remove('d')
+
+        if j - 1 < 0:
+            board.remove('l')
+
+        if j + 1 > len(state.board[0]) - 1:
+            board.remove('r')
+
+        return board
+        pass
+
+    moveAction = check(currentNode.state, currentNode.state.y, currentNode.state.x)
 
     for i in moveAction:
         movement: EightPuzzleState = currentNode.state.successor(i)
@@ -379,30 +393,6 @@ def getnode(currentNode: EightPuzzleNode):
     return Nodes
 
     # TODO: 5
-
-
-def Action(state: EightPuzzleState, i: int, j: int):
-    possibleAction = copy.deepcopy(state.action_space)
-
-    # row_upper = i - 1
-    if i - 1 < 0:
-        possibleAction.remove('u')
-
-    # row_under = i + 1
-    if i + 1 > len(state.board) - 1:
-        possibleAction.remove('d')
-
-    # col_left = j - 1
-    if j - 1 < 0:
-        possibleAction.remove('l')
-
-    # col_right = j + 1
-    if j + 1 > len(state.board[0]) - 1:
-        possibleAction.remove('r')
-
-    return possibleAction
-    pass
-
 
 def test_by_hand(verbose=True):
     """Run a graph-search."""
@@ -413,8 +403,6 @@ def test_by_hand(verbose=True):
 
     # frontier = GreedyFrontier(eightPuzzleH1, goal_state)
     frontier = AStarFrontier(eightPuzzleH2, goal_state)
-    # frontier = GreedyFrontier(eightPuzzleH2, goal_state)
-    # frontier = AStarFrontier(eightPuzzleH1, goal_state)
     # frontier = DFSFrontier()  # Change this to your own implementation.
     if verbose:
         print(init_state)
