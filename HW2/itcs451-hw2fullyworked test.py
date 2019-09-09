@@ -35,8 +35,7 @@ def eightPuzzleH1(state, goal_state):
     #             sum += 1
     sum = 0
     goal_board = goal_state.board
-    for x in range(len(goal_board)):
-        for y in range(len(goal_board[0])):
+    for x,y in range(len(goal_board),len(goal_board[0])):
             if goal_board[x][y] != goal_board[x][y]:
                 sum += 1
     return sum

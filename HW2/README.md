@@ -98,6 +98,17 @@ from typing import List, Any
         return sum
 ```
 
+ใน for loop ของ TODO 1 เราสามารถเขียนได้อีกแบบคือ
+```python
+    sum = 0
+    goal_board = goal_state.board
+    for x,y in range(len(goal_board),len(goal_board[0])):
+        if goal_board[x][y] != goal_board[x][y]:
+            sum += 1
+    return sum
+```
+
+
 ### 2. def eightPuzzleH2(state, goal_state):
 ```python
     """
