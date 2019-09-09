@@ -218,7 +218,9 @@ class GreedyFrontier(Frontier):
 
     def add(self, EightPuzzleNode):
         if EightPuzzleNode in self.find:
-            self.remove(EightPuzzleNode)
+            EightPuzzleNode = self.find.pop(EightPuzzleNode)
+            # self.find.pop(EightPuzzleNode)
+            EightPuzzleNode[-1] = -9999
         count = next(self.counter)
 
         priority = self.h(EightPuzzleNode.state, self.goal)
@@ -234,11 +236,6 @@ class GreedyFrontier(Frontier):
                 del self.find[EightPuzzleNode]
                 return EightPuzzleNode
         raise KeyError("Pop From Empty Priority Queue")
-
-    def remove(self, EightPuzzleNode):
-        entry = self.find.pop(EightPuzzleNode)
-        entry[-1] = -9999
-
 
 class AStarFrontier(Frontier):
     """A frontier for greedy search."""
@@ -270,7 +267,9 @@ class AStarFrontier(Frontier):
 
     def add(self, EightPuzzleNode):
         if EightPuzzleNode in self.enqueued:
-            self.rem(EightPuzzleNode)
+            EightPuzzleNode = self.find.pop(EightPuzzleNode)
+            # self.find.pop(EightPuzzleNode)
+            EightPuzzleNode[-1] = -9999
         count = next(self.counter)
 
         priority = EightPuzzleNode.path_cost + self.h(EightPuzzleNode.state, self.goal)
@@ -287,9 +286,9 @@ class AStarFrontier(Frontier):
                 return EightPuzzleNode
         raise KeyError("Pop From Empty Priority Queue")
 
-    def rem(self, EightPuzzleNode):
-        entry = self.find.pop(EightPuzzleNode)
-        entry[-1] = -9999
+    # def rem(self, EightPuzzleNode):
+    #     entry = self.find.pop(EightPuzzleNode)
+    #     entry[-1] = -9999
         # TODO: 3
         # Note that you have to create a data structure here and
         # implement the rest of the abstract methods.
@@ -400,7 +399,7 @@ def getnode(currentNode: EightPuzzleNode):
 def test_by_hand(verbose=True):
     """Run a graph-search."""
     goal_state = EightPuzzleState([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
-    init_state = EightPuzzleState([[7, 8, 6], [0, 4, 1], [2, 5, 3]])
+    init_state = EightPuzzleState.initializeState()
     while not _is_reachable(goal_state.board, init_state.board):
         init_state = EightPuzzleState.initializeState()
 

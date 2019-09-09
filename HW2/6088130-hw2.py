@@ -218,7 +218,8 @@ class GreedyFrontier(Frontier):
 
     def add(self, node: EightPuzzleNode):
         if node in self.find:
-            self.remove(node)
+            node = self.find.pop(EightPuzzleNode)
+            node[-1] = -9999
         count = next(self.counter)
 
         priority = self.h(node.state, self.goal)
@@ -234,10 +235,6 @@ class GreedyFrontier(Frontier):
                 del self.find[node]
                 return node
         raise KeyError("Pop From Empty Priority Queue")
-
-    def remove(self, node: EightPuzzleNode):
-        entry = self.find.pop(node)
-        entry[-1] = -9999
 
 
 class AStarFrontier(Frontier):
@@ -270,7 +267,8 @@ class AStarFrontier(Frontier):
 
     def add(self, node: EightPuzzleNode):
         if node in self.enqueued:
-            self.remove(node)
+            node = self.find.pop(EightPuzzleNode)
+            node[-1] = -9999
         count = next(self.counter)
 
         priority = node.path_cost + self.h(node.state, self.goal)
@@ -286,10 +284,6 @@ class AStarFrontier(Frontier):
                 del self.enqueued[node]
                 return node
         raise KeyError("Pop From Empty Priority Queue")
-
-    def remove(self, node: EightPuzzleNode):
-        entry = self.find.pop(node)
-        entry[-1] = -9999
 
 
 def _parity(board):

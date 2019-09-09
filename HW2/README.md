@@ -448,6 +448,41 @@ class AStarFrontier(Frontier):
         entry[-1] = -9999
 ```
 
+### ใน TODO ที่ 3 และ 4 สามารถลบฟังก์ชั่น Remove ออกแล้ว โค้ดหน้าตาจะออกมาประมาณนี้
+
+```python
+def __init__(self, h_func, goal_state):
+        self.goal = goal_state
+        self.h = h_func
+        self.queue = []
+        self.enqueued = {}
+        self.counter = itertools.count()
+
+    def is_empty(self):
+        return len(self.queue) == 0
+
+    def add(self, node: EightPuzzleNode):
+        if node in self.enqueued:
+            EightPuzzleNode = self.find.pop(EightPuzzleNode)
+            EightPuzzleNode[-1] = -9999
+        count = next(self.counter)
+
+        priority = node.path_cost + self.h(node.state, self.goal)
+        entry = [priority, count, node]
+        self.enqueued[node] = entry
+        heapq.heappush(self.queue, entry)
+        pass
+
+    def next(self):
+        while self.queue:
+            priority, count, node = heapq.heappop(self.queue)
+            if node is not -9999:
+                del self.enqueued[node]
+                return node
+        raise KeyError("Pop From Empty Priority Queue")
+```
+**def remove(self):** นั้นสามารถแทนด้วย self.find.pop(EightPuzzleNode) ซึ่งมาจาก heapq ไลบรารี่ซึ่งทำให้โค้ดนั้นสั้นลงได้
+
 ### 5. def graph_search(init_state, goal_state, frontier):
 
 ```python
