@@ -596,7 +596,7 @@ def getnode(currentNode: EightPuzzleNode): # ฟังก์ชันนี้�
     return Nodes
 
 ```
-หรือแบบนี้
+หรือแบบนี้ Cr.Wipu K.
 ```python
     while frontier.is_empty() == False:
         current = frontier.next()
