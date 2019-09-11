@@ -106,6 +106,7 @@ from typing import List, Any
         if goal_board[x][y] != goal_board[x][y]:
             sum += 1
     return sum
+    
 ```
 
 
@@ -257,7 +258,7 @@ def eightPuzzleH2(state, goal_state):
     def next(self):
         while self.queue:
             priority, count, EightPuzzleNode = heapq.heappop(self.queue)
-            if node is not -9999: # -9999 คือ REMOVED
+            if node is not -9999: # -9999 คือ REMOVED จริงๆจะ Defined แบบไหนก็ได้ขอแค่ตัวเราเข้าใจก็พอ
                 del self.find[node]
                 return node
             raise KeyError("Pop From Empty Priority Queue") # ใส่ไว้กรณีไม่มีค่าออกมา
@@ -590,7 +591,9 @@ def getnode(currentNode: EightPuzzleNode): # ฟังก์ชันนี้�
       moveAction = check(currentNode.state, currentNode.state.y, currentNode.state.x)
 
     for i in moveAction: # ใช้ for loop โดยใช้ moveAction เป็น Condition
-        movement: EightPuzzleState = currentNode.state.successor(i) # movement เป็นการ ชี้ไปที่ EightPuzzleNode-> successor เพื่อดึง movement ออกมา
+        movement: EightPuzzleState = currentNode.state.successor(i) # movement เป็นการ ชี้ไปที่ EightPuzzleNode-> successor เพื่อดึ
+        
+        ง movement ออกมา
         Nodes.append(EightPuzzleNode(movement, currentNode, i)) # เอา movement ที่ได้ใส่ลง List
     return Nodes
 
