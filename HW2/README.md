@@ -598,24 +598,37 @@ def getnode(currentNode: EightPuzzleNode): # ฟังก์ชันนี้�
 ```
 หรือแบบนี้ Cr.Wipu K.
 ```python
+      if not _is_reachable(init_state.board, goal_state.board):
+        return None, 0
+    if init_state.is_goal(goal_state.board):
+        return [], 0
+    num_nodes = 0
+    solution = []
+    # Perform graph search
+    root_node = EightPuzzleNode(init_state, action='INIT')
+    frontier.add(root_node)
+    num_nodes += 1
+    setnode = set()
+    
     while frontier.is_empty() == False:
         current = frontier.next()
         if current.state.is_goal() == True:
             result = current
             break
+
         if current.state not in setnode:
             setnode.add(current.state)
+
             num_nodes += 1
             Nodes=[]
-
-            board = copy.deepcopy(EightPuzzleState.action_space)
+            board = copy.deepcopy(init_state.action_space)
             if current.state.y - 1 < 0:
                 board.remove('u')
-            if current.state.y + 1 > len(EightPuzzleState.board) - 1:
+            if current.state.y + 1 > len(init_state.board) - 1:
                 board.remove('d')
             if current.state.x - 1 < 0:
                 board.remove('l')
-            if current.state.x + 1 > len(EightPuzzleState.board[0]) - 1:
+            if current.state.x + 1 > len(init_state.board[0]) - 1:
                 board.remove('r')
             for i in board:
                 EightPuzzleState2 = current.state.successor(i)
