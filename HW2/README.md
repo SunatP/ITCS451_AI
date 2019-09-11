@@ -598,6 +598,41 @@ def getnode(currentNode: EightPuzzleNode): # ฟังก์ชันนี้�
     return Nodes
 
 ```
+หรือแบบนี้
+```python
+    while frontier.is_empty() == False:
+        current = frontier.next()
+        if current.state.is_goal() == True:
+            result = current
+            break
+        if current.state not in setnode:
+            setnode.add(current.state)
+            num_nodes += 1
+            Nodes=[]
+            
+            board = copy.deepcopy(EightPuzzleState.action_space)
+            if current.state.y - 1 < 0:
+                board.remove('u')
+            if current.state.y + 1 > len(EightPuzzleState.board) - 1:
+                board.remove('d')
+            if current.state.x - 1 < 0:
+                board.remove('l')
+            if current.state.x + 1 > len(EightPuzzleState.board[0]) - 1:
+                board.remove('r')
+            for i in board:
+                EightPuzzleState2 = current.state.successor(i)
+                Nodes.append(EightPuzzleNode(EightPuzzleState2, current, i))
+            for i in Nodes:
+                frontier.add(i)
+    path = result.trace()
+    path.pop(0)
+    print ( path)
+    for i in path:
+        solution.append(i.action)
+    return solution, num_nodes
+```
+
+
 
 ### วิธีรันโค้ด
 หน้าตาตอนแรก
