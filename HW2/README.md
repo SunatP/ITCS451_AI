@@ -591,9 +591,7 @@ def getnode(currentNode: EightPuzzleNode): # ฟังก์ชันนี้�
       moveAction = check(currentNode.state, currentNode.state.y, currentNode.state.x)
 
     for i in moveAction: # ใช้ for loop โดยใช้ moveAction เป็น Condition
-        movement: EightPuzzleState = currentNode.state.successor(i) # movement เป็นการ ชี้ไปที่ EightPuzzleNode-> successor เพื่อดึ
-        
-        ง movement ออกมา
+        movement: EightPuzzleState = currentNode.state.successor(i) # movement เป็นการ ชี้ไปที่ EightPuzzleNode-> successor เพื่อดึง movement ออกมา
         Nodes.append(EightPuzzleNode(movement, currentNode, i)) # เอา movement ที่ได้ใส่ลง List
     return Nodes
 
@@ -609,7 +607,7 @@ def getnode(currentNode: EightPuzzleNode): # ฟังก์ชันนี้�
             setnode.add(current.state)
             num_nodes += 1
             Nodes=[]
-            
+
             board = copy.deepcopy(EightPuzzleState.action_space)
             if current.state.y - 1 < 0:
                 board.remove('u')
