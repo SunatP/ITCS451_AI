@@ -598,7 +598,7 @@ def getnode(currentNode: EightPuzzleNode): # ฟังก์ชันนี้�
 ```
 หรือแบบนี้ Cr.Wipu K.
 ```python
-      if not _is_reachable(init_state.board, goal_state.board):
+    if not _is_reachable(init_state.board, goal_state.board):
         return None, 0
     if init_state.is_goal(goal_state.board):
         return [], 0
@@ -609,7 +609,7 @@ def getnode(currentNode: EightPuzzleNode): # ฟังก์ชันนี้�
     frontier.add(root_node)
     num_nodes += 1
     setnode = set()
-    
+
     while frontier.is_empty() == False:
         current = frontier.next()
         if current.state.is_goal() == True:
