@@ -10,7 +10,7 @@
 | Project 1  | 10 |
 | Midterm Exam| 20 |
 |``The second half of the course``|
-| HW  | 15  |
+| HW  | 5  |
 |   Quizzes |  5 |
 | Project 2  | 10 |
 | Final Exam| 30 |
