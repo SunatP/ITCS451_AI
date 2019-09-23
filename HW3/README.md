@@ -64,8 +64,29 @@ import gym # คือชุดเครื่องมือที่ใช้�
         pass
     return cur_agent, history
 ```
-
-### 2. def eightPuzzleH2(state, goal_state):
+ตัวอย่าง Pseudo code / Algorithm ของ sideway
+```bash
+function Hillclimb(Initial,K)
+    initialize node with Initial # Set the current node to starting point
+    while forever # Continue until you cannot climb higher 
+        initialize max to -infinity # Minimum value
+        for each child(neighbor) of the node 
+            if v(child) > max # Find neighbor with max value
+                max = v(child)
+                next = child
+        if max <= 0 # Cannot climb higher 
+            if k == 0
+                return node
+            for each child(neighbor) of the node
+                value = Hillclimb(child,k-1)
+                if value > max
+                    max = value
+                    next = child
+            if max <= 0
+                return node
+        node = next # Climb to the next node
+```
+### 2. def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10000):
 ```python
        """
     Run a hill-climbing search, and return the final agent.
@@ -104,5 +125,21 @@ import gym # คือชุดเครื่องมือที่ใช้�
     
 
     return cur_agent, history
+```
+
+ตัวอย่าง Pseudo code / Algorithm ของ Simulated-Annealing
+
+```bash
+function Simulated-Annealing(problem,schedule) return a solution state
+Input problem, a problem schedule, a mapping from time to "temperature"
+
+current <- MAKE-NODE(problem.INITIAL-STATE)
+for t = 1 to inf.
+    T <- schedule(t) # อุณหภูมิ ณ ตอนนั้น
+    if T <= 0 then return current
+    next <- a randomly selected successor of current
+    DeltaEnergy <- next.VALUE - current.VALUE # ตัวถัดไป - ตัว node ปัจจุบัน
+    if DeltaEnergy > 0 then current <- next
+    else current <- next only with probability e^(DeltaEnergy/T) # e คือ exponential , eยกกำลัง(DeltaEnergyหารด้วยT)
 ```
 
