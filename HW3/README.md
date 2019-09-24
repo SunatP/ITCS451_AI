@@ -93,7 +93,7 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
     return cur_agent, history
 
 ```
-เราจะต้องสร้างตัวแปรขึ้นมาเก็บค่าสองตัวเพื่อหา neighbor ตัวถัดไปและค่า max
+เริ่มเขียน TODO 1
 ```python
 def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
     cur_agent = agent
@@ -134,12 +134,15 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
                     return MaxValue,history
                 # จบ if condition
             cur_agent = PreviousNeighbor[np.argmax(simulate(env, PreviousNeighbor))] # ตัวปัจจุบันจะมีค่ามากที่สุดจากตัวก่อนหน้า
-            cur_r = CalculateReward[np.argmax(simulate(env, PreviousNeighborvious))] # ค่า Reward เท่ากับ ค่าที่คำนวนจาก ค่าที่มากที่สุดจากตัวก่อนหน้า
+            cur_r = CalculateReward[np.argmax(simulate(env, PreviousNeighbor))] # ค่า Reward เท่ากับ ค่าที่คำนวนจาก ค่าที่มากที่สุดจากตัวก่อนหน้า
     # จบ for loop
     return cur_agent, history
 ```
 
 ### 2. def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10000):
+
+simulated_annealing หรือ การจำลองการอบเหนียว
+
 ```python
        """
     Run a hill-climbing search, and return the final agent.
@@ -183,3 +186,35 @@ for t = 1 to inf.
     if DeltaEnergy > 0 then current <- next
     else current <- next only with probability e^(DeltaEnergy/T) # e คือ exponential , eยกกำลัง(DeltaEnergyหารด้วยT)
 ```
+อัลกอริทึมตัวนี้จะจำลองสภาพการแก้ปัญหาเหมือนการหลอมเหล็กและค่อยๆลดอุณหภูมิลงโดยทำให้เหล็กนั้นมีสภาพแข็งขึ้นไม่เปราะหรือแตกหักได้ง่าย
+
+```python
+def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10000):
+     cur_agent = agent
+    cur_r = simulate(env, [agent])[0]
+    history = [cur_r]
+    sideway = 0
+
+    Temp = init_temp # สร้างตัวแปรขึ้นมาเก็บค่าอุณหภูมิเริ่มต้น
+    for __ in range(max_iters):
+        Temp += temp_step # ค่า Temp จะลดลงไปเรื่อยๆ เนื่องจาก temp_step มีค่า -0.1 นั่นก็คือการลดอุณหภูมิ
+        if Temp <= 0 # ถ้าอุณหภูมิลดลงจนน้อยกว่า 0
+            break # จบการทำงานของ for loop
+        #จบ if condition
+        PreviousNeighbor: list[CPAgent] = cur_agent.neighbors() # ใช้หา neighbor ตัวก่อนหน้า
+        NextNeighbor: CPAgent = np.random.choice(PreviousNeighbor,1)[0] # Neighbor ตัวถัดคือความน่าจะเป็นที่สามารถเลือกได้
+        cur_r = simulate(env,[cur_agent])[0] # ใช้ gym มาจำลองค่าใน Current Reward
+        E = simulate(env, [Next])[0] - cur_r # E หรือ DeltaE คือพลังงานที่เกิดจาก ค่าของตัวถัดไปลบด้วย ค่าปัจจุบัน
+        if E > 0 :
+            cur_agent = NextNeighbor # ค่าของตัวถัดไปจะเท่ากับตัวปัจจุบัน
+            cur_r = simulate(env, [cur_agent])[0] # ค่า Reward ปัจจุบันจะเท่ากับ agent ตัวปัจจุบัน
+        # จบ if condition
+        else:
+            if np.random.normal()<= pow(math.e, E/Temp): # ถ้าการสุ่มค่าแบบปกติ นั้นมีค่าน้อยกว่า exponential ยกกำลัง E/Temp
+                cur_agent = NextNeighbor
+                cur_r = simulate(env, [cur_agent])[0]]
+        history.append(cur_r) # ใส่ current Reward ลงใน history
+    return cur_agent, history
+```
+
+### วิธีรันโค้ด
