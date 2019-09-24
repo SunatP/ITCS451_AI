@@ -281,19 +281,27 @@ if __name__ == "__main__":
    2. มองหาที่ else จะมีถ้าเจอ agent = CPAgent() อยู่ ให้คลิกขวา แล้วกด Run Python File in Terminal 
 ```python
 else: 
-        agent = CPAgent()
-        # Hill Climbing search can solve this case.
-        # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
-        # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
-        # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+    # agent = CPAgent()
+    # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
+    agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
+    # Hill Climbing search can solve this case.
+    # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
+    # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
+    # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
+    # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+       
 ```
    3. ที่ agent = CPAgent() จะมีคอมเม้นของอาจารย์เพิ่มอีกสองค่า โดยคอมเม้นแรกบอกว่า Hill Climbing Search สามารถแก้ปัญหาได้ ให้ทำการเอา # หน้า agent ออกจะได้แบบนี้
 ```python
     # agent = CPAgent()
+    # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
+    agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
     # Hill Climbing search can solve this case.
-    agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
+    # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
+    # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
     # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
     # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+       
 ```
    4. จากนั้นคลิกขวาที่โค้ดแล้วกด Run Python File in Terminal จะได้ผลลัพธ์ออกมา
 
