@@ -1,6 +1,6 @@
 """A module for homework 3."""
 import sys
-
+import math
 import numpy as np
 import gym
 
@@ -145,17 +145,40 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
     explored = set()
     explored.add(cur_agent)
     history = [cur_r]
-    
+
+    sScore = 0
+    sideScore = 0
+
     for __ in range(max_iters):
         # TODO 1: Implement hill climbing search with sideway move.
-        pass
+        # Get All the Neighbors
+        previous: list[CPAgent] = cur_agent.neighbors()
+        newNeighbors: list[CPAgent] = []
+        for i in previous:
+            if i not in explored:  
+                newNeighbors.append(i)
+        previous = newNeighbors
+        CalReward = simulate(env, previous)
+        history.append(CalReward[np.argmax(CalReward)]) # Append CalReward to history
+        BestValue = CalReward[np.argmax(CalReward)]
+        Max = previous[np.argmax(CalReward)]
+        if BestValue < simulate(env, [agent])[0]: # If current score is lower than the previous score
+            return Max, history
+        else:
+            if cur_r == CalReward[np.argmax(simulate(env, previous))]: # If the Current value is equal to the previous value
+                if sideScore != CalReward[np.argmax(simulate(env, previous))]: # If sideScore is not max value
+                    sideScore = CalReward[np.argmax(simulate(env, previous))]  # Select Max value from neighbor
+                    sScore = 0    # Reset sScore
+                sScore += 1
+                if sideway_limit == sScore:   # If the Count is equal to the sideway limit
+                    return Max, history    # Returns the Agent with its History
+            cur_agent = previous[np.argmax(simulate(env, previous))] # Selects the best value from neighbor
+            cur_r = CalReward[np.argmax(simulate(env, previous))] # Current equal to max value
     return cur_agent, history
-
 
 def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10000):
     """
     Run a hill-climbing search, and return the final agent.
-
     Parameters
     ----------
     env : OpenAI Gym Environment.
@@ -168,7 +191,6 @@ def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10
         A step size to change the temperature for each iteration.
     max_iters: int
         Maximum number of iterations to search.
-
     Returns
     ----------
     final_agent : CPAgent
@@ -176,18 +198,31 @@ def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10
     history : List[float]
         A list containing the scores of the sampled neighbor of 
         all iterations.
-
     """
     cur_agent = agent
     cur_r = simulate(env, [agent])[0]
     history = [cur_r]
     sideway = 0
 
+    Temp = init_temp
     for __ in range(max_iters):
         # TODO 2: Implement simulated annealing search.
-        # We should not keep track of "already explored" neighbor.
-        pass
-    
+        Temp += temp_step
+        if Temp <= 0: # T<= 0
+            break
+        previous: list[CPAgent] = cur_agent.neighbors()
+        Next: CPAgent = np.random.choice(previous, 1)[0] # Probability selected successor
+        cur_r = simulate(env, [cur_agent])[0]
+        deltaE = simulate(env, [Next])[0] - cur_r # DeltaE = Next.Value - Current.Value
+        # print(deltaE)
+        if deltaE > 0:
+            cur_agent = Next # Move to next.Value
+            cur_r = simulate(env, [cur_agent])[0]
+        else:
+            if np.random.normal() <= pow(math.e, deltaE / Temp): # e^(DeltaE/T)
+                cur_agent = Next
+                cur_r = simulate(env, [cur_agent])[0]
+        history.append(cur_r) # Append cur_r to history
 
     return cur_agent, history
 
@@ -224,9 +259,12 @@ if __name__ == "__main__":
         
         print('Total Reward: ', total_reward)
     else: 
-        agent = CPAgent()
+        # agent = CPAgent()
+        # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
+        agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
         # Hill Climbing search can solve this case.
         # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
+        # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
         # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
         # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
         initial_reward = simulate(env, [agent])[0]
