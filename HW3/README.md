@@ -198,8 +198,7 @@ def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10
     Temp = init_temp # สร้างตัวแปรขึ้นมาเก็บค่าอุณหภูมิเริ่มต้น
     for __ in range(max_iters):
         Temp += temp_step # ค่า Temp จะลดลงไปเรื่อยๆ เนื่องจาก temp_step มีค่า -0.1 นั่นก็คือการลดอุณหภูมิ
-        if Temp <= 0 :# ถ้าอุณหภูมิลดลงจนน้อยกว่า 0
-            break # จบการทำงานของ for loop
+         k # จบการทำงานของ for loop
         #จบ if condition
         PreviousNeighbor: list[CPAgent] = cur_agent.neighbors() # ใช้หา neighbor ตัวก่อนหน้า
         NextNeighbor: CPAgent = np.random.choice(PreviousNeighbor,1)[0] # Neighbor ตัวถัดคือความน่าจะเป็นที่สามารถเลือกได้
@@ -212,7 +211,7 @@ def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10
         else:
             if np.random.normal()<= pow(math.e, E/Temp): # ถ้าการสุ่มค่าแบบปกติ นั้นมีค่าน้อยกว่า exponential ยกกำลัง E/Temp
                 cur_agent = NextNeighbor
-                cur_r = simulate(env, [cur_agent])[0]]
+                cur_r = simulate(env, [cur_agent])[0]
         history.append(cur_r) # ใส่ current Reward ลงใน history
     return cur_agent, history
 ```
