@@ -299,8 +299,11 @@ else:
 
 2. รันแบบไม่ปกติ(ใช้ Command Prompt/Terminal/PowerShell)
    1. เปิด Command Prompt ขึ้นมา
+![1](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/1.jpg)
    2. เปิดแฟ้มและคัดลอกที่อยู่ของแฟ้มที่เราเก็บโค้ดไว้
+![2](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/2.jpg)
    3. พิมพ์ cd แล้วกดวางที่อยู่โฟลเดอร์นั้นๆ แล้วกด Enter
+![3](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/3.jpg)
    4. Command Prompt จะเปลี่ยนเป็น Path ของโฟลเดอร์นั้นๆ
    5. พิมพ์ คำสั่งลงไป แล้วกด enter
 ```bash 
@@ -310,4 +313,7 @@ python itcs451-hw3.py "random"
 ```bash
 python itcs451-hw3.py "0.0111, 0.0909, 0.0688, 0.189,0.0456"
 ```
+![4](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/4.jpg)
    6. จะมี Cart-Pole จาก python ขึ้นมาให้รอจนกว่าหน้าต่างนั้นจะหายไปแล้วใน Command Prompt จะมี Total Reward ขึ้นมาเป็นอันจบ  
+![5](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/5.jpg)
+![6](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/6.jpg)
