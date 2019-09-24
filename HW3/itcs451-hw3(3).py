@@ -1,6 +1,6 @@
 """A module for homework 3."""
 import sys
-
+import math
 import numpy as np
 import gym
 
@@ -204,22 +204,24 @@ def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10
     history = [cur_r]
     sideway = 0
 
-    currentTemp = init_temp
+    Temp = init_temp
     for __ in range(max_iters):
         # TODO 2: Implement simulated annealing search.
-        currentTemp += temp_step
-        if currentTemp <= 0: # T<= 0
+        Temp += temp_step
+        if Temp <= 0: # T<= 0
             break
         previous: list[CPAgent] = cur_agent.neighbors()
-        Next: CPAgent = numpy.random.choice(previous, 1)[0] # Probability selected successor
+        Next: CPAgent = np.random.choice(previous, 1)[0] # Probability selected successor
         cur_r = simulate(env, [cur_agent])[0]
         deltaE = simulate(env, [Next])[0] - cur_r # DeltaE = Next.Value - Current.Value
         # print(deltaE)
         if deltaE > 0:
             cur_agent = Next # Move to next.Value
+            cur_r = simulate(env, [cur_agent])[0]
         else:
-            if np.random.normal() <= pow(math.e, deltaE / currentTemp): # e^(DeltaE/T)
+            if np.random.normal() <= pow(math.e, deltaE / Temp): # e^(DeltaE/T)
                 cur_agent = Next
+                cur_r = simulate(env, [cur_agent])[0]
         history.append(cur_r) # Append cur_r to history
 
     return cur_agent, history
@@ -258,9 +260,11 @@ if __name__ == "__main__":
         print('Total Reward: ', total_reward)
     else: 
         # agent = CPAgent()
+        # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
+        agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
         # Hill Climbing search can solve this case.
-        agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
-        # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056]))
+        # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
+        # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
         # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
         # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
         initial_reward = simulate(env, [agent])[0]

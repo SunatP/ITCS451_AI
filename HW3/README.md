@@ -52,17 +52,6 @@ import gym # คือชุดเครื่องมือที่ใช้�
         the algorithm to stop.
 
     """
-    cur_agent = agent
-    cur_r = simulate(env, [agent])[0]
-
-    explored = set()
-    explored.add(cur_agent)
-    history = [cur_r]
-    
-    for __ in range(max_iters):
-        # TODO 1: Implement hill climbing search with sideway move.
-        pass
-    return cur_agent, history
 ```
 ตัวอย่าง Pseudo code / Algorithm ของ sideway
 ```bash
@@ -86,6 +75,42 @@ function Hillclimb(Initial,K)
                 return node
         node = next # Climb to the next node
 ```
+เริ่มเขียน TODO 1
+```python
+def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
+    cur_agent = agent
+    cur_r = simulate(env, [agent])[0]
+
+    explored = set()
+    explored.add(cur_agent)
+    history = [cur_r]
+
+    for __ in range(max_iters):
+        # TODO 1: Implement hill climbing search with sideway move.
+        # Get All the Neighbors
+    return cur_agent, history
+
+```
+เราจะต้องสร้างตัวแปรขึ้นมาเก็บค่าสองตัวเพื่อหา neighbor ตัวถัดไปและค่า max
+```python
+def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
+    cur_agent = agent
+    cur_r = simulate(env, [agent])[0]
+
+    explored = set()
+    explored.add(cur_agent)
+    history = [cur_r]
+    sumScore = 0
+    for __ in range(max_iters):
+        # TODO 1: Implement hill climbing search with sideway move.
+        # Get All the Neighbors
+    return cur_agent, history
+
+```
+
+
+
+
 ### 2. def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10000):
 ```python
        """
@@ -113,18 +138,6 @@ function Hillclimb(Initial,K)
         all iterations.
 
     """:
-    cur_agent = agent
-    cur_r = simulate(env, [agent])[0]
-    history = [cur_r]
-    sideway = 0
-
-    for __ in range(max_iters):
-        # TODO 2: Implement simulated annealing search.
-        # We should not keep track of "already explored" neighbor.
-        pass
-    
-
-    return cur_agent, history
 ```
 
 ตัวอย่าง Pseudo code / Algorithm ของ Simulated-Annealing
@@ -137,9 +150,8 @@ current <- MAKE-NODE(problem.INITIAL-STATE)
 for t = 1 to inf.
     T <- schedule(t) # อุณหภูมิ ณ ตอนนั้น
     if T <= 0 then return current
-    next <- a randomly selected successor of current
-    DeltaEnergy <- next.VALUE - current.VALUE # ตัวถัดไป - ตัว node ปัจจุบัน
+    next <- a randomly selected successor of current # ค่าตัวถัดไปคือการสุ่มค่าจากตัวปัจจุบัน
+    DeltaEnergy <- next.VALUE - current.VALUE # ตัวถัดไป ลบด้วย ตัว node ปัจจุบัน
     if DeltaEnergy > 0 then current <- next
     else current <- next only with probability e^(DeltaEnergy/T) # e คือ exponential , eยกกำลัง(DeltaEnergyหารด้วยT)
 ```
-
