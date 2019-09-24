@@ -109,7 +109,7 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
         PreviousNeighbor: list[CPAgent] = cur_agent.neighbors() # ตัวนี้จะมี CPAgent อยู่ใน list ที่คอยหา Neighbors ให้
         # สร้าง list ใหม่ขึ้นมาเพื่อเก็บ neighbor 
         NewNeighbor: list[CPAgent] = []
-        for i in PreviousNeighbor # ใช้ i ในการหา Neighbors
+        for i in PreviousNeighbor: # ใช้ i ในการหา Neighbors
             if i not in explored: # ถ้า i ไม่มีค่า
                 NewNeighbor.append(i) # เอา i ที่หาค่าได้ใส่ลงใน list NewNeighbor
             # จบ if condition
@@ -198,7 +198,7 @@ def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10
     Temp = init_temp # สร้างตัวแปรขึ้นมาเก็บค่าอุณหภูมิเริ่มต้น
     for __ in range(max_iters):
         Temp += temp_step # ค่า Temp จะลดลงไปเรื่อยๆ เนื่องจาก temp_step มีค่า -0.1 นั่นก็คือการลดอุณหภูมิ
-        if Temp <= 0 # ถ้าอุณหภูมิลดลงจนน้อยกว่า 0
+        if Temp <= 0 :# ถ้าอุณหภูมิลดลงจนน้อยกว่า 0
             break # จบการทำงานของ for loop
         #จบ if condition
         PreviousNeighbor: list[CPAgent] = cur_agent.neighbors() # ใช้หา neighbor ตัวก่อนหน้า
