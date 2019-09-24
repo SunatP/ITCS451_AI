@@ -138,6 +138,55 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
     # จบ for loop
     return cur_agent, history
 ```
+หรือจะสร้างฟังก์ชันข้างในแบบนี้
+
+```python
+def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
+    cur_agent = agent
+    cur_r = simulate(env, [agent])[0]
+
+    explored = set()
+    explored.add(cur_agent)
+    history = [cur_r]
+    k = 0  # สร้างตัวนี้
+    sideScore = 0 # สร้างตัวนี้
+    for __ in range(max_iters):
+        # สร้าง list ขึ้นมาเพื่อเก็บ neighbor ตัวก่อนหน้านี้
+        PreviousNeighbor: list[CPAgent] = cur_agent.neighbors() # ตัวนี้จะมี CPAgent อยู่ใน list ที่คอยหา Neighbors ให้
+        # สร้าง list ใหม่ขึ้นมาเพื่อเก็บ neighbor 
+        def findOtherNeighbor(explored, prevNeighbors):
+            NewNeighbor: list[CPAgent] = []
+            for OldNeighbor in prevNeighbors: # ใช้ i ในการหา Neighbors
+                if OldNeighbor not in explored: # ถ้า i ไม่มีค่า
+                    NewNeighbor.append(OldNeighbor) # เอา i ที่หาค่าได้ใส่ลงใน list NewNeighbor
+                # จบ if condition
+            # จบ for loop
+            prevNeighbors = NewNeighbor
+            return prevNeighbors
+        PreviousNeighbor = findOtherNeighbor(explored,previous) # Neighbor ตัวใหม่จะเท่ากับตัวก่อนหน้า
+        # สร้างตัวแปรมาคำนวน Reward
+        CalculateReward = simulate(env,PreviousNeighbor) # ใช้ env ที่มี gym มาคำนวนค่าด้วย Neighbor ก่อนหน้า
+        history.append(Calculate[np.argmax(Calculate)]) # ค่าที่คำนวนหา value ที่มากที่สุดจาก gym จะถูกใส่ลงใน list ชื่อ history
+        BestValue = CalculateReward[np.argmax(Calculate)] # สร้างขึ้นเพื่อหาค่าที่ดีที่สุดและมากที่สุด
+        MaxValue = PreviousNeighbor[np.argmax(CalculateReward)] # สร้างมาเพื่อหา Neighbor ตัวก่อนหน้าที่มีค่ามากที่สุด
+        if BestValue < simulate(env, [agent])[0]: # ถ้าค่าที่หาได้น้อยกว่าขณะกำลังปีนขึ้นเขา
+            return MaxValue, history # เราจะใช้ค่าที่มากที่สุดแทน
+        # จบ if condition
+        else:
+            if cur_r == CalculateReward[np.argmax(simulate(env,PreviousNeighbor))]: # ถ้าตัวปัจจุบันมีค่าเท่ากับค่าที่สูงที่สุดของ Neighbor ที่เจอค่าตัวก่อนหน้านี้
+                if sideScore != CalculateReward[np.argmax(simulate(env,PreviousNeighbor))]: # ถ้าค่า sideScore ไม่เท่ากับค่าของ CalculateReward
+                    sideScore = CalculateReward[np.argmax(simulate(env,PreviousNeighbor))] # จับค่า CalculateReward เท่ากับ sideScore
+                    k = 0 # เริ่มนับค่า k ใหม่ (รีเซ็ทค่า)
+                #จบ if sideScore
+                k += 1
+                if sideway_limit == k : # ถ้า sideway_limit เท่ากับค่า k 
+                    return MaxValue,history
+                # จบ if condition
+            cur_agent = PreviousNeighbor[np.argmax(simulate(env, PreviousNeighbor))] # ตัวปัจจุบันจะมีค่ามากที่สุดจากตัวก่อนหน้า
+            cur_r = CalculateReward[np.argmax(simulate(env, PreviousNeighbor))] # ค่า Reward เท่ากับ ค่าที่คำนวนจาก ค่าที่มากที่สุดจากตัวก่อนหน้า
+    # จบ for loop
+    return cur_agent, history
+```
 
 ### 2. def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10000):
 

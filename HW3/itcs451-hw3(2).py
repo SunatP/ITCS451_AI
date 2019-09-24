@@ -153,11 +153,21 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
         # TODO 1: Implement hill climbing search with sideway move.
         # Get All the Neighbors
         previous: list[CPAgent] = cur_agent.neighbors()
-        newNeighbors: list[CPAgent] = []
-        for i in previous:
-            if i not in explored:  
-                newNeighbors.append(i)
-        previous = newNeighbors
+        # newNeighbors: list[CPAgent] = []
+        # for i in previous:
+        #     if i not in explored:  
+        #         newNeighbors.append(i)
+        #     print(newNeighbors)
+        # previous = newNeighbors
+        def findOtherNeighbor(explored, prevNeighbors):
+            NewNeighbor: list[CPAgent] = []
+            for OldNeighbor in prevNeighbors:
+                if OldNeighbor not in explored: 
+                    NewNeighbor.append(OldNeighbor)
+            prevNeighbors = NewNeighbor
+            return prevNeighbors
+
+        previous = findOtherNeighbor(explored,previous)
         CalReward = simulate(env, previous)
         history.append(CalReward[np.argmax(CalReward)]) # Append CalReward to history
         BestValue = CalReward[np.argmax(CalReward)]
@@ -175,6 +185,14 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
             cur_agent = previous[np.argmax(simulate(env, previous))] # Selects the best value from neighbor
             cur_r = CalReward[np.argmax(simulate(env, previous))] # Current equal to max value
     return cur_agent, history
+
+def findOtherNeighbor(explored, prevNeighbors):
+    NewNeighbor: list[CPAgent] = []
+    for OldNeighbor in prevNeighbors:
+        if OldNeighbor not in explored:  # we do not want to move to previously explored ones.
+            NewNeighbor.append(OldNeighbor)
+    prevNeighbors = NewNeighbor
+    return prevNeighbors
 
 def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10000):
     """
@@ -260,8 +278,8 @@ if __name__ == "__main__":
         print('Total Reward: ', total_reward)
     else: 
         # agent = CPAgent()
-        # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
-        agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
+        agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
+        # agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
         # Hill Climbing search can solve this case.
         # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
         # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
