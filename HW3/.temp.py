@@ -160,9 +160,8 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
         previous = newNeighbors
         CalReward = simulate(env, previous)
         history.append(CalReward[np.argmax(CalReward)]) # Append CalReward to history
-        BestValue = CalReward[np.argmax(CalReward)]
         Max = previous[np.argmax(CalReward)]
-        if BestValue < simulate(env, [agent])[0]: # If current score is lower than the previous score
+        if CalReward[np.argmax(CalReward)] < simulate(env, [agent])[0]: # If current score is lower than the previous score
             return Max, history
         else:
             if cur_r == CalReward[np.argmax(simulate(env, previous))]: # If the Current value is equal to the previous value
@@ -259,12 +258,12 @@ if __name__ == "__main__":
         
         print('Total Reward: ', total_reward)
     else: 
-        agent = CPAgent()
-        # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
-        # agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
+        # agent = CPAgent()
+        # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056]))) # Test hillclimb sideway
+        # agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056]))) # Test annealing
         # Hill Climbing search can solve this case.
         # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
-        # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
+        agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
         # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
         # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
         initial_reward = simulate(env, [agent])[0]
