@@ -218,3 +218,96 @@ def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10
 ```
 
 ### วิธีรันโค้ด
+
+1. รันแบบปกติ
+2. รันแบบใช้ Terminal/Command Prompt/PowerShell
+
+1. รันแบบปกติ โดยใช้ VSCode
+
+   1. มองหาโค้ดหน้าตาแบบนี้ จะอยู่ล่างสุด
+```python
+if __name__ == "__main__":
+    gym.envs.register(
+        id='CartPole-v2',
+        entry_point='gym.envs.classic_control:CartPoleEnv',
+        max_episode_steps=1500,
+        reward_threshold=1500.0
+    )
+    env = gym.make('CartPole-v2')
+    # w1 = np.array([-0.0723, -0.0668, 0.151, 0.0802])
+    # b1 = np.array([-0.0214])
+    if len(sys.argv) > 1:
+        if sys.argv[1] != 'random':
+            _w = [float(v.strip()) for v in sys.argv[1].split(',')]
+            w1 = np.array(_w[:4])
+            b1 = np.array(_w[4:5])
+            agent = CPAgent(w1=w1, b1=b1)
+        else:
+            agent = CPAgent()
+        print(agent)
+        env.seed(42)
+        obs = env.reset()
+        total_reward = 0
+        for t in range(1500):
+            env.render()
+            action = agent.act(obs)
+            obs, reward, done, info = env.step(action)
+            total_reward += reward
+            # if done:
+            #     break
+        
+        print('Total Reward: ', total_reward)
+    else: 
+        agent = CPAgent()
+        # Hill Climbing search can solve this case.
+        # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
+        # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
+        # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+        initial_reward = simulate(env, [agent])[0]
+        print('Initial:    ', agent, ' --> ', f'{initial_reward:.5}')
+        agent, history = hillclimb(env, agent)
+        initial_reward = simulate(env, [agent])[0]
+        for score in history:
+            print(score)
+        print('After:      ', agent, ' --> ', f'{initial_reward:.5}')
+        
+        neighbors = agent.neighbors()
+        rewards = simulate(env, neighbors)
+        for i, (a, r) in enumerate(zip(neighbors, rewards)):
+            print(f'Neighbor {i}: ', a, ' --> ', f'{r:.5}')
+    env.close()
+    
+```
+   2. มองหาที่ else จะมีถ้าเจอ agent = CPAgent() อยู่ ให้คลิกขวา แล้วกด Run Python File in Terminal 
+```python
+else: 
+        agent = CPAgent()
+        # Hill Climbing search can solve this case.
+        # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
+        # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
+        # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+```
+   3. ที่ agent = CPAgent() จะมีคอมเม้นของอาจารย์เพิ่มอีกสองค่า โดยคอมเม้นแรกบอกว่า Hill Climbing Search สามารถแก้ปัญหาได้ ให้ทำการเอา # หน้า agent ออกจะได้แบบนี้
+```python
+    # agent = CPAgent()
+    # Hill Climbing search can solve this case.
+    agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
+    # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
+    # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+```
+   4. จากนั้นคลิกขวาที่โค้ดแล้วกด Run Python File in Terminal จะได้ผลลัพธ์ออกมา
+
+2. รันแบบไม่ปกติ(ใช้ Command Prompt/Terminal/PowerShell)
+   1. เปิด Command Prompt ขึ้นมา
+   2. เปิดแฟ้มและคัดลอกที่อยู่ของแฟ้มที่เราเก็บโค้ดไว้
+   3. พิมพ์ cd แล้วกดวางที่อยู่โฟลเดอร์นั้นๆ แล้วกด Enter
+   4. Command Prompt จะเปลี่ยนเป็น Path ของโฟลเดอร์นั้นๆ
+   5. พิมพ์ คำสั่งลงไป แล้วกด enter
+```bash 
+python itcs451-hw3.py "random"
+```
+ตรงคำว่า random เราสามารถใส่ค่าอื่นได้เช่น
+```bash
+python itcs451-hw3.py "0.0111, 0.0909, 0.0688, 0.189,0.0456"
+```
+   6. จะมี Cart-Pole จาก python ขึ้นมาให้รอจนกว่าหน้าต่างนั้นจะหายไปแล้วใน Command Prompt จะมี Total Reward ขึ้นมาเป็นอันจบ  
