@@ -247,12 +247,13 @@ def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10
     Temp = init_temp # สร้างตัวแปรขึ้นมาเก็บค่าอุณหภูมิเริ่มต้น
     for __ in range(max_iters):
         Temp += temp_step # ค่า Temp จะลดลงไปเรื่อยๆ เนื่องจาก temp_step มีค่า -0.1 นั่นก็คือการลดอุณหภูมิ
-         k # จบการทำงานของ for loop
+        if Temp <=0:
+            break # จบการทำงานของ for loop
         #จบ if condition
         PreviousNeighbor: list[CPAgent] = cur_agent.neighbors() # ใช้หา neighbor ตัวก่อนหน้า
         NextNeighbor: CPAgent = np.random.choice(PreviousNeighbor,1)[0] # Neighbor ตัวถัดคือความน่าจะเป็นที่สามารถเลือกได้
         cur_r = simulate(env,[cur_agent])[0] # ใช้ gym มาจำลองค่าใน Current Reward
-        E = simulate(env, [Next])[0] - cur_r # E หรือ DeltaE คือพลังงานที่เกิดจาก ค่าของตัวถัดไปลบด้วย ค่าปัจจุบัน
+        E = simulate(env, [NextNeighbor])[0] - cur_r # E หรือ DeltaE คือพลังงานที่เกิดจาก ค่าของตัวถัดไปลบด้วย ค่าปัจจุบัน
         if E > 0 :
             cur_agent = NextNeighbor # ค่าของตัวถัดไปจะเท่ากับตัวปัจจุบัน
             cur_r = simulate(env, [cur_agent])[0] # ค่า Reward ปัจจุบันจะเท่ากับ agent ตัวปัจจุบัน

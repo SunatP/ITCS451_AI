@@ -170,7 +170,9 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
             return prevNeighbors
 
         previous = findOtherNeighbor(explored,previous)
+        
         CalReward = simulate(env, previous)
+        # print(CalReward)
         history.append(CalReward[np.argmax(CalReward)]) # Append CalReward to history
         BestValue = CalReward[np.argmax(CalReward)]
         Max = previous[np.argmax(CalReward)]
@@ -187,14 +189,6 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
             cur_agent = previous[np.argmax(simulate(env, previous))] # Selects the best value from neighbor
             cur_r = CalReward[np.argmax(simulate(env, previous))] # Current equal to max value
     return cur_agent, history
-
-def findOtherNeighbor(explored, prevNeighbors):
-    NewNeighbor: list[CPAgent] = []
-    for OldNeighbor in prevNeighbors:
-        if OldNeighbor not in explored:  # we do not want to move to previously explored ones.
-            NewNeighbor.append(OldNeighbor)
-    prevNeighbors = NewNeighbor
-    return prevNeighbors
 
 def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10000):
     """
@@ -289,10 +283,10 @@ if __name__ == "__main__":
         agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
 
         initial_reward = simulate(env, [agent])[0]
-        # for i in tqdm(range(int(10e6)),ascii= True, desc="Loading"):
-        #     pass
-        # print("Complete!!")
-        # time.sleep(2)
+        for i in tqdm(range(int(10e6)),ascii= True, desc="Loading"):
+            pass
+        print("Complete!!")
+        time.sleep(2)
         print('Initial:    ', agent, ' --> ', f'{initial_reward:.5}')
         agent, history = hillclimb_sideway(env, agent)
         initial_reward = simulate(env, [agent])[0]
