@@ -3,7 +3,9 @@ import sys
 import math
 import numpy as np
 import gym
-
+from tqdm import tqdm
+import os 
+import time
 
 def sigmoid(x):
     """Return sigmoid value of x."""
@@ -278,16 +280,21 @@ if __name__ == "__main__":
         print('Total Reward: ', total_reward)
     else: 
         # agent = CPAgent()
-        agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
+        # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
         # agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
         # Hill Climbing search can solve this case.
         # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
         # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
         # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
-        # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+        agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+
         initial_reward = simulate(env, [agent])[0]
+        # for i in tqdm(range(int(10e6)),ascii= True, desc="Loading"):
+        #     pass
+        # print("Complete!!")
+        # time.sleep(2)
         print('Initial:    ', agent, ' --> ', f'{initial_reward:.5}')
-        agent, history = hillclimb(env, agent)
+        agent, history = hillclimb_sideway(env, agent)
         initial_reward = simulate(env, [agent])[0]
         for score in history:
             print(score)

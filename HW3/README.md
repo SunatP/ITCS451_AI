@@ -270,9 +270,57 @@ def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10
 1. รันแบบปกติ
 2. รันแบบใช้ Terminal/Command Prompt/PowerShell
 
-1. รันแบบปกติ โดยใช้ VSCode
+1. รันแบบปกติ โดยใช้ VSCode (รันด้วยฟังก์ชั่น CPAgent())
+   1. จากนั้นคลิกขวาที่โค้ดแล้วกด Run Python File in Terminal จะได้ผลลัพธ์ออกมา
 
-   1. มองหาโค้ดหน้าตาแบบนี้ จะอยู่ล่างสุด
+2. รันแบบไม่ปกติ(ใช้ Command Prompt/Terminal/PowerShell)
+   1. เปิด Command Prompt ขึ้นมา
+![1](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/1.jpg)
+   2. เปิดแฟ้มและคัดลอกที่อยู่ของแฟ้มที่เราเก็บโค้ดไว้
+![2](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/2.jpg)
+   3. พิมพ์ cd แล้วกดวางที่อยู่โฟลเดอร์นั้นๆ แล้วกด Enter
+![3](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/3.jpg)
+   4. Command Prompt จะเปลี่ยนเป็น Path ของโฟลเดอร์นั้นๆ
+   5. พิมพ์ คำสั่งลงไป แล้วกด enter
+```bash 
+python itcs451-hw3.py "random"
+```
+ตรงคำว่า random เราสามารถใส่ค่าอื่นได้เช่น
+```bash
+python itcs451-hw3.py "0.0111, 0.0909, 0.0688, 0.189,0.0456"
+```
+![4](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/4.jpg)
+   6. จะมี Cart-Pole จาก python ขึ้นมาให้รอจนกว่าหน้าต่างนั้นจะหายไปแล้วใน Command Prompt จะมี Total Reward ขึ้นมาเป็นอันจบ  
+![5](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/5.jpg)
+![6](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/6.jpg)
+
+CPAgent() จะได้ Reward มากหรือน้อยขึ้นอยู่กับดวงของคนนั้นๆด้วย
+
+## เสริมวิธีเช็ค HillClimb_Sideway ว่าถุกหรือไม่
+ให้เรามองหาคอมเม้นใน main function
+
+```python
+    # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
+    # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+```
+ให้เอาคอมเม้น(#)ของ agent ออก แล้วแก้ agent, history เพิ่ม
+จาก hillclimb 
+```python
+    initial_reward = simulate(env, [agent])[0]
+    print('Initial:    ', agent, ' --> ', f'{initial_reward:.5}')
+    agent, history = hillclimb(env, agent) # แก้ตรงนี้
+    initial_reward = simulate(env, [agent])[0]
+
+```
+เป็น hillclimb_sideway
+```python
+initial_reward = simulate(env, [agent])[0]
+        print('Initial:    ', agent, ' --> ', f'{initial_reward:.5}')
+        agent, history = hillclimb_sideway(env, agent) # ตรงนี้เป็น hillclimb_sideway แล้ว
+        initial_reward = simulate(env, [agent])[0]
+```
+แล้วกดรันโค้ดตามปกติ คะแนนจะต้องมี 1500 ถึงจะถือว่าถูก
+
 ```python
 if __name__ == "__main__":
     gym.envs.register(
@@ -306,14 +354,19 @@ if __name__ == "__main__":
         
         print('Total Reward: ', total_reward)
     else: 
-        agent = CPAgent()
+        # agent = CPAgent()
         # Hill Climbing search can solve this case.
         # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
         # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
-        # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+        agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+
         initial_reward = simulate(env, [agent])[0]
+        # for i in tqdm(range(int(10e6)),ascii= True, desc="Loading"):
+        #     pass
+        # print("Complete!!")
+        # time.sleep(2)
         print('Initial:    ', agent, ' --> ', f'{initial_reward:.5}')
-        agent, history = hillclimb(env, agent)
+        agent, history = hillclimb_sideway(env, agent) # ตรงนี้ ถูกแก้จาก hillclimb เป็น hillclimb_sideway
         initial_reward = simulate(env, [agent])[0]
         for score in history:
             print(score)
@@ -324,52 +377,6 @@ if __name__ == "__main__":
         for i, (a, r) in enumerate(zip(neighbors, rewards)):
             print(f'Neighbor {i}: ', a, ' --> ', f'{r:.5}')
     env.close()
-    
 ```
-   2. มองหาที่ else จะมีถ้าเจอ agent = CPAgent() อยู่ ให้คลิกขวา แล้วกด Run Python File in Terminal 
-```python
-else: 
-    # agent = CPAgent()
-    # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
-    agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
-    # Hill Climbing search can solve this case.
-    # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
-    # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
-    # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
-    # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
-       
-```
-   3. ที่ agent = CPAgent() จะมีคอมเม้นของอาจารย์เพิ่มอีกสองค่า โดยคอมเม้นแรกบอกว่า Hill Climbing Search สามารถแก้ปัญหาได้ ให้ทำการเอา # หน้า agent ออกจะได้แบบนี้
-```python
-    # agent = CPAgent()
-    # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
-    agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
-    # Hill Climbing search can solve this case.
-    # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
-    # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
-    # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
-    # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
-       
-```
-   4. จากนั้นคลิกขวาที่โค้ดแล้วกด Run Python File in Terminal จะได้ผลลัพธ์ออกมา
 
-2. รันแบบไม่ปกติ(ใช้ Command Prompt/Terminal/PowerShell)
-   1. เปิด Command Prompt ขึ้นมา
-![1](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/1.jpg)
-   2. เปิดแฟ้มและคัดลอกที่อยู่ของแฟ้มที่เราเก็บโค้ดไว้
-![2](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/2.jpg)
-   3. พิมพ์ cd แล้วกดวางที่อยู่โฟลเดอร์นั้นๆ แล้วกด Enter
-![3](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/3.jpg)
-   4. Command Prompt จะเปลี่ยนเป็น Path ของโฟลเดอร์นั้นๆ
-   5. พิมพ์ คำสั่งลงไป แล้วกด enter
-```bash 
-python itcs451-hw3.py "random"
-```
-ตรงคำว่า random เราสามารถใส่ค่าอื่นได้เช่น
-```bash
-python itcs451-hw3.py "0.0111, 0.0909, 0.0688, 0.189,0.0456"
-```
-![4](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/4.jpg)
-   6. จะมี Cart-Pole จาก python ขึ้นมาให้รอจนกว่าหน้าต่างนั้นจะหายไปแล้วใน Command Prompt จะมี Total Reward ขึ้นมาเป็นอันจบ  
-![5](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/5.jpg)
-![6](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW3/img/6.jpg)
+### Simulated Annealing ไม่สามารถเช็คได้แบบปกติ
