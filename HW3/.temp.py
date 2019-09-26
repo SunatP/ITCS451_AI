@@ -263,12 +263,12 @@ if __name__ == "__main__":
         # agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056]))) # Test annealing
         # Hill Climbing search can solve this case.
         # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
-        agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
+        # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
         # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
-        # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+        agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
         initial_reward = simulate(env, [agent])[0]
         print('Initial:    ', agent, ' --> ', f'{initial_reward:.5}')
-        agent, history = hillclimb(env, agent)
+        agent, history = simulated_annealing(env, agent)
         initial_reward = simulate(env, [agent])[0]
         for score in history:
             print(score)

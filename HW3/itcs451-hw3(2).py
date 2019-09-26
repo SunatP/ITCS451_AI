@@ -178,16 +178,15 @@ def hillclimb_sideway(env, agent, max_iters=10000, sideway_limit=10):
         Max = previous[np.argmax(CalReward)]
         if BestValue < simulate(env, [agent])[0]: # If current score is lower than the previous score
             return Max, history
-        else:
-            if cur_r == CalReward[np.argmax(simulate(env, previous))]: # If the Current value is equal to the previous value
-                if sideScore != CalReward[np.argmax(simulate(env, previous))]: # If sideScore is not max value
-                    sideScore = CalReward[np.argmax(simulate(env, previous))]  # Select Max value from neighbor
-                    sScore = 0    # Reset sScore
-                sScore += 1
-                if sideway_limit == sScore:   # If the Count is equal to the sideway limit
-                    return Max, history    # Returns the Agent with its History
-            cur_agent = previous[np.argmax(simulate(env, previous))] # Selects the best value from neighbor
-            cur_r = CalReward[np.argmax(simulate(env, previous))] # Current equal to max value
+        elif cur_r == CalReward[np.argmax(simulate(env, previous))]: # If the Current value is equal to the previous value
+            if sideScore != CalReward[np.argmax(simulate(env, previous))]: # If sideScore is not max value
+                sideScore = CalReward[np.argmax(simulate(env, previous))]  # Select Max value from neighbor
+                sScore = 0    # Reset sScore
+            sScore += 1
+            if sideway_limit == sScore:   # If the Count is equal to the sideway limit
+                return Max, history    # Returns the Agent with its History
+        cur_agent = previous[np.argmax(simulate(env, previous))] # Selects the best value from neighbor
+        cur_r = CalReward[np.argmax(simulate(env, previous))] # Current equal to max value
     return cur_agent, history
 
 def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10000):
@@ -227,13 +226,12 @@ def simulated_annealing(env, agent, init_temp=25.0, temp_step=-0.1, max_iters=10
         previous: list[CPAgent] = cur_agent.neighbors()
         Next: CPAgent = np.random.choice(previous, 1)[0] # Probability selected successor
         cur_r = simulate(env, [cur_agent])[0]
-        deltaE = simulate(env, [Next])[0] - cur_r # DeltaE = Next.Value - Current.Value
+        deltaE = simulate(env, [Next])[0] - simulate(env, [agent])[0] # DeltaE = Next.Value - Current.Value
         # print(deltaE)
         if deltaE > 0:
             cur_agent = Next # Move to next.Value
             cur_r = simulate(env, [cur_agent])[0]
-        else:
-            if np.random.normal() <= pow(math.e, deltaE / Temp): # e^(DeltaE/T)
+        elif np.random.rand() <= pow(math.e, deltaE / Temp): # e^(DeltaE/T)
                 cur_agent = Next
                 cur_r = simulate(env, [cur_agent])[0]
         history.append(cur_r) # Append cur_r to history
@@ -275,12 +273,12 @@ if __name__ == "__main__":
     else: 
         # agent = CPAgent()
         # agent,history = hillclimb_sideway(env,CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test hillclimb sideway
-        # agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))) # Test annealing
+        # agent,history = simulated_annealing(env,CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056]))) # Test annealing
         # Hill Climbing search can solve this case.
         # agent = CPAgent(w1=np.array([0.0111, 0.0909, 0.0688, 0.189]), b1=np.array([0.0456]))
-        # agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
+        agent = CPAgent(w1=np.array([0.0011, 0.0909, 0.0688, 0.189]), b1=np.array([0.0056])) # Hill climbing search can solve this case Total Reward is 1500
         # Hill Climbing search cannot solve this case, but sideway move limit at 10 will solve this.
-        agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
+        # agent = CPAgent(w1=np.array([0.0155, 0.0946, 0.0225, 0.0975]), b1=np.array([-0.0628]))
 
         initial_reward = simulate(env, [agent])[0]
         for i in tqdm(range(int(10e6)),ascii= True, desc="Loading"):
@@ -288,7 +286,7 @@ if __name__ == "__main__":
         print("Complete!!")
         time.sleep(2)
         print('Initial:    ', agent, ' --> ', f'{initial_reward:.5}')
-        agent, history = hillclimb_sideway(env, agent)
+        agent, history = simulated_annealing(env, agent)
         initial_reward = simulate(env, [agent])[0]
         for score in history:
             print(score)
