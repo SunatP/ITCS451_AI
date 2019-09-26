@@ -114,17 +114,17 @@ T : {a,c,i} # T != "h" คือ T จะไม่ทำงาน h
 ```
 <br>
 4. Starting from the answer from question 3, please write the assignment you choose to make and the remaining values of all variable in the same format as in question 3. For example,<br>
-    
-    #ITERATION 1 <br>
-    {'VAR1': 'VAL2'} <br>
-    {<br>
-        'VAR1': ['VAL2'],<br>
-        'VAR2': ['VAL4'],<br>
-        ...<br>
-        'VAR7': ['VAL2']<br
-    }<br>
-    #ITERATION 2<br>
-    ...<br>
+   
+    #ITERATION 1 
+    {'VAR1': 'VAL2'} 
+    {
+        'VAR1': ['VAL2'],
+        'VAR2': ['VAL4'],
+        ...
+        'VAR7': ['VAL2']
+    }
+    #ITERATION 2
+    ...
 
 NOTE: If there is a need to backtrack (MAC detects a failure), it is either 
 the question is incorrect or you are doing it wrong. Please consult me or 
