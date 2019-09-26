@@ -37,7 +37,7 @@ M = "i" #  M must work on i project.
 S = K #  S และ K ทำงานเดียวกันได้
 K != J #  K และ J จะไม่ทำงานด้วยกัน
 M != J #  M และ J จะไม่ทำงานด้วยกัน
-J not in {"a", "c"} # J จะไม่ทำงาน a กับ c นั่นคือถ้ามีงาน a,c,h,i J จะทำงาน h กับ i ได้เท่านั้น
+J not in {"a", "c"} # J จะไม่ทำงาน a กับ c นั่นคือถ้ามีงาน a,c,h,i J จะทำงานได้แค่ h กับ i เท่านั้น
 S = I #  S และ I ทำงานเดียวกันได้
 H = M #  H และ M ทำงานเดียวกันได้
 T != "h" #  T จะไม่ทำงาน h
@@ -82,6 +82,51 @@ and MRV for variable ordering. Please answer the following questions:
 ภาพที่ได้จากการวิเคราะห์จะเป็นแบบนี้
 
 ![After](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW4/img/HW4.jpg)
-
+<br>
 1. How many possible complete states?<br>
-Answer: $4^7$ 
+Answer: 4 ยกกำลัง 7 (4^7) = 16384 เนื่องจากมี 4 งาน ต้องแบ่งให้นักเรียนให้ครบทั้งหมด 7 คนโดยที่งานไม่ซ้ำกัน<br>
+2. What is the depth level of the goal state (level 0 means empty assignment)?<br>
+Answer: 7 level เนื่องจากใช้ backtracking search เพื่อหาค่าครบทั้ง 7 neighbor โดยใช้ MAC และ MRV เช้ามาช่วย
+3.  Before we begin running backtracking search, it is much more efficient to 
+   eliminate values that invalidate the unary contraints. Please list variables 
+   and possible values left after enforcing the unary constrains. Please order 
+   your variables and values alphabetically in the following format:<br>
+<br>
+    {<br>
+        'VAR1': ['VAL1', 'VAL2'],<br>
+        'VAR2': ['VAL2', 'VAL4'],<br>
+        ...<br>
+        'VAR7': ['VAL2']<br>
+    }<br>
+<br>
+   Such that you can use eval() function to read your answer.<br>
+
+Answer:
+อ่านจาก following constraints to be satisfied แล้วตีความหมายจะได้ประมาณนี้<br>
+```bash
+H : {a,c,h,i} # ไม่มี condition
+I : {h,a} # I in {"h", "a"} คือ I ทำงานได้แค่ h กับ a
+J : {h,i} # J not in {"a", "c"} คือ J จะไม่ทำงาน a กับ c นั่นคือถ้ามีงาน a,c,h,i ซึ่ง J จะทำงานได้แค่ h กับ i เท่านั้น
+K : {a,c,h,i} # ไม่มี condition
+M : {i} # M = "i" คือ M จะทำงานได้แค่ i
+S : {a,c,h,i} # ไม่มี condition
+T : {a,c,i} # T != "h" คือ T จะไม่ทำงาน h
+```
+<br>
+4. Starting from the answer from question 3, please write the assignment you choose to make and the remaining values of all variable in the same format as in question 3. For example,<br>
+    
+    #ITERATION 1 <br>
+    {'VAR1': 'VAL2'} <br>
+    {<br>
+        'VAR1': ['VAL2'],<br>
+        'VAR2': ['VAL4'],<br>
+        ...<br>
+        'VAR7': ['VAL2']<br
+    }<br>
+    #ITERATION 2<br>
+    ...<br>
+
+NOTE: If there is a need to backtrack (MAC detects a failure), it is either 
+the question is incorrect or you are doing it wrong. Please consult me or 
+your classmates. 
+Answer: เดี๋ยวมาทำต่อนอนดีกว่าตี 1 แล้ว
