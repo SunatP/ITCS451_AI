@@ -90,15 +90,16 @@ Answer: 7 level เนื่องจากใช้ backtracking search เพ�
 3.  Before we begin running backtracking search, it is much more efficient to 
    eliminate values that invalidate the unary contraints. Please list variables 
    and possible values left after enforcing the unary constrains. Please order 
-   your variables and values alphabetically in the following format:<br>
-<br>
-    {<br>
-        'VAR1': ['VAL1', 'VAL2'],<br>
-        'VAR2': ['VAL2', 'VAL4'],<br>
-        ...<br>
-        'VAR7': ['VAL2']<br>
-    }<br>
-<br>
+   your variables and values alphabetically in the following format:
+```bash
+    {
+        'VAR1': ['VAL1', 'VAL2'],
+        'VAR2': ['VAL2', 'VAL4'],
+        ...
+        'VAR7': ['VAL2']
+    }
+```
+
    Such that you can use eval() function to read your answer.<br>
 
 Answer:
@@ -113,7 +114,7 @@ S : {a,c,h,i} # ไม่มี condition
 T : {a,c,i} # T != "h" คือ T จะไม่ทำงาน h
 ```
 <br>
-4. Starting from the answer from question 3, please write the assignment you choose to make and the remaining values of all variable in the same format as in question 3. For example,<br>
+1. Starting from the answer from question 3, please write the assignment you choose to make and the remaining values of all variable in the same format as in question 3. For example,<br>
    
     #ITERATION 1 
     {'VAR1': 'VAL2'} 
