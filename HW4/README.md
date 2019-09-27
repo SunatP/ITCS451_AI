@@ -1,12 +1,12 @@
-# HW4 AI
+# HW4 AI 
 
 ## Due Date : Sunday, 29 September 2019, 11:55 PM
 
-## Description
+## Description 
 
 [Project Management] In this semester, you are overwhelmed with group projects.<br> Currently, there are 4 projects under an imminent deadline: <br>
 
-{a, c, h, i}
+{a, c, h, i} 
 
 Fortunately, you have 7 friends in your group that are ready at your service: 
 
@@ -48,7 +48,7 @@ M = "i" #  M จะทำงานได้แค่ i
 ```
 
 You will solve this by using backtracking search with MAC as the inference 
-and MRV for variable ordering. Please answer the following questions:
+and MRV for variable ordering. Please answer the following questions:()
 
 1. M จะทำงานได้แค่งาน i
 2. H จะทำงานร่วมกับ M 
@@ -111,7 +111,7 @@ S : {a,c,h,i} # ไม่มี condition
 T : {a,c,i} # T != "h" คือ T จะไม่ทำงาน h
 ```
 <br>
-1. Starting from the answer from question 3, please write the assignment you choose to make and the remaining values of all variable in the same format as in question 3. For example,<br>
+4. Starting from the answer from question 3, please write the assignment you choose to make and the remaining values of all variable in the same format as in question 3. For example,<br>
    
     #ITERATION 1 
     {'VAR1': 'VAL2'} 
@@ -125,4 +125,85 @@ T : {a,c,i} # T != "h" คือ T จะไม่ทำงาน h
     ...
 
 NOTE: If there is a need to backtrack (MAC detects a failure), it is either the question is incorrect or you are doing it wrong. Please consult me or your classmates. <br>
-Answer: เดี๋ยวมาทำต่อนอนดีกว่าตี 1 แล้ว
+Answer: เริ่มจากการใช้ MRV มาทำการตรวจจับ Node ที่มี value น้อยที่สุดก่อนเพื่อ assign งานเข้าก่อนเป็นตัวเริ่ม Iteration จากนั้นก็ไล่งานให้ครบ ทุก Neighbor โดยใช้รูปภาพอ้างอิง <br>
+![After](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW4/img/HW4.jpg)
+
+```bash
+    # ITERATION 1
+    {'M': 'i'}
+    {
+        'H': ['i'],
+        'I': ['a'],
+        'J': ['h'],
+        'K': ['a'],
+        'M': ['i'],
+        'S': ['a'],
+        'T': ['a','c','i']
+    }
+    # ITERATION 2
+    {'H':'i'}
+    {
+        'H': ['i'],
+        'I': ['a'],
+        'J': ['h'],
+        'K': ['a'],
+        'M': ['i'],
+        'S': ['a'],
+        'T': ['a','c','i']  
+    }
+    # ITERATION 3
+    {'J':'h'}
+    {
+        'H': ['i'],
+        'I': ['a'],
+        'J': ['h'],
+        'K': ['a'],
+        'M': ['i'],
+        'S': ['a'],
+        'T': ['a','c','i']
+    }
+    # ITERATION 4
+    {'K':'a'}
+    {
+        'H': ['i'],
+        'I': ['a'],
+        'J': ['h'],
+        'K': ['a'],
+        'M': ['i'],
+        'S': ['a'],
+        'T': ['a','c','i']   
+    }
+    # ITERATION 5
+    {'S':'a'}
+    {        
+        'H': ['i'],
+        'I': ['a'],
+        'J': ['h'],
+        'K': ['a'],
+        'M': ['i'],
+        'S': ['a'],
+        'T': ['a','c','i']
+    }
+    # ITERATION 6
+    {'I','a'}
+    {
+        'H': ['i'],
+        'I': ['a'],
+        'J': ['h'],
+        'K': ['a'],
+        'M': ['i'],
+        'S': ['a'],
+        'T': ['a','c','i']
+    }
+    # ITERATION 7
+    {'T':'c'}
+    {
+        'H': ['i'],
+        'I': ['a'],
+        'J': ['h'],
+        'K': ['a'],
+        'M': ['i'],
+        'S': ['a'],
+        'T': ['c']        
+    }
+```
