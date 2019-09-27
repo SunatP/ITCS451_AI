@@ -85,10 +85,10 @@ and MRV for variable ordering. Please answer the following questions:()
 
 <br>
 1. How many possible complete states?<br>
-Answer: 4 ยกกำลัง 7 (4^7) = 16384 เนื่องจากมี 4 งาน ต้องแบ่งให้นักเรียนให้ครบทั้งหมด 7 คนโดยที่งานไม่ซ้ำกัน<br>
-2. What is the depth level of the goal state (level 0 means empty assignment)?<br>
-Answer: 7 level เนื่องจากใช้ backtracking search เพื่อหาค่าครบทั้ง 7 neighbor โดยใช้ MAC และ MRV เช้ามาช่วย<br>
-3.  Before we begin running backtracking search, it is much more efficient to eliminate values that invalidate the unary contraints. Please list variables and possible values left after enforcing the unary constrains. Please order your variables and values alphabetically in the following format:<br>
+<b>Answer: 4 ยกกำลัง 7 (4^7) = 16384 เนื่องจากมี 4 งาน ต้องแบ่งให้นักเรียนให้ครบทั้งหมด 7 คนโดยที่งานไม่ซ้ำกัน</b><br>
+1. What is the depth level of the goal state (level 0 means empty assignment)?<br>
+<b>Answer: 7 level เนื่องจากใช้ backtracking search เพื่อหาค่าครบทั้ง 7 neighbor โดยใช้ MAC และ MRV เช้ามาช่วย</b><br>
+1.  Before we begin running backtracking search, it is much more efficient to eliminate values that invalidate the unary contraints. Please list variables and possible values left after enforcing the unary constrains. Please order your variables and values alphabetically in the following format:<br>
    
 ```bash
     {
@@ -110,6 +110,20 @@ M : {i} # M = "i" คือ M จะทำงานได้แค่ i
 S : {a,c,h,i} # ไม่มี condition
 T : {a,c,i} # T != "h" คือ T จะไม่ทำงาน h
 ```
+
+<b>answer</b>
+```bash
+    {
+        'H': ['a', 'c', 'h', 'i'],
+        'I': ['a', 'h'],
+        'J': ['h', 'i'],
+        'K': ['a', 'c', 'h', 'i'],
+        'M': ['i'],
+        'S': ['a', 'c', 'h', 'i'],
+        'T': ['a', 'c', 'i']
+    }
+```
+
 <br>
 4. Starting from the answer from question 3, please write the assignment you choose to make and the remaining values of all variable in the same format as in question 3. For example,<br>
    
@@ -125,7 +139,7 @@ T : {a,c,i} # T != "h" คือ T จะไม่ทำงาน h
     ...
 
 NOTE: If there is a need to backtrack (MAC detects a failure), it is either the question is incorrect or you are doing it wrong. Please consult me or your classmates. <br>
-Answer: เริ่มจากการใช้ MRV มาทำการตรวจจับ Node ที่มี value น้อยที่สุดก่อนเพื่อ assign งานเข้าก่อนเป็นตัวเริ่ม Iteration จากนั้นก็ไล่งานให้ครบ ทุก Neighbor โดยใช้รูปภาพอ้างอิง <br>
+<b>Answer: เริ่มจากการใช้ MRV มาทำการตรวจจับ Node ที่มี value น้อยที่สุดก่อนเพื่อ assign งานเข้าก่อนเป็นตัวเริ่ม Iteration จากนั้นก็ไล่งานให้ครบ ทุก Neighbor โดยใช้รูปภาพอ้างอิง</b> <br>
 ![After](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW4/img/HW4.jpg)
 
 ```bash
