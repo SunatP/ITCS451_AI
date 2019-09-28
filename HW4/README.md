@@ -139,6 +139,27 @@ T : {a,c,i} # T != "h" คือ T จะไม่ทำงาน h
     ...
 
 NOTE: If there is a need to backtrack (MAC detects a failure), it is either the question is incorrect or you are doing it wrong. Please consult me or your classmates. <br>
+การเช็ค **Iteration** ทีละตัวทำได้ดังนี้
+```bash
+    iteration=1 # i = 1 เราจะใช้ MRV มาช่วยเลือก Domain ที่น้อยที่สุดให้กับ Variable ซึ่ง M นั้นมีแค่ i ซึ่งเป็น Domain เดียว
+    
+        M => i # เครื่องหมาย => คือการ assign เช่น M => i คือ การ assign งาน i ให้ M
+        _______
+        H -> M => i # เช็ค Neighbor H ที่ไปหา M ซึ่ง H ทำงานกับ M โดยที่ M ทำได้แค่งานเดียว (assign i) ซึ่ง  M และ H ทำงาน i เหมือนกัน ตรงนี้ถูกต้อง
+        J -> M => h  # เช็ค Neighbor J ที่ไปหา M ซึ่ง J ไม่ทำงานร่วมกับ M ซึ่ง M ทำได้แค่งาน i ส่วน J ทำงาน h เราจึงต้องเช็ค neighbor of neighbor อีกที (MAC)
+        K -> H # เช็ค neighbor ที่มาจาก neighbor H ซึ่ง K มาจาก M แบบนี้ K -> H -> M โดย K จะไม่ทำงานร่วมกับ H โดยที่ K มี assign a ส่วน H นั้นมีแค่ assign i ซึ่งเป็น consistence 
+        K -> J # เช็ค neighbor ที่มาจาก neighbor J ซึ่ง K มาจาก J แบบนี้ K -> J -> M โดย K จะไม่ทำงานร่วมกับ J โดยที่ K มี assign a ส่วน J นั้นมีแค่ assign h ซึ่งเป็น consistence 
+        # การเช็ค K-> H และ K-> J เป็นการเช็คด้วย MAC หรือ neighbor of Neighbor 
+    ___________________________________________________
+    # จบ Iteration 1
+    iteration=2 # i = 2 เราจะใช้ MRV มาช่วยเลือก Domain ที่น้อยที่สุดให้กับ Variable ซึ่ง H นั้นมีแค่ i ซึ่งเป็น Domain เดียวเหมือนกับ M
+        H => i
+        ______
+        K -> H # เช็ค neighbor ที่มาจาก neighbor H ซึ่ง K มาจาก M แบบนี้ K -> H -> M โดย K จะไม่ทำงานร่วมกับ H โดยที่ K มี assign a ส่วน H นั้นมีแค่ assign i ซึ่งเป็น consistence 
+        S -> K # เช็ค neighbor ที่มาจาก neighbor H ซึ่ง S มาจาก K แบบนี้ S -> K -> H โดย S จะทำงานร่วมกับ K ซึ่งเป็น consistence 
+    
+```
+
 <b>Answer: เริ่มจากการใช้ MRV มาทำการตรวจจับ Node ที่มี value น้อยที่สุดก่อนเพื่อ assign งานเข้าก่อนเป็นตัวเริ่ม Iteration จากนั้นก็ไล่งานให้ครบ ทุก Neighbor โดยใช้รูปภาพอ้างอิง</b> <br>
 ![After](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/HW4/img/HW4.jpg)
 
