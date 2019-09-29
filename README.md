@@ -1,5 +1,14 @@
 # ITCS451_Artificial Intelligence
 
+## Tools
+
+1. Python 3.6.6 64 Bit
+2. Visual Studio Code
+3. Jupyter Notebook
+4. Anaconda Prompt
+5. Piece of Brain
+
+
 ## Grading
 
 |Evaluation Method  | Weight  |
