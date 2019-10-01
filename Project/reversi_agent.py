@@ -91,3 +91,26 @@ class RandomAgent(ReversiAgent):
         randidx = random.randint(0, len(valid_actions) - 1)
         self._move = valid_actions[randidx]
         print('okay')
+
+class SunatAgent(ReversiAgent): # Create Sunat Agent
+
+    async def search(self, board, valid_actions):
+        # max()
+        infinity = float('inf')
+        best_val = -infinity
+        beta = infinity
+        best_state = None
+        value = self.min(best_val,beta)
+        if value > best_val:
+            best_val = value
+        # best_val = self.max(valid_actions)
+        self._move = valid_actions
+
+        print("Sunat Finished")
+    
+    def max(self,board,valid_actions):
+        print("Max Visited Node : " + self.max(valid_actions))
+
+
+    def min(self,board,valid_actions):
+        print("Brhhhh")
