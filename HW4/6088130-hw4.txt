@@ -1,7 +1,7 @@
 # QUESTION 1
 16384
 # QUESTION 2
-7 level
+7
 # QUESTION 3
     {
         'H': ['a', 'c', 'h', 'i'],

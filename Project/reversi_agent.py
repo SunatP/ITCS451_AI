@@ -92,22 +92,24 @@ class RandomAgent(ReversiAgent):
         self._move = valid_actions[randidx] # Return Value
         print('okay')
 
-class SunatAgent(ReversiAgent): # Create Sunat Agent
+class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Search
 
-    async def search(self, board, valid_actions):
+    async def search(self, board, valid_actions): # Point to async search
         await asyncio.sleep(0.5)
         infinity = float('inf')
         best_val = -infinity
         beta = infinity
-
+    
         successors = self.getSuccessors(board)
         best_state = None
-        for state in successors:
-            value = self.min_value(state, best_val, beta)
+        scores = np.zeros(len(self.move))
+        for state in self.best_move(board):
+            # value = self.max_value(state, best_val, beta)
+            value = max(value, self.min_value(state,best_state))
             if value > best_val:
                 best_val = value
                 best_state = state
-        self._move = valid_actions[best_state]
+        return self._move == valid_actions[best_state]
         # alpha = -float('inf') # define as min val
         # beta = float('inf') # define as max val
         # max = -float('inf')
@@ -129,11 +131,13 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent
         for state in successors:
             value = min(value, self.max_value(state, alpha, beta))
             if value <= alpha:
-                # return value
-                self._move = value[min]
+                return value
+                # self._move = value[min]
             beta = min(beta, value)
 
-        self._move = value[min]
+        # self._move = value[min]
+        # return value
+        return self._move == value[beta]
     
     def max_value(self,node,alpha,beta):
         infinity = float('inf')
@@ -144,11 +148,12 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent
         for state in successors:
             value = max(value, self.min_value(state, alpha, beta))
             if value >= beta:
-                # return value
-                self._move = value[max]
+                return value
+                # self._move = value[max]
             alpha = max(alpha, value)
         # return value
-        self._move = value[max]
+        return self._move == value[alpha]
+        # self._move = value[max]
 
     def getSuccessors(self, node):
         assert node is not None
