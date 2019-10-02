@@ -87,7 +87,7 @@ and MRV for variable ordering. Please answer the following questions:()
 1. How many possible complete states?<br>
 <b>Answer: 4 ยกกำลัง 7 (4^7) = 16384 เนื่องจากมี 4 งาน ต้องแบ่งให้นักเรียนให้ครบทั้งหมด 7 คนโดยที่งานไม่ซ้ำกัน</b><br>
 1. What is the depth level of the goal state (level 0 means empty assignment)?<br>
-<b>Answer: 7 level เนื่องจากใช้ backtracking search เพื่อหาค่าครบทั้ง 7 neighbor โดยใช้ MAC และ MRV เช้ามาช่วย</b><br>
+<b>Answer: 7 เนื่องจากใช้ backtracking search เพื่อหาค่าครบทั้ง 7 neighbor โดยใช้ MAC และ MRV เช้ามาช่วย</b><br>
 1.  Before we begin running backtracking search, it is much more efficient to eliminate values that invalidate the unary contraints. Please list variables and possible values left after enforcing the unary constrains. Please order your variables and values alphabetically in the following format:<br>
    
 ```bash
