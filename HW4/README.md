@@ -242,3 +242,71 @@ NOTE: If there is a need to backtrack (MAC detects a failure), it is either the 
         'T': ['c']        
     }
 ```
+
+### วิธีเช็ค HW4 ว่าถูกหรือไม่
+
+1. เข้า Command Prompt/Terminal
+2. พิมพ์คำว่า python(สำหรับ windows) python3(MacOS/Ubuntu)
+```bash
+    python # Windows
+    python3 # MacOS/Linux
+```
+3. จะมี python รันขึ้นมาประมาณนี้
+```bash
+Python 3.7.3 | packaged by conda-forge | (default, Mar 27 2019, 23:18:50) [MSC v.1900 64 bit (AMD64)] :: Anaconda, Inc. on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+```
+4. พิมพ์ eval() ข้างในวงเล็บมีฟันหนูตามด้วยคำตอบ เช่น
+```python
+eval("""16384""") # คำตอบ ข้อ 1
+```
+คำตอบจะออกมาแบบนี้
+```bash
+>>> eval("""16384""")
+16384
+>>>
+```
+ถ้าใส่คำตอบที่มีคำศัพท์ลงไป จะขึ้น error เช่น
+```python
+eval("""7 level""")
+```
+Error ที่เกิดขึ้นจะเป็นงี้ ซึ่ง eval() จะเช็คได้แค่ string ทีละตัว
+```bash
+>>> eval("""7 level""")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<string>", line 1
+    7 level
+          ^
+SyntaxError: unexpected EOF while parsing
+>>>
+```
+เช็คคำตอบข้อ 3 จะต้องเว้นบรรทัดให้เหมือนกับตัวอย่างของอาจารย์ถึงจะถูกต้อง เช่น
+```python
+eval("""{
+        'H': ['a', 'c', 'h', 'i'],
+        'I': ['a', 'h'],
+        'J': ['h', 'i'],
+        'K': ['a', 'c', 'h', 'i'],
+        'M': ['i'],
+        'S': ['a', 'c', 'h', 'i'],
+        'T': ['a', 'c', 'i']
+    }"""
+) 
+```
+คำตอบจะออกมาแบบนี้
+```bash
+>>> eval("""{
+...         'H': ['a', 'c', 'h', 'i'],
+...         'I': ['a', 'h'],
+...         'J': ['h', 'i'],
+...         'K': ['a', 'c', 'h', 'i'],
+...         'M': ['i'],
+...         'S': ['a', 'c', 'h', 'i'],
+...         'T': ['a', 'c', 'i']
+...     }"""
+... )
+{'H': ['a', 'c', 'h', 'i'], 'I': ['a', 'h'], 'J': ['h', 'i'], 'K': ['a', 'c', 'h', 'i'], 'M': ['i'], 'S': ['a', 'c', 'h', 'i'], 'T': ['a', 'c', 'i']}
+>>>
+```

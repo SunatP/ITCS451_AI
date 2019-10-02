@@ -1,6 +1,6 @@
 # question 1
 eval("""16384""") 
-# question 2 number only or char
+# question 2 number only or string
 eval("""7""") 
 # question 3
 eval("""{
