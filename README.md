@@ -2,7 +2,7 @@
 
 ## Tools
 
-1. Python 3.6.6 64 Bit
+1. Python 3.7.3 64 Bit (Base on conda)
 2. Visual Studio Code
 3. Jupyter Notebook
 4. Anaconda Prompt
