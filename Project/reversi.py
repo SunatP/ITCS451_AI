@@ -57,7 +57,7 @@ async def main(black, white, timelimit=2):
         else:
             start_time = time.time()
             try:
-                agent_task = asyncio.create_task(black.move(board, valids))
+                agent_task = asyncio.create_task(active_player.move(board, valids))
                 time_task = asyncio.create_task(timer(timelimit))
                 done, pending = await asyncio.wait(
                     {time_task, agent_task},
@@ -87,6 +87,6 @@ async def main(black, white, timelimit=2):
 
 
 if __name__ == "__main__":
-    black = agents.SunatAgent(bg2.BLACK)
-    white = agents.RandomAgent(bg2.WHITE)
+    black = agents.RandomAgent(bg2.BLACK)
+    white = agents.SunatAgent(bg2.WHITE)
     asyncio.run(main(black, white, 10))

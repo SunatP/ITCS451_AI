@@ -87,29 +87,90 @@ class RandomAgent(ReversiAgent):
     
     async def search(self, board, valid_actions):
         """Set the intended move to self._move."""
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(2.0)
         randidx = random.randint(0, len(valid_actions) - 1)
-        self._move = valid_actions[randidx] # Return Value
-        print('okay')
+        self._move = valid_actions[randidx]
+
 
 class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Search
 
+    """
+    Alpha-Beta Pruning Search Algorithm
+    -----------------------------------------------
+    function ABS(state) return action
+    v <- Max_value(state,+inf,-inf) # v = Max_Value
+    -----------------------------------------------
+    function Max_value(state,alpha,beta) return a utility value
+    if Terminal-test(state) then return utility(state)
+    v <- (-inf)
+    for each a in action(state) do
+    v <- max(v,Min_Value(Result(s,a),alpha,beta))
+    if v >= beta then return v
+    alpha <- max(alpha,v)
+    return v
+    -----------------------------------------------
+    function Min_value(state,alpha,beta) return a utility value
+    if Terminal-test(state) then return utility(state)
+    v <- (inf)
+    for each a in action(state) do
+    v <- min(v,Max_Value(Result(s,a),alpha,beta))
+    if v <= alpha then return v
+    beta <- max(beta,v)
+    return v
+    """
+
     async def search(self, board, valid_actions): # Point to async search
-        await asyncio.sleep(0.5)
-        infinity = float('inf')
-        best_val = -infinity
-        beta = infinity
+        await asyncio.sleep(2.0)
+        moving = Alpha_moving(float('inf')  ,Max_value,Min_value)
+        self._move = valid_actions[moving]
+
+        def Alpha_moving(state):
+            value = Max_value(state,-float('inf'),float('inf'))
+            self._move = valid_actions[value]
+
+        def Max_value(self,alpha,beta):
+            alpha = -float('inf')
+            beta = float('inf')
+            if self.isTerminal(self._move):
+                return self.getUtility(self._move)
+            value = alpha
+            best_state = None
+            for a in self.move:
+                value = max(value, Min_value(best_state,a),alpha,beta)
+                if value >= beta :
+                    return value
+                    best_state = a
+                    alpha = max(alpha,value)
+            self._move = best_state[value]
     
-        successors = self.getSuccessors(board)
-        best_state = None
-        scores = np.zeros(len(self.move))
-        for state in self.best_move(board):
-            # value = self.max_value(state, best_val, beta)
-            value = max(value, self.min_value(state,best_state))
-            if value > best_val:
-                best_val = value
-                best_state = state
-        return self._move == valid_actions[best_state]
+        def Min_value(self,alpha,beta):
+            alpha = -float('inf')
+            beta = float('inf')
+            if self.isTerminal(self._move):
+                return self.getUtility(self._move)
+            value = beta
+            best_state = None
+            for a in self.move:
+                value = max(value, Max_value(best_state,a),alpha,beta)
+                if value <= alpha :
+                    return value
+                    best_state = a
+                    beta = min(beta,value)
+            self._move = best_state[value]
+        # infinity = float('inf')
+        # best_val = -infinity
+        # beta = infinity
+    
+        # successors = self.getSuccessors(board)
+        # best_state = None
+        # scores = np.zeros(len(self.move))
+        # for state in self.best_move(board):
+        #     # value = self.max_value(state, best_val, beta)
+        #     value = max(value, self.min_value(state,best_state))
+        #     if value > best_val:
+        #         best_val = value
+        #         best_state = state
+        # return self._move == valid_actions[best_state]
         # alpha = -float('inf') # define as min val
         # beta = float('inf') # define as max val
         # max = -float('inf')
@@ -122,52 +183,52 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
         # self._move = valid_actions[best_state]
         # print("Fuck You")
 
-    def min_value(self,node,alpha,beta):
-        infinity = float('inf')
-        value = infinity
-        if self.isTerminal(node):
-            return self.getUtility(node)
-        successors = self.getSuccessors(node)
-        for state in successors:
-            value = min(value, self.max_value(state, alpha, beta))
-            if value <= alpha:
-                return value
-                # self._move = value[min]
-            beta = min(beta, value)
+    # def min_value(self,node,alpha,beta):
+    #     infinity = float('inf')
+    #     value = infinity
+    #     if self.isTerminal(node):
+    #         return self.getUtility(node)
+    #     successors = self.getSuccessors(node)
+    #     for state in successors:
+    #         value = min(value, self.max_value(state, alpha, beta))
+    #         if value <= alpha:
+    #             return value
+    #             # self._move = value[min]
+    #         beta = min(beta, value)
 
-        # self._move = value[min]
-        # return value
-        return self._move == value[beta]
+    #     # self._move = value[min]
+    #     # return value
+    #     return self._move == value[beta]
     
-    def max_value(self,node,alpha,beta):
-        infinity = float('inf')
-        value = -infinity
-        if self.isTerminal(node):
-            return self.getUtility(node)
-        successors = self.getSuccessors(node)
-        for state in successors:
-            value = max(value, self.min_value(state, alpha, beta))
-            if value >= beta:
-                return value
-                # self._move = value[max]
-            alpha = max(alpha, value)
-        # return value
-        return self._move == value[alpha]
-        # self._move = value[max]
+    # def max_value(self,node,alpha,beta):
+    #     infinity = float('inf')
+    #     value = -infinity
+    #     if self.isTerminal(node):
+    #         return self.getUtility(node)
+    #     successors = self.getSuccessors(node)
+    #     for state in successors:
+    #         value = max(value, self.min_value(state, alpha, beta))
+    #         if value >= beta:
+    #             return value
+    #             # self._move = value[max]
+    #         alpha = max(alpha, value)
+    #     # return value
+    #     return self._move == value[alpha]
+    #     # self._move = value[max]
 
-    def getSuccessors(self, node):
-        assert node is not None
-        return node.children
+        def getSuccessors(self, node):
+            assert node is not None
+            return node.children
 
     # return true if the node has NO children (successor states)
     # return false if the node has children (successor states)
-    def isTerminal(self, node):
-        assert node is not None
-        return len(node.children) == 0
+        def isTerminal(self, node):
+            assert node is not None
+            return len(node.children) == 0
 
-    def getUtility(self, node):
-        assert node is not None
-        return node.value
+        def getUtility(self, node):
+            assert node is not None
+            return node.value
         # # max()
         # infinity = float('inf')
         # best_val = np.argmin(infinity)
@@ -187,30 +248,30 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
         # # self._move = valid_actions[best_state]
         # print("Sunat Finished")
     
-    # def max(self,alpha,beta):
-    #     infinity = float('inf')
-    #     value = np.argmin(infinity)
-    #     # successor = self.move(random)
-    #     for state in self.best_move:
-    #         print(state)
-    #         value = np.argmax(value, self.min(state,alpha,beta))
-    #         if value >= beta:
-    #             return value
-    #         # alpha = max(alpha,value)
-    #         alpha = np.argmax(alpha,value)
-    #     return value
-    #     # print("Max Visited Node : " + self.max(valid_actions))
+        def max(self,alpha,beta):
+            infinity = float('inf')
+            value = min(infinity)
+            # successor = self.move(random)
+            for state in self.best_move:
+                print(state)
+                value = max(value, self.min(state,alpha,beta))
+                if value >= beta:
+                    return value
+                # alpha = max(alpha,value)
+                alpha = max(alpha,value)
+            return value
+        # print("Max Visited Node : " + self.max(valid_actions))
 
 
-    # def min(self,alpha,beta):
-    #     infinity = float('inf')
-    #     value = np.argmax(infinity)
-    #     # successor = self.move(random)
-    #     for state in self.best_move:
-    #         value = np.argmin(value, self.max(state,alpha,beta))
-    #         if value <= alpha:
-    #             return value
-    #         # beta = min(alpha,value)
-    #         beta = np.argmin(alpha,value)
-    #     return value
-    #     # print("Max Visited Node : " + self.max(valid_actions))
+        def min(self,alpha,beta):
+            infinity = float('inf')
+            value = max(infinity)
+            # successor = self.move(random)
+            for state in self.best_move:
+                value = min(value, self.max(state,alpha,beta))
+                if value <= alpha:
+                    return value
+                # beta = min(alpha,value)
+                beta = min(alpha,value)
+            return value
+        # print("Max Visited Node : " + self.max(valid_actions))
