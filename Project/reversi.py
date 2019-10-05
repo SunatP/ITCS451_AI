@@ -20,7 +20,7 @@ def clear_screen():
         subprocess.call('cls', shell=True)
     else:
         subprocess.call('clear', shell=True)
-
+    # pass 
 
 def render(board, turn, prev_move=None, prev_turn=None):
     """Render on the screen."""
@@ -37,6 +37,7 @@ async def timer(limit):
     """Create a progress bar for timer."""
     for i in tqdm(range(limit*10), desc="Time Limit: "):
         await asyncio.sleep(1/10)
+    
 
 async def main(black, white, timelimit=2):
     """Run the game."""
