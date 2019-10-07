@@ -6,7 +6,7 @@
     1.  def load_data(): เป็นฟังก์ชันที่เราจะต้องสร้างชุดข้อมูล(เกรด)เพื่อมาใช้ training
     2.  def train(features,labels): ฟังก์ชัน training จะเอา data จาก load_data() มาใช้ในการ train 
     3.  def predict(model,features): ฟังก์ชันนี้จะทำการทำนายความน่าจะเป็นหรือการ predict ค่าจากฟังก์ชัน train
-    4.  def evaluate(labels,predictions,label_types): ฟังก์ชันสุดท้ายจะแสดงค่าในรูปแบบ เมทริกซ์ที่บอกค่าความแม่นยำ (confusion matrix) ที่มี
+    4.  def evaluate(labels,predictions,label_types): ฟังก์ชันสุดท้ายจะแสดงค่าในรูปแบบ เมทริกซ์ที่บอกค่าความแม่นยำ (confusion matrix)
 
 ## มีอะไร import มาให้แล้วบ้าง
 
