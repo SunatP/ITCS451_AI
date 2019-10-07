@@ -3,9 +3,12 @@
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
-
+from sklearn.metrics import confusion_matrix # Use instead create method to print result
 
 def load_data():
+    
+    # data_label = ["A","C","D","C","B","B","A","B"],
+    # last value is label
     """
     Return dataset for classification in a form of numpy array.
 
@@ -26,23 +29,39 @@ def load_data():
         2D array containing features and label.
 
     """
+
     # TODO: 1
-    raise NotImplementedError
+    data_import = np.array([
+    [10,25,30,4],
+    [12,18,15,2],
+    [14,8,6,1],
+    [13,8,4,2],
+    [18,5,6,0],
+    [14,30,12,3],
+    [18,16,14,4],
+    [15,4,2,0],
+    [20,30,25,4],
+    [8,4,2,0]
+    ])
+    return data_import
+    # raise NotImplementedError
     # The following example is a dataset about 
     # quiz, hw, reading hours and grade.
-    return np.array([
-        [5, 15, 10, 4],  # 4 is A
-        [5, 13, 7, 3],  # 3 is B
-        [4, 10, 3, 2],  # 2 is C
-        [3, 0, 4, 1],  # 1 is D
-        [2, 1, 1, 0],  # 0 is F
-        [5, 11, 8, 3],
-        [3, 9, 4, 3],
-        [5, 6, 3, 2],
-        ])
+    # return np.array([
+    #     [5, 15, 10, 4],  # 4 is A
+    #     [5, 13, 7, 3],  # 3 is B
+    #     [4, 10, 3, 2],  # 2 is C
+    #     [3, 0, 4, 1],  # 1 is D
+    #     [2, 1, 1, 0],  # 0 is F
+    #     [5, 11, 8, 3],
+    #     [3, 9, 4, 3],
+    #     [5, 6, 3, 2],
+    #     ])
     
 
 def train(features, labels):
+    # train_decision = tree.DecisionTreeClassifier()
+
     """
     Return a decision tree model after "training".
 
@@ -55,7 +74,9 @@ def train(features, labels):
 
     """
     # TODO 2:
-    raise NotImplementedError
+    # train_decision = DecisionTreeClassifier()
+    return DecisionTreeClassifier().fit(features,labels)
+    # raise NotImplementedError
 
 
 def predict(model, features):
@@ -72,8 +93,10 @@ def predict(model, features):
     predictions : np.array
 
     """
+    
     # TODO 3:
-    raise NotImplementedError
+    return model.predict(features)
+    # raise NotImplementedError
 
 
 def evaluate(labels, predictions, label_types):
@@ -95,24 +118,35 @@ def evaluate(labels, predictions, label_types):
         Number of class is the length of `label_types`.
 
     """
+ 
     # TODO 4:
+    return confusion_matrix(labels,predictions,label_types)
+    
     # You can use a library if you can find it.
-    raise NotImplementedError
+    # raise NotImplementedError
 
 
 
 if __name__ == "__main__":
-    data = load_data() # โหลดข้อมูลจากฟังก์ชัน load_data
-    all_labels = data[:, -1] # offset ค่าของอาเรย์ เพื่อเลือกตัวสุดท้ายของอาเรย์
+    data = load_data()
+    all_labels = data[:, -1]
     all_labels = set(all_labels)
     all_labels = np.array([v for v in all_labels])
     train_data, test_data = train_test_split(data,test_size=0.3)
     features = train_data[:, :-1]
     labels = train_data[:, -1]
     tree = train(features, labels)
+
     predictions = predict(tree, features)
     print('Training Confusion Matrix:')
     print(evaluate(labels, predictions, all_labels))
+    # return value from expression that's equal to labels(array)
+    # evaluate(expression, globals=None, locals=None)
+    """
+    expression - this string as parsed and evaluated as a Python expression
+    globals (optional) - a dictionary
+    locals (optional)- a mapping object. Dictionary is the standard and commonly used mapping type in Python.
+    """
     predictions = predict(tree, test_data[:, :-1])
     print('Testing Confusion Matrix:')
     print(evaluate(test_data[:, -1], predictions, all_labels))

@@ -37,9 +37,12 @@ def eightPuzzleH1(state, goal_state):
     goal_board = goal_state.board
     for x in range(len(goal_board)):
         for y in range(len(goal_board[0])):
-            if goal_board[x][y] != state.board[x][y]: # fix change from goal_board to state.board
+            if goal_board[x][y] != state.board[x][y]:
                 sum += 1
+
+    print(sum)
     return sum
+    
 
 
 def eightPuzzleH2(state, goal_state):
@@ -396,7 +399,7 @@ def test_by_hand(verbose=True):
         init_state = EightPuzzleState.initializeState()
 
     # frontier = GreedyFrontier(eightPuzzleH1, goal_state)
-    frontier = AStarFrontier(eightPuzzleH2, goal_state)
+    frontier = AStarFrontier(eightPuzzleH1, goal_state)
     # frontier = DFSFrontier()  # Change this to your own implementation.
     if verbose:
         print(init_state)
