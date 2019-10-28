@@ -88,7 +88,7 @@ def eightPuzzleH2(state, goal_state):
             #     break
 
         AxisX = abs(goalPositions[1] - currPositions[1])
-        AxisY = abs(goalPositions[0] - currPositions[0])
+        AxisY = abs(go alPositions[0] - currPositions[0])
 
         sum += AxisY + AxisX
 

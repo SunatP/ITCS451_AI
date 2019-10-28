@@ -1,5 +1,6 @@
 """
 This module is a reversi engine for the AI.
+
 Version 3.0
 """
 
@@ -14,10 +15,8 @@ import numpy as np
 import boardgame2 as bg2
 
 import reversi_agent as agents
-import temp as snp
 
 _name = {bg2.BLACK: 'BLACK', bg2.WHITE: 'WHITE'}
-
 
 def clear_screen():
     """Clear the shell."""
@@ -26,7 +25,6 @@ def clear_screen():
     else:
         subprocess.call('clear', shell=True)
     # pass
-
 
 def render(board, turn, prev_move=None, prev_turn=None):
     """Render on the screen."""
@@ -38,12 +36,10 @@ def render(board, turn, prev_move=None, prev_turn=None):
     white_score = np.sum(board == bg2.WHITE)
     print(f'  BLACK : {black_score}  -  {white_score} : WHITE')
 
-
 async def timer(limit):
     """Create a progress bar for timer."""
-    for i in tqdm(range(limit * 10), desc="Time Limit: "):
-        await asyncio.sleep(1 / 10)
-
+    for i in tqdm(range(limit*10), desc="Time Limit: "):
+        await asyncio.sleep(1/10)
 
 async def main(black, white, timelimit=2):
     """Run the game."""
@@ -83,9 +79,9 @@ async def main(black, white, timelimit=2):
         prev_turn = turn
         board, turn = env.get_next_state((board, turn), move)
         render(board, turn, move, prev_turn)
-        winner = env.get_winner((board, turn))
+        winner = env.get_winner((board, turn)) 
         if winner is not None:
-            print('=' * 40)
+            print('='*40)
             if winner == bg2.BLACK:
                 print('BLACK wins!')
             elif winner == bg2.WHITE:
@@ -96,7 +92,6 @@ async def main(black, white, timelimit=2):
 
 
 if __name__ == "__main__":
-    # black = agents.SunatAgent(bg2.BLACK)
-    black = agents.SunatAgent(bg2.BLACK)
+    black = agents.RandomAgent(bg2.BLACK)
     white = agents.RandomAgent(bg2.WHITE)
     asyncio.run(main(black, white, 10))

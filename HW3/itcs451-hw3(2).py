@@ -286,7 +286,7 @@ if __name__ == "__main__":
         print("Complete!!")
         time.sleep(2)
         print('Initial:    ', agent, ' --> ', f'{initial_reward:.5}')
-        agent, history = simulated_annealing(env, agent)
+        agent, history = hillclimb(env, agent)
         initial_reward = simulate(env, [agent])[0]
         for score in history:
             print(score)
