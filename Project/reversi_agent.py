@@ -5,6 +5,7 @@ import asyncio
 import random
 import time
 import traceback
+import sys
 from multiprocessing import Process, Value
 
 import gym
@@ -194,7 +195,7 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
         super(SunatAgent,self)    
 
     def search(self, color, board, valid_actions, output_move_row, output_move_column): # Instead Alpha Beta Search
-        time.sleep(0.75)
+        # time.sleep(0.75)
         print(" Sunat AI is Thinking...")
         try:
             # if self._color == 1 :
@@ -202,7 +203,7 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 # print("Sunat is making the decision")
                 # best_state = self.minmax(board,len(valid_actions)-1,3,0, float('-inf'),float('inf'),True)
                 # moving = self.Max_value(board,valid_actions,4,0,MIN,MAX,True)
-            evaluation, best_state = self.Max_value(board,valid_actions,1,0,-float('inf'),float('inf'),True)
+            evaluation, best_state = self.Max_value(board,valid_actions,5,0,-float('inf'),float('inf'),True)
                 # we found depth level between 1 - 4 is found solution quicker
             print(" Choice A")
                 # Sunat_Action = valid_actions[best_state]
@@ -218,13 +219,13 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
             # Sunat_Action = valid_actions[moving]
             
             # print(" Sunat Selected:" + str(best_state)) 
-            time.sleep(0.25)  
+            # time.sleep(0.25)  
             print(" Sunat is making the decision")    
-            time.sleep(0.25)    
+            # time.sleep(0.25)    
             output_move_row.value = best_state[0]
             output_move_column.value = best_state[1]
             print(" Sunat Selected:" + str(best_state))
-            time.sleep(1.25)
+            # time.sleep(1.25)
         except Exception as e:
             print(type(e).__name__, ':', e)
             print('search() Traceback (most recent call last): ')
@@ -340,3 +341,101 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
 """
 End Zone of Sunat Agent
 """
+
+class PoohAgent(ReversiAgent):
+
+    def __index__(self):
+        super(MyAgent, self)
+        # self.transpositionTable = set()
+
+    def search(self, color, board, valid_actions, output_move_row, output_move_column):
+        if self._color == 1:
+            evaluation, bestAction = self.minimax(board, valid_actions, 4, 0, - sys.maxsize - 1, sys.maxsize, True)
+        else:
+            evaluation, bestAction = self.minimax(board, valid_actions, 2, 0, - sys.maxsize - 1, sys.maxsize, True)
+        # self.createState(board, valid_actions, self._color)
+
+        print("Me Selected: " + str(bestAction))
+        output_move_row.value = bestAction[0]
+        output_move_column.value = bestAction[1]
+
+    def minimax(self, board: np.array, validActions: np.array, depth: int, levelCount: int, alpha: int, beta: int,
+                maximizingPlayer: bool):
+        if depth == 0:
+            return self.evaluateStatistically(board)
+
+        bestAction: np.array = None
+        if maximizingPlayer:
+            mAlpha: int = alpha
+            maxEval: int = - sys.maxsize - 1 # -float("int")
+            player: int = self._color
+
+            for action in validActions:
+                newState, newValidActions = self.createState(board, action, player)
+                evaluation = self.minimax(newState, newValidActions
+                                          , depth - 1, levelCount + 1, mAlpha, beta, not maximizingPlayer)
+
+                if maxEval < evaluation:
+                    maxEval = evaluation
+
+                    if levelCount == 0:
+                        bestAction = action
+
+                mAlpha = max(mAlpha, evaluation)
+                if beta <= mAlpha:
+                    break
+            if levelCount != 0:
+                return maxEval
+            else:
+                return maxEval, bestAction
+        else:
+            mBeta: int = beta
+            minEval: int = sys.maxsize
+            player: int = self.getOpponent(self._color)
+
+            for action in validActions:
+                newState, newValidActions = self.createState(board, action, player)
+                evaluation = self.minimax(newState, newValidActions
+                                          , depth - 1, levelCount + 1, alpha, mBeta, not maximizingPlayer)
+
+                if minEval > evaluation:
+                    minEval = evaluation
+
+                    if levelCount == 0:
+                        bestAction = action
+
+                mBeta = min(mBeta, evaluation)
+                if mBeta <= alpha:
+                    break
+            if levelCount != 0:
+                return minEval
+            else:
+                return minEval, bestAction
+
+    def evaluateStatistically(self, board: np.array) -> int:
+        countA: int = 0
+        countB: int = 0
+        evalBoard = np.array(list(zip(*board.nonzero())))
+
+        # print("Print Board: " + str(evalBoard))
+        for row in evalBoard:
+            if board[row[0]][row[1]] == self._color:
+                countA += 1
+            else:
+                countB += 1
+        return countA - countB
+
+    @staticmethod
+    def getOpponent(player: int):
+        if player == 1:
+            return -1
+        else:
+            return 1
+
+    def createState(self, board: np.array, action: np.array, player: int) -> (np.array, np.array):
+        newState: np.array = transition(board, player, action)
+
+        validMoves: np.array = _ENV.get_valid((newState, self.getOpponent(player)))
+        validMoves: np.array = np.array(list(zip(*validMoves.nonzero())))
+
+        return newState, validMoves

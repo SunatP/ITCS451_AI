@@ -2,7 +2,7 @@
 
 Othello with AI by using minimax with Alpha-beta pruning Algorithm
 
-## Due Date 17 November 2019, 11.55 PM (23.55 GMT+07:00)
+## Due Date 24 November 2019, 11.55 PM (23.55 GMT+07:00)
 
 ## มี 2 TODO ที่ต้องทำ
     1.  TODO แรกจะอยู่ในไฟล์ reversi_agent.py โดยที่เราจะต้องสร้าง abstract class ขึ้นมาแล้วเขียน code search โดยใช้อัลกอริทึ่ม minimax ที่มี Alpha-beta pruning เพื่อเพิ่มประสิทธิภาพ
@@ -191,7 +191,7 @@ def Max_value(self,board:np.array,validactions:np.array,depth:int,level:int,alph
         countA: int = 0
         countB: int = 0
         evalBoard = np.array(list(zip(*board.nonzero()))) 
-        # nonzero จะทให้ค่าในอาเรย์ที่เราจะสร้างนั้นจะไม่มีค่าออกมาเป็น 0
+        # nonzero จะทำให้ค่าในอาเรย์ที่เราจะสร้างนั้นจะไม่มีค่าออกมาเป็น 0
         # zip คือคำสั่งในการจับคู่ของ value ทั้งสองตัว
         # a = ["a", "b", "c"]
         # b = [1, 2, 3]
