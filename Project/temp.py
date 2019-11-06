@@ -195,7 +195,7 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
         super(SunatAgent,self)    
 
     def search(self, color, board, valid_actions, output_move_row, output_move_column): # Instead Alpha Beta Search
-        time.sleep(0.5)
+        time.sleep(0.25)
         print(" Sunat AI is Thinking...")
         try:
             # if self._color == 1 :
@@ -203,9 +203,8 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 # print("Sunat is making the decision")
                 # best_state = self.minmax(board,len(valid_actions)-1,3,0, float('-inf'),float('inf'),True)
                 # moving = self.Max_value(board,valid_actions,4,0,MIN,MAX,True)
-            evaluation, best_state = self.Max_value(board,valid_actions,4,0,-float('inf'),float('inf'),True)
+            evaluation, best_state = self.Max_value(board,valid_actions,4,0,-2000.0,2000.0,True)
                 # we found depth level between 1 - 4 is found solution quicker
-            print(" Choice A")
                 # Sunat_Action = valid_actions[best_state]
                 # output_move_row.value = Sunat_Action[0]
                 # output_move_column.value = Sunat_Action[1]
@@ -218,13 +217,13 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 # output_move_column.value = Sunat_Action[1]
             # Sunat_Action = valid_actions[moving]
             # print(" Sunat Selected:" + str(best_state)) 
-            time.sleep(0.25)  
+            time.sleep(0.125)  
             print(" Sunat is making the decision")    
-            time.sleep(0.25)    
+            time.sleep(0.125)    
             output_move_row.value = best_state[0]
             output_move_column.value = best_state[1]
             print(" Sunat Selected:" + str(best_state))
-            time.sleep(0.5)
+            time.sleep(0.2)
         except Exception as e:
             print(type(e).__name__, ':', e)
             print('search() Traceback (most recent call last): ')
@@ -254,7 +253,7 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
             return countA - countB 
        
         best_state: np.array = None 
-        MaxAlpha: int = alpha
+        MaxAlpha: float = alpha
         Maxevaluation = -float('inf')
         player: int = self._color
 
@@ -286,7 +285,7 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 else:
                     countB += 1
             return countA - countB 
-        MinBeta: int = beta
+        MinBeta: float = beta
         Minevaluation = float('inf')
         player: int = self.getOpponent(self._color)
         best_state: np.array = None 
@@ -295,12 +294,12 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
             newstep = self.Max_value(newstate,newaction,depth-1,level + 1, alpha,MinBeta,not gain)
                 
             if Minevaluation > newstep:
-                Minevaluation = newstep
+                Minevaluation = newstep     
                 # print(depth)    
                 if level == 0 :
                     best_state = a
 
-            MinBeta = min(MinBeta,newstep)
+            MinBeta = min(MinBeta,Minevaluation)
             if MinBeta <= alpha:
                 break
         if level != 0:

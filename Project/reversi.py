@@ -98,5 +98,5 @@ async def main(black, white, timelimit=2):
 if __name__ == "__main__":
     # black = agents.SunatAgent(bg2.BLACK)
     black = snp.SunatAgent(bg2.BLACK)
-    white = agents.RandomAgent(bg2.WHITE)
+    white = agents.PoohAgent(bg2.WHITE)
     asyncio.run(main(black, white, 10))
