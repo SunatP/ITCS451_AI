@@ -284,7 +284,9 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                     countA += 1
                 else:
                     countB += 1
-            return countA - countB 
+            return countA - countB
+        
+         
         MinBeta: float = beta
         Minevaluation = float('inf')
         player: int = self.getOpponent(self._color)
