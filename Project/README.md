@@ -4,17 +4,17 @@ Othello with AI by using minimax with Alpha-beta pruning Algorithm
 
 ## Due Date 24 November 2019, 11.55 PM (23.55 GMT+07:00)
 
-## มี 2 TODO ที่ต้องทำ
+## มี 2 TODO ที่ต้องทำ (We have 2 TODO to get work)
     1.  TODO แรกจะอยู่ในไฟล์ reversi_agent.py โดยที่เราจะต้องสร้าง abstract class ขึ้นมาแล้วเขียน code search โดยใช้อัลกอริทึ่ม minimax ที่มี Alpha-beta pruning เพื่อเพิ่มประสิทธิภาพ
     2.  TODO สองจะต้องมาแก้ Agent ใน reversi.py เพื่อเอา agent ที่เราเขียนมาลองปรับใช้
 
-### ก่อนจะเขียนเราต้องติดตั้ง อะไรบ้าง
+### ก่อนจะเขียนเราต้องติดตั้ง อะไรบ้าง (What do we need for this project?)
     1. Numpy
     2. Gym 
     3. tqdm ตัวนี้เป็น progess bar
     4. boardgame2 bg2
 
-### import อะไรมาใช้บ้างใน Reversi_agent.py
+### import อะไรมาใช้บ้างใน Reversi_agent.py (What we need to import in our code?)
 ```python
 import sys
 import abc
@@ -46,7 +46,7 @@ The savings of alpha beta can be considerable. If a standard minimax search tree
 
 ### Pseudo Minimax with Alpha-Beta Prunning for Othello
 
-อัลกอริทึ่มของ Minimax with Alpha-Beta Prunning 
+อัลกอริทึ่ม (Algorithm of) ของ Minimax with Alpha-Beta Prunning 
 ![python](https://www.researchgate.net/profile/Dor_Atzmon/publication/329715244/figure/fig1/AS:704844495077383@1545059431887/The-Alpha-Beta-pseudo-code-from-Russell-and-Norvigs-AI-textbook-Russell-and-Norvig.jpg)
 
 
@@ -99,10 +99,11 @@ The savings of alpha beta can be considerable. If a standard minimax search tree
     """
 ```
 
-## 1. reversi_agent.py สร้าง Agent ของเราขึ้นมาเอง
+## 1. reversi_agent.py สร้าง Agent ของเราขึ้นมาเอง (Create our Agent)
 
 
-เดิมทีอาจารย์จะให้ Agent มา 1 ตัวนั่นก็คือ RandomAgent ซึ่งเป็นตัวสุ่มค่าเล่นกับ AI ของเราเอง เราจะต้องสร้าง class ที่มี Agent ของเราเพื่อมาสู้กับ AI ของอาจารย์นั่นเอง
+เดิมทีอาจารย์จะให้ Agent มา 1 ตัวนั่นก็คือ RandomAgent ซึ่งเป็นตัวสุ่มค่าเล่นกับ AI ของเราเอง เราจะต้องสร้าง class ที่มี Agent ของเราเพื่อมาสู้กับ AI ของอาจารย์นั่นเอง<br>
+First Teacher give an Agent in our Project that is RandomAgent AI. This AI will Random value and mark this value in the board, So we need to create our class function to versus Teacher AI Agent!!.
 
 ```python
 class RandomAgent(ReversiAgent):
@@ -126,15 +127,14 @@ class RandomAgent(ReversiAgent):
             traceback.print_tb(e.__traceback__)
 
 ```
-นี่คือ Agent ของอาจารย์ 
+This is Teacher Agent<br>นี่คือ Agent ของอาจารย์ 
 
-## เริ่มสร้าง Agent ของเรากัน
+## เริ่มสร้าง Agent ของเรากัน (Let's Create the Agent)
 
-ให้เราสร้าง class ตามด้วยชื่อของเราและมี ReversiAgent ด้วย
-ตัวอย่าง
+ให้เราสร้าง class ตามด้วยชื่อของเราและมี ReversiAgent ด้วย<br>ตัวอย่าง<br> First we should to create our class with division name or something in class funciton of python, example of Teacher Class
 ```python
 class NorAgent(ReversiAgent):
-    ข้างในเป็นโค้ด
+    ข้างในเป็นโค้ด # Code will be here
 ```
 
 จากนั้นให้สร้างฟังก์ชั่น ***search*** ใส่ไว้ใน class ที่เราพึ่งสร้างเมื่อกี้นี้ตามตัวอย่าง Agent ของอาจารย์
