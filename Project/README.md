@@ -173,8 +173,7 @@ class NorAgent(ReversiAgent):
         raise NotImplementedError('You will have to implement this.')
 
 ```
-เมื่อเราสร้างฟังก์ชัน search เสร็จแล้วให้เราข้ามไปก่อน ให้เราไปสร้างฟังก์ชั่น Alpha-Beta Pruning ขึ้นมาก่อนแล้วค่อยกลับไปทำฟังก์ชั่น search ทีหลัง
-
+เมื่อเราสร้างฟังก์ชัน search เสร็จแล้วให้เราข้ามไปก่อน ให้เราไปสร้างฟังก์ชั่น Alpha-Beta Pruning ขึ้นมาก่อนแล้วค่อยกลับไปทำฟังก์ชั่น search ทีหลัง<br> When we already create Function **search** we will skip this function, then we create Alpha-Beta Pruning after that, we will go back to do this search function again.
 ```python
 """
 function Max_value(state,alpha,beta) return a utility value
@@ -288,7 +287,7 @@ def createState(self, board: np.array, action: np.array, player: int) -> (np.arr
     return newState, validMoves 
 ```
 
-เมื่อเราสร้างฟังก์ชั่น MiniMax with Alpha Beta Prunning เสร็จแล้วให้กลับเพิ่มโค้ดใน search ต่อ
+เมื่อเราสร้างฟังก์ชั่น MiniMax with Alpha Beta Prunning เสร็จแล้วให้กลับเพิ่มโค้ดใน search ต่อ<br>After we create Minimax Function we will back to implement search function again.
 
 ```python
 class NorAgent(ReversiAgent):
@@ -307,7 +306,7 @@ class NorAgent(ReversiAgent):
         
 ```
 จากนั้นให้ไปที่ **reversi.py** เพื่อเอา Agent เราไปใส่ ให้เรามองหา if __name__ == __**main**__: 
-หน้าตาตอนแรกจะเป็นอย่างงี้ให้เรา class ที่เราสร้างนั้นใส่ลงไปแทน
+หน้าตาตอนแรกจะเป็นอย่างงี้ให้เรา class ที่เราสร้างนั้นใส่ลงไปแทน<br>Back to **reversi.py** and add the agent that we created it, before we add it looking for main function and replace RandomAgent to Our Agent that we created it.
 
 จาก
 ```python
@@ -343,16 +342,15 @@ Time spent total : ~194.9124 Seconds # with depth 4 and limit 10000
 |-10000,10000|4|~194.9124|RandomAgent|
 
 
-เราเจอผลลัพธ์บางอย่างในการรันแต่ละครั้งพบว่าเมื่อ AI คิดได้แล้วแต่ไม่สามารถลงค่าได้ จะไปเข้า Condition ของ except ใน try/except ตรงนี้
+เราเจอผลลัพธ์บางอย่างในการรันแต่ละครั้งพบว่าเมื่อ AI คิดได้แล้วแต่ไม่สามารถลงค่าได้ จะไปเข้า Condition ของ except ใน try/except ตรงนี้<br>After I run this code, I found some case that i never expect, My code AI cannot place the value in the board(Place same value) and into except from Try/Except
 ```python
 except Exception as e:
             print(type(e).__name__, ':', e)
             print('search() Traceback (most recent call last): ')
             traceback.print_tb(e.__traceback__)
 ```
-ทำให้ถูก skip turn ไปเนื่องจากลงหมากทับกับตาที่แล้ว<br>
+ทำให้ถูก skip turn ไปเนื่องจากลงหมากทับกับตาที่แล้ว<br>That's why my AI is always skip the turn playing after board get full score
 
 ### ข้อสังเกต 
 
-เมื่อเราลด limit ลงจะทำให้เราต้องเพิ่ม depth มากขึ้นซึ่งโอกาสโดน skip turn มีสูงมากที่ทำให้เกิดโอกาสแพ้ได้สูงยิ่งขึ้นเช่นกัน<br> 
-เราจะต้องใช้การ prunning เพื่อตัด depth ที่สูงเกินความจำเป็นและกลับมาที่ depth เริ่มต้น ประมาณ 1 - 4 (0 จะไม่มีความลึกของ node) ซึ่งค่าที่เราได้ทั้ง Depth, Level, Limit ตอนนี้ Result ที่ดีที่สุดอยู่ที่ Limit XXXX , Depth X , Level X (หาไม่เจอ555) ยังต้องเพิ่ม Logic อีกหน่อยนึง
+เมื่อเราลด limit ลงจะทำให้เราต้องเพิ่ม depth มากขึ้นซึ่งโอกาสโดน skip turn มีสูงมากที่ทำให้เกิดโอกาสแพ้ได้สูงยิ่งขึ้นเช่นกัน<br> เราจะต้องใช้การ prunning เพื่อตัด depth ที่สูงเกินความจำเป็นและกลับมาที่ depth เริ่มต้น ประมาณ 1 - 4 (0 จะไม่มีความลึกของ node) ซึ่งค่าที่เราได้ทั้ง Depth, Level, Limit ตอนนี้ Result ที่ดีที่สุดอยู่ที่ Limit XXXX , Depth X , Level X (หาไม่เจอ555) ยังต้องเพิ่ม Logic อีกหน่อยนึง<br>When we decrease the Limit value we should to increase depth value instead, Chance of skip turn to playing the Othello is very high which will cause the opportunity to even more, so we need to use prunning to cut off the depth of tree and came back to first depth (depth size around 1 - 4)   
