@@ -325,3 +325,34 @@ if __name__ == "__main__":
     white = agents.RandomAgent(bg2.WHITE)
     asyncio.run(main(black, white, 10))
 ```
+
+### Result of Othello AI 
+Result แบบคร่าวๆ
+```bash
+Time spent total : ~100.6128 - 180.4286 Seconds # alpha & beta is -2080,2080 vs Pooh Agents 
+Time spent total : ~173.6436 Seconds # versus with RandomAgent
+Time spent total : ~317.7048 Seconds # with depth 5 and limit 1000
+Time spent total : ~194.9124 Seconds # with depth 4 and limit 10000
+```
+**Result จริงๆแล้วนะ**
+|Limit<br> (α,β)|Depth|Time Spent<br> Second(s)|Agent|
+|:---:|:---:|:---:|:---:|
+|-2080,2080|4|~100.6128 - 180.4286|Pooh Agent|
+|-2080,2080|4|~173.6436|RandomAgent|
+|-1000,1000|5|~317.7048|RandomAgent|
+|-10000,10000|4|~194.9124|RandomAgent|
+
+
+เราเจอผลลัพธ์บางอย่างในการรันแต่ละครั้งพบว่าเมื่อ AI คิดได้แล้วแต่ไม่สามารถลงค่าได้ จะไปเข้า Condition ของ except ใน try/except ตรงนี้
+```python
+except Exception as e:
+            print(type(e).__name__, ':', e)
+            print('search() Traceback (most recent call last): ')
+            traceback.print_tb(e.__traceback__)
+```
+ทำให้ถูก skip turn ไปเนื่องจากลงหมากทับกับตาที่แล้ว<br>
+
+### ข้อสังเกต 
+
+เมื่อเราลด limit ลงจะทำให้เราต้องเพิ่ม depth มากขึ้นซึ่งโอกาสโดน skip turn มีสูงมากที่ทำให้เกิดโอกาสแพ้ได้สูงยิ่งขึ้นเช่นกัน<br> 
+เราจะต้องใช้การ prunning เพื่อตัด depth ที่สูงเกินความจำเป็นและกลับมาที่ depth เริ่มต้น ประมาณ 1 - 4 (0 จะไม่มีความลึกของ node) ซึ่งค่าที่เราได้ทั้ง Depth, Level, Limit ตอนนี้ Result ที่ดีที่สุดอยู่ที่ Limit XXXX , Depth X , Level X (หาไม่เจอ555) ยังต้องเพิ่ม Logic อีกหน่อยนึง

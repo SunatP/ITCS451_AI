@@ -203,7 +203,9 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 # print("Sunat is making the decision")
                 # best_state = self.minmax(board,len(valid_actions)-1,3,0, float('-inf'),float('inf'),True)
                 # moving = self.Max_value(board,valid_actions,4,0,MIN,MAX,True)
-            evaluation, best_state = self.Max_value(board,valid_actions,4,0,-2000.0,2000.0,True)
+            evaluation, best_state = self.Max_value(board,valid_actions,4,0,-2080.0,2080.0,True)
+                # Since the min from a and Max from b is around 2000 - 2080 by calculating table size
+                # So 2080 and 10000 is highest value for comparing the great result now
                 # we found depth level between 1 - 4 is found solution quicker
                 # Sunat_Action = valid_actions[best_state]
                 # output_move_row.value = Sunat_Action[0]
@@ -218,6 +220,7 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
             # Sunat_Action = valid_actions[moving]
             # print(" Sunat Selected:" + str(best_state)) 
             time.sleep(0.125)  
+            # We can decided to decrease sleep time or remove it with print output
             print(" Sunat is making the decision")    
             time.sleep(0.125)    
             output_move_row.value = best_state[0]

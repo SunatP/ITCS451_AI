@@ -47,10 +47,11 @@ async def timer(limit):
 
 async def main(black, white, timelimit=2):
     """Run the game."""
+    
     env = gym.make('Reversi-v0')
     board, turn = env.reset()
     render(board, turn)
-    # Start the game loop.
+    # Start the game loop.  
     for __ in range(200):
         valids = env.get_valid((board, turn))
         valids = np.array(list(zip(*valids.nonzero())))
@@ -84,8 +85,10 @@ async def main(black, white, timelimit=2):
         board, turn = env.get_next_state((board, turn), move)
         render(board, turn, move, prev_turn)
         winner = env.get_winner((board, turn))
+        
         if winner is not None:
             print('=' * 40)
+            # print(elapsed_time)
             if winner == bg2.BLACK:
                 print('BLACK wins!')
             elif winner == bg2.WHITE:
@@ -98,5 +101,12 @@ async def main(black, white, timelimit=2):
 if __name__ == "__main__":
     # black = agents.SunatAgent(bg2.BLACK)
     black = snp.SunatAgent(bg2.BLACK)
-    white = agents.PoohAgent(bg2.WHITE)
+    # white = agents.PoohAgent(bg2.WHITE)
+    white = agents.RandomAgent(bg2.WHITE)
+    start_time = time.time() # Create stopwatch
     asyncio.run(main(black, white, 10))
+    elapsed_time = time.time()
+    totaled_timed = elapsed_time - start_time
+    precision = 4
+    print("{:.{}f}".format( totaled_timed, precision ), "second(s)")
+    # {:.{}f}".format( totaled_timed, precision ) print out the data with precision
