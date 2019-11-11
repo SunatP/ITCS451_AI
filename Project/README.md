@@ -137,7 +137,7 @@ class NorAgent(ReversiAgent):
     ข้างในเป็นโค้ด # Code will be here
 ```
 
-จากนั้นให้สร้างฟังก์ชั่น ***search*** ใส่ไว้ใน class ที่เราพึ่งสร้างเมื่อกี้นี้ตามตัวอย่าง Agent ของอาจารย์
+จากนั้นให้สร้างฟังก์ชั่น ***search*** ใส่ไว้ใน class ที่เราพึ่งสร้างเมื่อกี้นี้ตามตัวอย่าง Agent ของอาจารย์<br>after that we should to create **search** function in our class that we are already create as example teacher's Agent (Implement function) 
 
 ```python
 class NorAgent(ReversiAgent):
@@ -145,7 +145,7 @@ class NorAgent(ReversiAgent):
             output_move_row, output_move_column):
 ```
 
-ซึ่ง search ตัวนี้ อ้างอิงมาจาก abstract method จาก class ReversiAgent ของอาจารย์อันนี้
+ซึ่ง search ตัวนี้ อ้างอิงมาจาก abstract method จาก class ReversiAgent ของอาจารย์อันนี้<br>This **Search** function reference from abstract method that teacher create ReversiAgent
 
 ```python
 @abc.abstractmethod
