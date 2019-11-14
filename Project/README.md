@@ -1,4 +1,12 @@
-# Project 1 Othello V3.0 (AI Player)
+# Project 1 Othello V3.1 (AI Player)
+
+## Patch Fixes
+
+    1. V3.1 Fixed a corner case where both players skipped or returned invalid moves.
+    2. V3.0 The search function is now required to return move by setting the values of the output_move argument. The function definition of the search function is also changed. This is to fix the global interpreter lock where a timer will not work in the previous version.
+    3. V2.0 Added a transition function to "simulate" a move.
+    4. V1.0 Fixed a bug that a black player is always the active player. 
+    5. V0.1 Uploaded project template 
 
 Othello with AI by using minimax with Alpha-beta pruning Algorithm
 

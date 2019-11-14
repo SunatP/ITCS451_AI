@@ -13,7 +13,7 @@ import subprocess
 import gym
 import numpy as np
 import boardgame2 as bg2
-import temp as snp
+
 import reversi_agent as agents
 
 _name = {bg2.BLACK: 'BLACK', bg2.WHITE: 'WHITE'}
@@ -115,7 +115,7 @@ async def main(black, white, timelimit=2):
 
 
 if __name__ == "__main__":
-    black = snp.SunatAgent(bg2.BLACK)
+    black = agents.RandomAgent(bg2.BLACK)
     white = agents.PoohAgent(bg2.WHITE)
     start_time = time.time() # Create stopwatch
     asyncio.run(main(black, white, 10))
@@ -124,4 +124,3 @@ if __name__ == "__main__":
     precision = 4
     print("{:.{}f}".format( totaled_timed, precision ), "second(s)")
     # {:.{}f}".format( totaled_timed, precision ) print out the data with precision
-    

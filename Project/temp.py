@@ -1,15 +1,21 @@
-"""This module contains agents that play reversi."""
+"""
+This module contains agents that play reversi.
+
+Version 3.1
+"""
 
 import abc
-import asyncio
 import random
-import time
-import sys
+import asyncio
 import traceback
+import time
 from multiprocessing import Process, Value
 
-import gym
 import numpy as np
+import gym
+import boardgame2 as bg2
+
+
 
 _ENV = gym.make('Reversi-v0')
 _ENV.reset()
@@ -29,16 +35,18 @@ class ReversiAgent(abc.ABC):
     def __init__(self, color):
         """
         Create an agent.
+        
         Parameters
         -------------
         color : int
             BLACK is 1 and WHITE is -1. We can get these constants
             from bg2.BLACK and bg2.WHITE.
+
         """
         super().__init__()
         self._move = None
         self._color = color
-
+    
     @property
     def player(self):
         """Return the color of this agent."""
@@ -52,10 +60,12 @@ class ReversiAgent(abc.ABC):
     @property
     def best_move(self):
         """Return move after the thinking.
+        
         Returns
         ------------
         move : np.array
             The array contains an index x, y.
+
         """
         if self._move is not None:
             return self._move
@@ -68,11 +78,11 @@ class ReversiAgent(abc.ABC):
         output_move_row = Value('d', -1)
         output_move_column = Value('d', 0)
         try:
-            # await self.search(board, valid_actions)
+            # await self.search(board, valid_actions)    
             p = Process(
-                target=self.search,
+                target=self.search, 
                 args=(
-                    self._color, board, valid_actions,
+                    self._color, board, valid_actions, 
                     output_move_row, output_move_column))
             p.start()
             while p.is_alive():
@@ -92,33 +102,38 @@ class ReversiAgent(abc.ABC):
 
     @abc.abstractmethod
     def search(
-            self, color, board, valid_actions,
+            self, color, board, valid_actions, 
             output_move_row, output_move_column):
         """
         Set the intended move to self._move.
+        
         The intended move is a np.array([r, c]) where r is the row index
         and c is the column index on the board. [r, c] must be one of the
         valid_actions, otherwise the game will skip your turn.
+
         Parameters
         -------------------
         board : np.array
-            An 8x8 array that contains
+            An 8x8 array that contains 
         valid_actions : np.array
             An array of shape (n, 2) where n is the number of valid move.
+
         Returns
         -------------------
         None
-            This method should set value for
-            `output_move_row.value` and `output_move_column.value`
+            This method should set value for 
+            `output_move_row.value` and `output_move_column.value` 
             as a way to return.
+
         """
         raise NotImplementedError('You will have to implement this.')
 
+
 class RandomAgent(ReversiAgent):
     """An agent that move randomly."""
-
+    
     def search(
-            self, color, board, valid_actions,
+            self, color, board, valid_actions, 
             output_move_row, output_move_column):
         """Set the intended move to the value of output_moves."""
         # If you want to "simulate a move", you can call the following function:
@@ -138,7 +153,6 @@ class RandomAgent(ReversiAgent):
             print(type(e).__name__, ':', e)
             print('search() Traceback (most recent call last): ')
             traceback.print_tb(e.__traceback__)
-
 
 """
 Default Zone of Sunat Agent 
