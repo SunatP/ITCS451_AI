@@ -232,7 +232,8 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 # output_move_row.value = Sunat_Action[0]
                 # output_move_column.value = Sunat_Action[1]
             # Sunat_Action = valid_actions[moving]
-            # print(" Sunat Selected:" + str(best_state)) 
+            # print(" Sunat Selected:" + str(best_state))
+ 
             time.sleep(0.125)  
             # We can decided to decrease sleep time or remove it with print output
             print(" Sunat is making the decision")    
@@ -268,12 +269,12 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 else:
                     countB += 1
             return countA - countB 
-       
+               
         best_state: np.array = None 
         MaxAlpha: float = alpha
         Maxevaluation = -float('inf')
         player: int = self._color
-
+        
         for a in validactions :
             newstate, newaction = self.createState(board,a,player)
             newstep = self.Min_value(newstate,newaction,depth-1,level + 1, MaxAlpha,beta,not gain)
@@ -285,10 +286,12 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
             MaxAlpha = max(MaxAlpha,Maxevaluation)
             if beta <= MaxAlpha:
                 break
+
         if level != 0:
             return Maxevaluation
         else:
             return Maxevaluation, best_state
+        
     
     def Min_value(self,board:np.array,validactions:np.array,depth:int,level:int,alpha:float,beta:float,gain:bool):    
         if depth == 0:

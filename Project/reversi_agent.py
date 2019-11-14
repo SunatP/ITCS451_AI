@@ -230,7 +230,6 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 # output_move_row.value = Sunat_Action[0]
                 # output_move_column.value = Sunat_Action[1]
             # Sunat_Action = valid_actions[moving]
-            
             # print(" Sunat Selected:" + str(best_state)) 
             time.sleep(0.25)  
             print(" Sunat is making the decision")    

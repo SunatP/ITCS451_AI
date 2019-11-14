@@ -362,3 +362,7 @@ except Exception as e:
 ### ข้อสังเกต 
 
 เมื่อเราลด limit ลงจะทำให้เราต้องเพิ่ม depth มากขึ้นซึ่งโอกาสโดน skip turn มีสูงมากที่ทำให้เกิดโอกาสแพ้ได้สูงยิ่งขึ้นเช่นกัน<br> เราจะต้องใช้การ prunning เพื่อตัด depth ที่สูงเกินความจำเป็นและกลับมาที่ depth เริ่มต้น ประมาณ 1 - 4 (0 จะไม่มีความลึกของ node) ซึ่งค่าที่เราได้ทั้ง Depth, Level, Limit ตอนนี้ Result ที่ดีที่สุดอยู่ที่ Limit XXXX , Depth X , Level X (หาไม่เจอ555) ยังต้องเพิ่ม Logic อีกหน่อยนึง<br>When we decrease the Limit value we should to increase depth value instead, Chance of skip turn to playing the Othello is very high which will cause the opportunity to even more, so we need to use prunning to cut off the depth of tree and came back to first depth (depth size around 1 - 4)   
+
+### ข้อสงสัย 
+
+ทำไม Agent ของเราถึงไปเริ่มที่ตำแหน่ง 2 4 ก่อน? ไปหาคำตอบมา
