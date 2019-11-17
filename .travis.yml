@@ -27,5 +27,5 @@ install:
 
 
 script: 
-  - cd ./Project/
-  - pytest reversi.py
+  - cd ./HW2/
+  - python itcs451-hw2fullyworked.py
