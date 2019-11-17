@@ -1,4 +1,4 @@
-# Project 1 Othello V3.1 (AI Player)
+# Project 1 Othello V3.1 (AI Player) [![Build Status](https://travis-ci.org/SunatP/ITCS451_AI.svg?branch=master)](https://travis-ci.org/SunatP/ITCS451_AI)
 
 ## Patch Fixes
 
