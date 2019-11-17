@@ -116,12 +116,12 @@ async def main(black, white, timelimit=2):
 
 if __name__ == "__main__":
     black = snp.SunatAgent(bg2.BLACK)
-    white = agents.RandomAgent(bg2.WHITE)
+    white = agents.AgentMongChaChaVI(bg2.WHITE)
     start_time = time.time() # Create stopwatch
     asyncio.run(main(black, white, 10))
     elapsed_time = time.time()
     totaled_timed = elapsed_time - start_time
     precision = 4
-    print("{:.{}f}".format( totaled_timed, precision ), "second(s)")
+    print(" Time used: ","{:.{}f}".format( totaled_timed, precision ), "second(s)")
     # {:.{}f}".format( totaled_timed, precision ) print out the data with precision
     

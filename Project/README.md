@@ -3,9 +3,9 @@
 ## Patch Fixes
 
     1. V3.1 Fixed a corner case where both players skipped or returned invalid moves.
-    2. V3.0 The search function is now required to return move by setting the values of the output_move argument. The function definition of the search function is also changed. This is to fix the global interpreter lock where a timer will not work in the previous version.
-    3. V2.0 Added a transition function to "simulate" a move.
-    4. V1.0 Fixed a bug that a black player is always the active player. 
+    2. V3.0 The search function is now required to return move by setting the values of the output_move argument. The function definition of the search function is also changed. This is to fix the global interpreter lock where a timer will not work in the previous version. (Credit: "Dai Kyo" division)
+    3. V2.0 Added a transition function to "simulate" a move.  (Credit: Tanawin) And improved error handling.
+    4. V1.0 Fixed a bug that a black player is always the active player. (Credit: Sunat)
     5. V0.1 Uploaded project template 
 
 Othello with AI by using minimax with Alpha-beta pruning Algorithm
@@ -21,6 +21,16 @@ Othello with AI by using minimax with Alpha-beta pruning Algorithm
     2. Gym 
     3. tqdm ตัวนี้เป็น progess bar
     4. boardgame2 bg2
+
+### โปรแกรม Code Editor ที่แนะนำ
+    1. Visual Studio Code
+        Extension ที่แนะนำ
+        1.  Python
+        2.  MagicPython
+        3.  Python Extension Pack
+        4.  Bracket Pair Colorizer
+        5.  Visual Studio IntelliCode
+    2. PyCharm
 
 ### import อะไรมาใช้บ้างใน Reversi_agent.py (What we need to import in our code?)
 ```python
@@ -340,14 +350,16 @@ Time spent total : ~100.6128 - 180.4286 Seconds # alpha & beta is -2080,2080 vs 
 Time spent total : ~173.6436 Seconds # versus with RandomAgent
 Time spent total : ~317.7048 Seconds # with depth 5 and limit 1000
 Time spent total : ~194.9124 Seconds # with depth 4 and limit 10000
+Time spent total : ~168.6919 Seconds # Improve Logic thinking versus with RandomAgent
 ```
 **Result จริงๆแล้วนะ**
 |Limit<br> (α,β)|Depth|Time Spent<br> Second(s)|Agent|
 |:---:|:---:|:---:|:---:|
-|-2080,2080|4|~100.6128 - 180.4286|Pooh Agent|
+|-2080,2080|4|~100.6128 - 180.4286|Pooh Agent<br> Old version|
 |-2080,2080|4|~173.6436|RandomAgent|
 |-1000,1000|5|~317.7048|RandomAgent|
 |-10000,10000|4|~194.9124|RandomAgent|
+|-10000,10000|4|~168.6919|RandomAgent|
 
 
 เราเจอผลลัพธ์บางอย่างในการรันแต่ละครั้งพบว่าเมื่อ AI คิดได้แล้วแต่ไม่สามารถลงค่าได้ จะไปเข้า Condition ของ except ใน try/except ตรงนี้<br>After I run this code, I found some case that i never expect, My code AI cannot place the value in the board(Place same value) and into except from Try/Except
@@ -365,4 +377,12 @@ except Exception as e:
 
 ### ข้อสงสัย 
 
-ทำไม Agent ของเราถึงไปเริ่มที่ตำแหน่ง 2 4 ก่อน? ไปหาคำตอบมา
+```python
+# เราต้อง assign ค่าเพื่อให้สองตัวนี้ทำการ update value อยู่ตลอดเวลา
+# เราต้องแก้การเรียกค่าแบบ tuple ที่นำมา Union เพื่อหา best_state ให้ได้
+output_move_row.value = agentmove[0] 
+output_move_column.value = agentmove[1]
+```
+
+ทำไม Agent ของเราถึงไปเริ่มที่ตำแหน่ง [2 4] ก่อน? ไปหาคำตอบมา<br>
+ที่ลงช่อง [2 4] ก่อนเพราะการคิด evaluation score นั้นเหมาะสมที่สุดแล้ว จากการลองใช้กระดาน 10 x 10 และ 8 x 8 นั้น Agent เราจะเริ่มการลงที่ [2 4] ก่อนเสมอ เราได้ทำการเพิ่ม RandomAgent ลงไปช่วยคิดในกรณีที่ Agent ปกติเราคิดไม่ได้(เอ๋อ)จะสลับกลับไปใช้ RandomAgent ให้ทันที
