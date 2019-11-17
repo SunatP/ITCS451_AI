@@ -23,8 +23,9 @@ install:
   - pip3 install tqdm==2.2.3
   - pip3 install gym==0.7.4
   - pip3 install boardgame2 
+  - pip3 install pytest
 
 
 script: 
   - cd ./Project/
-  - python reversi.py
+  - pytest reversi.py
