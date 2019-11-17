@@ -18,4 +18,4 @@ install:
 
 script: 
   - cd ./Project/
-  - pytest reversi | python reversi.py
+  - pytest reversi.py | python reversi.py
