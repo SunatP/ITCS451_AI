@@ -1,4 +1,4 @@
-# ITCS451_Artificial Intelligence
+# ITCS451_Artificial Intelligence [![Build Status](https://travis-ci.org/SunatP/ITCS451_AI.svg?branch=master)](https://travis-ci.org/SunatP/ITCS451_AI)
 
 ## Tools
 
