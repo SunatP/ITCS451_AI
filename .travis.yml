@@ -17,4 +17,4 @@ install:
   - pip3 install numpy
 script: 
   - cd ./Project1/
-  - pytest reversi.py
+  - pytest reversi | python reversi.py
