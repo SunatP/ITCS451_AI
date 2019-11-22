@@ -88,6 +88,7 @@ class ReversiAgent(abc.ABC):
             p.start()
             while p.is_alive():
                 await asyncio.sleep(0.1)
+                self._move = np.array([output_move_row.value,output_move_column.value],dtype=np.int32)
         except asyncio.CancelledError as e:
             print('The previous player is interrupted by a user or a timer.')
         except Exception as e:
@@ -211,14 +212,14 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
     def __init__(self, color):
         super().__init__(color)
         # Create Weight table for Othello that we know is 8x8
-        SQUARE_WEIGHTS = [10000, -3000, 1000,  800,  800, 1000,  -3000, 10000,   
-                          -3000, -5000, -450, -500, -500, -450,  -5000, -3000,
-                           1000,  -450,   30,   10,   10,   30,  -450,   1000,   
-                            800,  -500,   10,   50,   50,   10,  -500,    800,   
-                            800,  -500,   10,   50,   50,   10,  -500,    800,   
-                           1000,  -450,   30,   10,   10,   30,  -450,   1000,   
-                          -3000, -5000, -450, -500, -500, -450,  -5000, -3000,
-                          10000, -3000, 1000,  800,  800, 1000, -3000,  10000,]
+        SQUARE_WEIGHTS = [120, -20,  20,   5,   5,  20, -20, 120,   
+     -20, -40,  -5,  -5,  -5,  -5, -40, -20,   
+      20,  -5,  15,   3,   3,  15,  -5,  20,   
+       5,  -5,   3,   3,   3,   3,  -5,   5,   
+       5,  -5,   3,   3,   3,   3,  -5,   5,   
+      20,  -5,  15,   3,   3,  15,  -5,  20,   
+     -20, -40,  -5,  -5,  -5,  -5, -40, -20,   
+     120, -20,  20,   5,   5,  20, -20, 120]
 
         self.weight_condition = np.array(SQUARE_WEIGHTS).reshape(8,8)
 
@@ -238,7 +239,7 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 evaluation, best_state = self.Max_value(board,valid_actions,4,0,-2080,2080,True)
             else :
                 evaluation, best_state = self.Max_value(board,valid_actions,4,0,-10000,10000,True)
-            print("  ",evaluation,best_state)
+            
             if best_state is None or valid_actions is None:
                 time.sleep(0.008125)
                 print(" Sunat cannot making the decision")   
@@ -253,6 +254,7 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 print(" Random's AI Selected:"+ str(random_action))
                 time.sleep(0.008125)
             if best_state is not None:
+                 print("  ",evaluation,best_state)
                  time.sleep(0.008125)  
             # We can decided to decrease sleep time or remove it to make an AI decided Faster
                  print(" Sunat is making the decision")    
@@ -351,7 +353,7 @@ class SunatAgent(ReversiAgent): # Create Sunat Agent use Alpha-Beta Pruning Sear
                 OpponentScore += (new_weight[Y][X]) 
         # print(" Eval Score: ", total)
             total = MyScore - OpponentScore
-        return (MyScore - OpponentScore)
+        return (MyScore - OpponentScore) 
    
     @staticmethod
     def getOpponent(player: int):
