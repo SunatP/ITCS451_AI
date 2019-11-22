@@ -15,6 +15,7 @@ import numpy as np
 import boardgame2 as bg2
 import temp as snp
 import reversi_agent as agents
+import tmp as pooh
 
 _name = {bg2.BLACK: 'BLACK', bg2.WHITE: 'WHITE'}
 
@@ -116,7 +117,7 @@ async def main(black, white, timelimit=2):
 
 if __name__ == "__main__":
     black = agents.Chocobo(bg2.BLACK)
-    white = agents.RandomAgent(bg2.WHITE)
+    white = pooh.AgentMongChaChaVI(bg2.WHITE)
     start_time = time.time() # Create stopwatch
     asyncio.run(main(black, white, 10))
     elapsed_time = time.time()

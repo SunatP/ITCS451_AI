@@ -167,7 +167,7 @@ class RandomAgent(ReversiAgent):
 
 
 """
-Default Zone of Chocobo 天ぷら (Tempura)
+Init Zone of Chocobo 天ぷら (Tempura)
 """
 
 
@@ -233,7 +233,8 @@ class Chocobo(ReversiAgent):  # Create Sunat Agent use Alpha-Beta Pruning Search
             -20, -40,  -5,  -5,  -5,  -5, -40, -20,
             120, -20,  20,   5,   5,  20, -20, 120, ]
 
-        self.weight_condition = np.array(SQUARE_WEIGHTS).reshape(8, 8)
+        self.weight_condition = np.array(
+            SQUARE_WEIGHTS, dtype=np.int32).reshape(8, 8)
 
         # Max_value = sum(map(abs,SQUARE_WEIGHTS))
         # Min_value = -Max_value
@@ -245,41 +246,34 @@ class Chocobo(ReversiAgent):  # Create Sunat Agent use Alpha-Beta Pruning Search
 
     # Instead Alpha Beta Search
     def search(self, color, board, valid_actions, output_move_row, output_move_column):
-        time.sleep(0.03125)
-        print(" Chocobo AI is Thinking...")
+        # time.sleep(0.03125)
+        # print(" Chocobo AI is Thinking...")
         try:
             if self._color == 1:
                 evaluation, best_state = self.Max_value(
-                    board, valid_actions, 4, 0, -10000, 10000, True)
+                    board, valid_actions, 4, 0, -99999, 99999, True)
             else:
                 evaluation, best_state = self.Max_value(
-                    board, valid_actions, 4, 0, -2080, 2080, True)
-            print("  ", evaluation, best_state)
+                    board, valid_actions, 4, 0, -99999, 99999, True)
+            # print("  ", evaluation, best_state)
             if best_state is None or valid_actions is None:
-                time.sleep(0.01625)
-                print(" Sunat cannot making the decision")
-                time.sleep(0.0625)
-                print(" Switch to Random Decided")
-                time.sleep(0.0625)
+                # time.sleep(0.01625)
                 # randidx = random.randint(0, len(valid_actions) - 1)
                 # implement with random by using board control
                 randidx = random.randint(0, len(self.weight_condition)-8)
                 random_action = valid_actions[randidx]
-                output_move_row.value = random_action[0]
-                output_move_column.value = random_action[1]
+                output_move_row.value, output_move_column.value = random_action[0], random_action[1]
                 print(" Chocobo Random Selected:" + str(random_action))
-                time.sleep(0.0625)
+                # time.sleep(0.0625)
             elif best_state is not None:
-                time.sleep(0.03125)
-            # We can decided to decrease sleep time or remove it with print output
-                print(" Chocobo is making the decision")
-                time.sleep(0.03125)
-                output_move_row.value = best_state[0]
-                output_move_column.value = best_state[1]
-                print(" Chocobo Selected:" + str(best_state))
-                time.sleep(0.03125)
-                # Since the min from a and Max from b is around 2000 - 2080 by calculating table size
-                # So 2080 and 10000 is highest value for comparing the great result now
+                # time.sleep(0.03125)
+                # We can decided to decrease sleep time or remove it with print output
+                # print(" Chocobo is making the decision")
+                # time.sleep(0.03125)
+                output_move_row.value, output_move_column.value = best_state[0], best_state[1]
+                print(" Chocobo Selected:" + str(best_state) +
+                      " Evaluated Score: " + str(evaluation))
+                # time.sleep(0.03125)
                 # we found depth level between 1 - 4 is found solution quicker
                 # Sunat_Action = valid_actions[moving]
                 # print(" Sunat Selected:" + str(best_state))
@@ -294,7 +288,7 @@ class Chocobo(ReversiAgent):  # Create Sunat Agent use Alpha-Beta Pruning Search
 
         best_state: np.array = None
         MaxAlpha: int = alpha
-        Maxevaluation = -1000000
+        Maxevaluation = -99999
         player: int = self._color
 
         for a in validactions:
@@ -313,14 +307,16 @@ class Chocobo(ReversiAgent):  # Create Sunat Agent use Alpha-Beta Pruning Search
         if level != 0:
             return Maxevaluation
         else:
-            return Maxevaluation, best_state
+            self._move = best_state
+            # print(self._move)
+            return self.evaluateStatistically(board), best_state
 
     def Min_value(self, board: np.array, validactions: np.array, depth: int, level: int, alpha: int, beta: int, gain: bool):
         if depth == 0:
             return self.evaluateStatistically(board)
 
         MinBeta: int = beta
-        Minevaluation = 1000000
+        Minevaluation = 99999
         player: int = self.getOpponent(self._color)
         best_state: np.array = None
         for a in validactions:
@@ -340,8 +336,9 @@ class Chocobo(ReversiAgent):  # Create Sunat Agent use Alpha-Beta Pruning Search
         if level != 0:
             return Minevaluation
         else:
-            return Minevaluation, best_state
-            # self._move = best_state[value]
+            self._move = best_state
+            # print(self._move)
+            return self.evaluateStatistically(board), best_state
 
     def evaluateStatistically(self, board: np.array) -> int:
         MyScore = 0
@@ -349,7 +346,7 @@ class Chocobo(ReversiAgent):  # Create Sunat Agent use Alpha-Beta Pruning Search
         total = 0
         new_weight = copy.deepcopy(self.weight_condition)
         evalBoard = np.array(list(zip(*board.nonzero())))
-
+        # np.array([output_move_row.value, output_move_column.value], dtype=np.int32)
         # print("Print Board: " + str(evalBoard))
         for position in evalBoard:
             Y, X = position[0], position[1]
@@ -358,7 +355,7 @@ class Chocobo(ReversiAgent):  # Create Sunat Agent use Alpha-Beta Pruning Search
             else:
                 OpponentScore += (new_weight[Y][X])
         # print(" Eval Score: ", total)
-            total = MyScore - OpponentScore
+            # total = MyScore - OpponentScore
         return (MyScore - OpponentScore)
 
     @staticmethod
@@ -373,7 +370,8 @@ class Chocobo(ReversiAgent):  # Create Sunat Agent use Alpha-Beta Pruning Search
 
         validMoves: np.array = _ENV.get_valid(
             (newState, self.getOpponent(player)))
-        validMoves: np.array = np.array(list(zip(*validMoves.nonzero())))
+        validMoves: np.array = np.array(
+            list(zip(*validMoves.nonzero())), dtype=np.int32)
 
         return newState, validMoves
 
