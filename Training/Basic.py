@@ -52,18 +52,43 @@
 # age = 21
 # txt = "My name is Pok, and I am {}" # {} is replaced string
 # print(txt.format(age))
-import numpy as np
+# import numpy as np
 
 
-# print(float('inf'))
-SQUARE_WEIGHTS = [10000, -3000, 1000,  800,  800, 1000,  -3000, 10000,   
-                          -3000, -5000, -450, -500, -500, -450,  -5000, -3000,
-                           1000,  -450,   30,   10,   10,   30,  -450,   1000,   
-                            800,  -500,   10,   50,   50,   10,  -500,    800,   
-                            800,  -500,   10,   50,   50,   10,  -500,    800,   
-                           1000,  -450,   30,   10,   10,   30,  -450,   1000,   
-                          -3000, -5000, -450, -500, -500, -450,  -5000, -3000,
-                          10000, -3000, 1000,  800,  800, 1000, -3000,  10000,]
+# # print(float('inf'))
+# SQUARE_WEIGHTS = [10000, -3000, 1000,  800,  800, 1000,  -3000, 10000,   
+#                           -3000, -5000, -450, -500, -500, -450,  -5000, -3000,
+#                            1000,  -450,   30,   10,   10,   30,  -450,   1000,   
+#                             800,  -500,   10,   50,   50,   10,  -500,    800,   
+#                             800,  -500,   10,   50,   50,   10,  -500,    800,   
+#                            1000,  -450,   30,   10,   10,   30,  -450,   1000,   
+#                           -3000, -5000, -450, -500, -500, -450,  -5000, -3000,
+#                           10000, -3000, 1000,  800,  800, 1000, -3000,  10000,]
 
-weight_condition = np.array(SQUARE_WEIGHTS).reshape(8,8)
-print(len(weight_condition)-9)
+# weight_condition = np.array(SQUARE_WEIGHTS).reshape(8,8)
+# print(len(weight_condition)-9)
+import time
+
+x = 0 
+start_time = time.time() # Create stopwatch
+while(True):
+    x +=1
+    if(x < 100):
+        print(x) 
+        elapsed_time = time.time() # Create stopwatch  
+    else:
+        break
+
+totaled_timed = elapsed_time - start_time
+precision = 4
+
+start_time2 = time.time() # Create stopwatch
+x = 0
+for x in range(100) :
+    print(x)
+    elapsed_time2 = time.time() # Create stopwatch
+
+totaled_timed2 = elapsed_time2 - start_time2
+precision = 4
+print(" Time used by for loop: ","{:.{}f}".format( totaled_timed2, precision ), "second(s)")
+print(" Time used by while loop: ","{:.{}f}".format( totaled_timed, precision ), "second(s)")

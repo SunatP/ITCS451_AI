@@ -585,3 +585,306 @@ class KrittametNoobsAgent(ReversiAgent):
         validMoves: np.array = np.array(list(zip(*validMoves.nonzero())))
 
         return newState, validMoves 
+
+
+class PolAgent(ReversiAgent):
+    def search(self, color, board, valid_action, output_move_row, output_move_column):
+        try:
+            evaluation, best_state = self.Max_value(board,valid_action,4,0,-99999,99999)
+            output_move_row.value = best_state[0]
+            output_move_column.value = best_state[1]
+        except Exception as e:
+            print(type(e).__name__, ':', e)
+            print('search() Traceback (most recent call last): ')
+            traceback.print_tb(e.__traceback__)
+
+
+    def Max_value(self,board:np.array,validactions:np.array,depth:int,level:int,alpha:int, beta:int):
+        if depth == 0:
+            return self.Evalustatis(board)
+            
+        best_state: np.array=None
+        Maxalpha: int = alpha
+        Maxevaluation = -99999
+        player: int = self._color
+
+        for Actions in validactions:
+            newboard, newaction = self.createState(board, Actions, player)
+            newmove = self.Min_value(newboard, newaction, depth - 1, level + 1, Maxalpha, beta)
+            if Maxevaluation < newmove:
+                Maxevaluation = newmove
+                if level == 0:
+                    best_state = Actions
+
+            Maxalpha = max(Maxalpha, Maxevaluation)
+            if beta <= Maxalpha:
+                break
+
+        if level != 0:
+            return Maxevaluation
+        else:
+            return Maxevaluation, best_state
+
+    def Min_value(self, board: np.array, validactions: np.array, depth: int, level: int, alpha: int, beta: int):
+        if depth == 0:
+            return self.Evalustatis(board)
+
+        MinBeta: int = beta
+        Minevaluation = 99999
+        player: int = self.getOpponent(self._color)
+        best_state: np.array = None
+        for a in validactions:
+            newstate, newaction = self.createState(board, a, player)
+            newstep = self.Max_value(newstate, newaction, depth - 1, level + 1, alpha, MinBeta)
+
+            if Minevaluation > newstep:
+                Minevaluation = newstep
+                if level == 0:
+                    best_state = a
+
+            MinBeta = min(MinBeta, Minevaluation)
+            if MinBeta <= alpha:
+                break
+        if level != 0:
+            return Minevaluation
+        else:
+            return Minevaluation, best_state
+
+
+    def Evalustatis(self, board: np.array) -> int:
+        MyScore = 0
+        OpponentScore = 0
+        total = 0
+        evalBoard = np.array(list(zip(*board.nonzero())))
+
+        for position in evalBoard:
+            Y, X = position[0], position[1]
+            if board[Y][X] == self._color:
+                MyScore += (board[Y][X])
+            else:
+                OpponentScore += (board[Y][X])
+                # print(" Eval Score: ", total)
+            total = MyScore - OpponentScore
+        return (MyScore - OpponentScore)
+
+    @staticmethod
+    def getOpponent(player: int):
+        if player == 1:
+            return -1
+        else:
+            return 1
+
+    def createState(self, board: np.array, action: np.array, player: int) -> (np.array, np.array):
+        newState: np.array = transition(board, player, action)
+
+        validMoves: np.array = _ENV.get_valid((newState, self.getOpponent(player)))
+        validMoves: np.array = np.array(list(zip(*validMoves.nonzero())))
+
+        return newState, validMoves
+
+
+class Old_Chocobo(ReversiAgent):  # Create Sunat Agent use Alpha-Beta Pruning Search
+
+    """
+    Alpha-Beta Pruning Search Algorithm limit with 10
+    -----------------------------------------------
+    function ABS(state) return action
+    v <- Max_value(state,+inf,-inf) # v = Max_Value
+    -----------------------------------------------
+    function Max_value(state,alpha,beta) return a utility value
+    if Terminal-test(state) then return utility(state)
+    v <- (-inf)  # we can define -inf as float('-inf') or -float('inf)
+    for each a in action(state) do
+    v <- max(v,Min_Value(Result(s,a),alpha,beta))
+    if v >= beta then return v
+    alpha <- max(alpha,v)
+    return v
+    -----------------------------------------------
+    function Min_value(state,alpha,beta) return a utility value
+    if Terminal-test(state) then return utility(state)
+    v <- (inf)
+    for each a in action(state) do
+    v <- min(v,Max_Value(Result(s,a),alpha,beta))
+    if v <= alpha then return v
+    beta <- max(beta,v)
+    return v
+    -----------------------------------------------
+    function alphabeta(node, depth, α, β, maximizingPlayer) is
+    if depth = 0 or node is a terminal node then
+        return the heuristic value of node
+    if maximizingPlayer then
+        value := −∞
+        for each child of node do
+            value := max(value, alphabeta(child, depth − 1, α, β, FALSE))
+            α := max(α, value)
+            if α ≥ β then
+                break (* β cut-off *)
+        return value
+    else
+        value := +∞
+        for each child of node do
+            value := min(value, alphabeta(child, depth − 1, α, β, TRUE))
+            β := min(β, value)
+            if α ≥ β then
+                break (* α cut-off *)
+        return value
+    (* Initial call *)
+    alphabeta(origin, depth, −∞, +∞, TRUE)
+    """
+
+    def __init__(self, color):
+        super().__init__(color)
+        # Create Weight table for Othello that we know is 8x8
+        SQUARE_WEIGHTS = [
+            0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+            0, 120, -20,  20,   5,   5,  20, -20, 120,   0,
+            0, -20, -40,  -5,  -5,  -5,  -5, -40, -20,   0,
+            0,  20,  -5,  15,   3,   3,  15,  -5,  20,   0,
+            0,   5,  -5,   3,   3,   3,   3,  -5,   5,   0,
+            0,   5,  -5,   3,   3,   3,   3,  -5,   5,   0,
+            0,  20,  -5,  15,   3,   3,  15,  -5,  20,   0,
+            0, -20, -40,  -5,  -5,  -5,  -5, -40, -20,   0,
+            0, 120, -20,  20,   5,   5,  20, -20, 120,   0,
+            0,   0,   0,   0,   0,   0,   0,   0,   0,   0, ]
+
+        self.weight_condition = np.array(
+            SQUARE_WEIGHTS, dtype=np.int32).reshape(10, 10)
+
+        # Max_value = sum(map(abs,SQUARE_WEIGHTS))
+        # Min_value = -Max_value
+        # print(self.weight_condition.reshape) print for get the shape of Weight table
+        # print(self.weight_condition.ndim) print for get the shape dimension
+
+    def __index__(self):
+        super(Old_Chocobo, self)
+
+    # Instead Alpha Beta Search
+    def search(self, color, board, valid_actions, output_move_row, output_move_column):
+        # time.sleep(0.03125)
+        # print(" Chocobo AI is Thinking...")
+        try:
+            if self._color == 1:
+                evaluation, best_state = self.Max_value(
+                    board, valid_actions, 4, 0, -99999, 99999, True)
+            else:
+                evaluation, best_state = self.Max_value(
+                    board, valid_actions, 4, 0, -99999, 99999, True)
+            # print("  ", evaluation, best_state)
+            if best_state is None or valid_actions is None:
+                # time.sleep(0.01625)
+                # randidx = random.randint(0, len(valid_actions) - 1)
+                # implement with random by using board control
+                randidx = random.randint(0, len(self.weight_condition)-10)
+                random_action = valid_actions[randidx]
+                output_move_row.value, output_move_column.value = random_action[0], random_action[1]
+                print(" Chocobo Random Selected:" + str(random_action))
+                # time.sleep(0.0625)
+            elif best_state is not None:
+                # time.sleep(0.03125)
+                # We can decided to decrease sleep time or remove it with print output
+                # print(" Chocobo is making the decision")
+                # time.sleep(0.03125)
+                output_move_row.value, output_move_column.value = best_state[0], best_state[1]
+                print(" Chocobo Selected:" + str(best_state) +
+                      " Evaluated Score: " + str(evaluation))
+                # time.sleep(0.03125)
+                # we found depth level between 1 - 4 is found solution quicker
+                # Sunat_Action = valid_actions[moving]
+                # print(" Sunat Selected:" + str(best_state))
+        except Exception as e:
+            print(type(e).__name__, ':', e)
+            print('search() Traceback (most recent call last): ')
+            traceback.print_tb(e.__traceback__)
+
+    def Max_value(self, board: np.array, validactions: np.array, depth: int, level: int, alpha: int, beta: int, gain: bool):
+        if depth == 0:
+            return self.evaluateStatistically(board)
+
+        best_state: np.array = None
+        MaxAlpha: int = alpha
+        Maxevaluation = -99999
+        player: int = self._color
+
+        for a in validactions:
+            newstate, newaction = self.createState(board, a, player)
+            newstep = self.Min_value(
+                newstate, newaction, depth-1, level + 1, MaxAlpha, beta, not gain)
+            if Maxevaluation < newstep:
+                Maxevaluation = newstep
+                if level == 0:
+                    best_state = a
+
+            MaxAlpha = max(MaxAlpha, Maxevaluation)
+            if beta <= MaxAlpha:
+                break
+
+        if level != 0:
+            return Maxevaluation
+        else:
+            self._move = best_state
+            # print(self._move)
+            return self.evaluateStatistically(board), best_state
+
+    def Min_value(self, board: np.array, validactions: np.array, depth: int, level: int, alpha: int, beta: int, gain: bool):
+        if depth == 0:
+            return self.evaluateStatistically(board)
+
+        MinBeta: int = beta
+        Minevaluation = 99999
+        player: int = self.getOpponent(self._color)
+        best_state: np.array = None
+        for a in validactions:
+            newstate, newaction = self.createState(board, a, player)
+            newstep = self.Max_value(
+                newstate, newaction, depth-1, level + 1, alpha, MinBeta, not gain)
+
+            if Minevaluation > newstep:
+                Minevaluation = newstep
+                # print(depth)
+                if level == 0:
+                    best_state = a
+
+            MinBeta = min(MinBeta, Minevaluation)
+            if MinBeta <= alpha:
+                break
+        if level != 0:
+            return Minevaluation
+        else:
+            self._move = best_state
+            # print(self._move)
+            return self.evaluateStatistically(board), best_state
+
+    def evaluateStatistically(self, board: np.array) -> int:
+        MyScore = 0
+        OpponentScore = 0
+        total = 0
+        new_weight = copy.deepcopy(self.weight_condition)
+        evalBoard = np.array(list(zip(*board.nonzero()))).T
+        # np.array([output_move_row.value, output_move_column.value], dtype=np.int32)
+        # print("Print Board: " + str(evalBoard))
+        for position in evalBoard:
+            Y, X = position[0], position[1]
+            if board[Y][X] == self._color:
+                MyScore += (new_weight[Y][X] + board[Y][X])
+            else:
+                OpponentScore += (new_weight[Y][X] + board[Y][X])
+        # print(" Eval Score: ", total)
+            # total = MyScore - OpponentScore
+        return (MyScore - OpponentScore)
+
+    @staticmethod
+    def getOpponent(player: int):
+        if player == 1:
+            return -1
+        else:
+            return 1
+
+    def createState(self, board: np.array, action: np.array, player: int) -> (np.array, np.array):
+        newState: np.array = transition(board, player, action)
+
+        validMoves: np.array = _ENV.get_valid(
+            (newState, self.getOpponent(player)))
+        validMoves: np.array = np.array(
+            list(zip(*validMoves.nonzero())), dtype=np.int32)
+
+        return newState, validMoves

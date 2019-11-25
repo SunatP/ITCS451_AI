@@ -117,7 +117,7 @@ async def main(black, white, timelimit=2):
 
 if __name__ == "__main__":
     black = agents.Chocobo(bg2.BLACK)
-    white = pooh.AgentMongChaChaVI(bg2.WHITE)
+    white = agents.PolAgent(bg2.WHITE)
     start_time = time.time() # Create stopwatch
     asyncio.run(main(black, white, 10))
     elapsed_time = time.time()
