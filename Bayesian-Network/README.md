@@ -37,4 +37,18 @@
 จากนั้นเราพิมพ์ False ลงไปแต่ไม่ต้องกด New
 ![12](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/12.PNG)
 แล้วให้เรามากดที่ปุ่ม OK จะขึ้นมาตามภาพ
-![13](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/13.PNG)
+![13](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/smoker.PNG)
+เราจะสร้างอีกอันนึงขึ้นมาชื่อว่า Pollution กำหนดค่า Low High ตามนี้
+![14](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/13.PNG)
+ต่อมาเราจะสร้างอีกอันนึงชื่อว่า Cancer ที่กำหนดค่า True False
+![15](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/14.PNG) เมื่อสร้างมาแล้วไปกดที่ปุ่มลูกศร (Add Link) แล้วลากจาก Smoker ไปที่ Cancer และ Pollution ไปที่ Cancer 
+![16](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/15.PNG) เมื่อลากแบบนี้ตามภาพแล้วให้กดรูปสายฟ้า (Complie Net) จะมีกราฟแท่งขึ้นมาแบบนี้
+![17](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/16.PNG)
+จากนั้นคลิกขวาที่ Smoker เลือก Table
+![18](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/17.png)
+เราจะทำการใส่ค่าลงไปที่ True และ False เป็น 30 กับ 70
+![19](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/18.PNG)
+ตามภาพนี้เป็นต้น
+![20](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/19.PNG)
+เมื่อเราใส่เสร็จแล้วก็กด OK
+![21](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/21.png)
