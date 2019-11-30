@@ -57,3 +57,11 @@
 ![23](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/23.PNG)
 กับ Dysnopea และใส่ค่าตามภาพ เมื่อใส่ค่าเสร็จแล้วให้ลากลูกศร (Add Link) จาก Cancer มาที่ XRay และ Dysnopea จากนั้นกด Compile Net จะได้ตามภาพดังนี้
 ![24](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/24.PNG)
+จากนั้นลองคลิกที่ True ตรง Cancer ค่าที่ได้จะเปลี่ยนไปทั้งภาพ
+![25](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/25.PNG)
+ถ้าเราเปลี่ยนเป็นคลิกที่ False ดูบ้างค่าก็จะเปลี่ยนไปเหมือนกัน
+![26](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/26.PNG)
+ถ้ามากดที่ False ตรง Pollution ค่าก็จะเปลี่ยนไปอีกเช่นกัน
+![27](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/27.PNG)
+หรือจะตรง Smoker ก็ตาม
+![28](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/28.PNG)
