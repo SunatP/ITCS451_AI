@@ -25,5 +25,16 @@
 ![5](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/5.PNG)
 ให้เรากดปุ่ม Limited Mode (Limited Mode จะใช้งานได้ไม่เกิน 10 Nodes) เพื่อเข้าใช้งานโปรแกรม เมื่อกดเข้ามาแล้วจะเป็นอย่างงี้
 ![6](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/6.PNG)
-4. ให้เรากด New ขึ้นมาจะมีหน้าต่างใหม่ขึ้นมาแบบนี้
+5. ให้เรากด New Net ขึ้นมาจะมีหน้าต่างใหม่ขึ้นมาแบบนี้
 ![7](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/7.PNG)
+6. ต่อมากดที่ปุ่มวงกลมสีเหลือง (Add Nature Node) ตรงนี้ 
+![8](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/8.PNG)
+7. แล้วมากดตรงที่ว่างในหน้าต่างที่เรากดสร้างใหม่ขึ้นมาจะขึ้นมาดังภาพ
+![9](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/9.PNG)
+8. ดับเบิ้ลคลิกที่ Nature Node ที่เราวางไว้ตรงพื้นที่ขาวๆ (ในรูปจะมีชื่อว่า A แล้วก็ state0) จะมีหน้าต่างใหม่ขึ้นมา
+![10](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/10.PNG) ตรง A เราจะเปลี่ยนชื่อเป็นอะไรก็ได้ ในตัวอย่างเราจะตั้งชื่อเป็น Smoker จากนั้นลงมาดูที่ State เราสามารถเขียน State แบบไหนก็ได้ในตัวอย่างเราจะเขียน True กับ False ลงไป โดยเขียน True ลงไปแล้วกด New 
+![11](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/11.PNG)
+จากนั้นเราพิมพ์ False ลงไปแต่ไม่ต้องกด New
+![12](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/12.PNG)
+แล้วให้เรามากดที่ปุ่ม OK จะขึ้นมาตามภาพ
+![13](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/13.PNG)
