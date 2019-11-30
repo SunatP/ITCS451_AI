@@ -50,5 +50,10 @@
 ![19](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/18.PNG)
 ตามภาพนี้เป็นต้น
 ![20](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/19.PNG)
-เมื่อเราใส่เสร็จแล้วก็กด OK
-![21](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/21.png)
+เมื่อเราใส่เสร็จแล้วก็กด OK อีกอันนึงสำหรับ Pollution เราจะใส่เป็น Low 90 และ High 10 ต่อมาที่ Cancer เราจะคลิกขวาและกด Table ลองแก้ไขโดยใส่ค่าตามภาพ
+![21](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/21.PNG)
+จากนั้นสร้าง Node ขึ้นมาอีกสองตัวตามภาพ ในภาพเราจะสร้าง XRay 
+![22](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/22.PNG)
+![23](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/23.PNG)
+กับ Dysnopea และใส่ค่าตามภาพ เมื่อใส่ค่าเสร็จแล้วให้ลากลูกศร (Add Link) จาก Cancer มาที่ XRay และ Dysnopea จากนั้นกด Compile Net จะได้ตามภาพดังนี้
+![24](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/24.PNG)
