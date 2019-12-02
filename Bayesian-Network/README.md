@@ -15,7 +15,7 @@
 
 1. ไฟล์ที่โหลดมามันจะมีชื่อแบบนี้ เราก็ดับเบิ้ลคลิกไฟล์ตามปกติ
 ![1](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/1.PNG)
-2. มันจะมีหน้าต่างขึ้นมาแบบนี้ตามภาพ ให้เรากด Unzip
+2. มันจะมีหน้าต่างขึ้นมาแบบนี้ตามภาพ ให้เรากด Unzip<br>
 ![2](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/2.PNG)
 3. หลังจากที่กด **Unzip** แล้วตัวแฟ้มตัวนี้จะไปอยู่ที่ ไดรฟ์ C: จะมีแฟ้มชื่อ Netica โผล่มา
 ![3](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/3.PNG)
