@@ -65,3 +65,11 @@
 ![27](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/27.PNG)
 หรือจะตรง Smoker ก็ตาม
 ![28](https://raw.githubusercontent.com/SunatP/ITCS451_AI/master/img/28.PNG)
+
+
+### อีกวิธีนึงเร็วกว่านี้อีกเยอะ
+
+1. ให้เราสร้างไฟล์ขึ้นมาใหม่
+2. จากนั้นไปที่ Cases -> Learn -> Add Cases File Node...
+3. ให้เราหาไฟล์ที่มีนามสกุล .csv ที่มี data ไม่เกิน 10 column
+4. จากนั้นจะมีกล่องขึ้นคำถาม How many states would you like continuous node CL to have (0 for no discretization)?
